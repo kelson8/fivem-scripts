@@ -1,5 +1,6 @@
 # Resources info
 These are going to be for the custom FiveM server that I am working on.
+
 I'm mostly just doing this to learn lua a bit more and scripting with FiveM.
 
 # Resource list
@@ -11,5 +12,5 @@ I'm mostly just doing this to learn lua a bit more and scripting with FiveM.
 
 # Todo
 Add features:
-Give all weapons command.
-Custom menus for car spawning, weapon spawning, player skins, god mode toggles and stuff like that.
+* Give all weapons command.
+* Custom menus for car spawning, weapon spawning, player skins, god mode toggles and stuff like that.
