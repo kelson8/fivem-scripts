@@ -2,6 +2,18 @@
 --local spawnPos = vector3(-1853.68, 2815.78, 32.81) -- Army base
 local spawnPos = vector3(222.2027, -864.0162, 30.2922) -- Middle of Los santos
 
+-- I'm quite sure this might fix the players not being able to respawn.
+-- Yes, this works without a cooldown and without needing ch_gamemode, and ch_map
+Citizen.CreateThread(function()
+    exports.spawnmanager:setAutoSpawn(true) -- must be true for this to work
+    while true do
+        if IsEntityDead(PlayerPedId()) then -- check if the player is dead
+            exports.spawnmanager:forceRespawn() -- forcefully respawn without a cooldown
+        end
+        Citizen.Wait(1000)
+    end
+end)
+
 AddEventHandler('onClientGameTypeStart', function()
     exports.spawnmanager:setAutoSpawnCallback(function()
         exports.spawnmanager:spawnPlayer({
