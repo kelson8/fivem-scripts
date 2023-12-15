@@ -1,3 +1,7 @@
+RegisterCommand('car_menu', function (source, args)
+    -- TODO figure out how to make a menu with a couple of cars in it.
+end)
+
 RegisterCommand('car', function(source, args)
     -- account for the argument not being passed
     local vehicleName = args[1] or 'adder'
