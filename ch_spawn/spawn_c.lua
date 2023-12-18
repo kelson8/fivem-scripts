@@ -14,6 +14,7 @@ Citizen.CreateThread(function()
     end
 end)
 
+
 AddEventHandler('onClientGameTypeStart', function()
     exports.spawnmanager:setAutoSpawnCallback(function()
         exports.spawnmanager:spawnPlayer({

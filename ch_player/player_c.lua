@@ -14,19 +14,26 @@ RegisterCommand('god', function(source, args)
     god = not god
     local ped = GetPlayerPed(PlayerId())
     if god then
-        SetEntityInvincible(GetPlayerPed(ped), true)
+        --SetEntityInvincible(GetPlayerPed(ped), true)
+        SetEntityInvincible(ped, true)
         TriggerEvent('chat:addMessage', {
             args = { 'You have enabled god mode! ' }
         })
         --notify("~g~God Mode On")
     else
-        SetEntityInvincible(GetPlayerPed(ped), false)
+        --SetEntityInvincible(GetPlayerPed(ped), false)
+        SetEntityInvincible(ped, false)
         TriggerEvent('chat:addMessage', {
             args = { 'You have disabled god mode! ' }
         })
         --notify("~r~God Mode Off")
     end
   end, false)
+
+RegisterCommand('kms', function()
+    local ped = GetPlayerPed(PlayerId())
+    SetEntityHealth(ped, 0)
+end)
 
 
 --[[
