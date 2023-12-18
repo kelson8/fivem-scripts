@@ -1,18 +1,19 @@
---[[RegisterCommand('weapon', function(source, args)
-    local weaponName = args[1] or ''
+function alert(msg)
+    SetTextComponentFormat("STRING")
+    AddTextComponentString(msg)
+    DisplayHelpTextFromStringLabel(0,0,0, -1)
+end
 
-    if not IsModelInCdimage(weaponName) or IsWeaponValid then
-        TriggerEvent('chat:addMessage', {
-            args = { 'The weapon' ..weaponName.. ' doesn\'t exist!' }
-        })
+function notify(msg)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(msg)
+    DrawNotification(true, false)
+end
 
-        return
-    end
-    
-
-
-
-end)]]
+-- Move this into function, to be used later.
+function giveWeapon(hash)
+    GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
+end
 
 -- This is working for spawning in with a pistol
 AddEventHandler('playerSpawned', function()
@@ -30,24 +31,17 @@ RegisterCommand("weapon", function(source, args)
     local weaponName = "weapon_" .. tostring(args[1])
     --local weaponName = GetHashKey(args[1])
 
-
-    -- Create a list of hash names.
-
     -- Need to check if given weapon hash is valid
     if not IsWeaponValid(weaponName) then
-        TriggerEvent('chat:addMessage', {
-            args = { 'Weapon not recognized \'' .. weaponName .. '\'' }
-        })
+        notify("Invalid weapon \'" .. weaponName .. '\'')
         return
     end
-    GiveWeaponToPed(ped, weaponName, 1000, false, false)
-
-    
-    --GiveWeaponToPed(ped, GetHashKey("WEAPON_PISTOL"), 1000, false, false)
+    giveWeapon(weaponName)
+    alert("~b~Enjoy your new " .. args[1])
 end, false)
 
 
-
+-- Create a list of hash names with weapon hashes in weapon_list.lua
 RegisterCommand("weaponall", function(args, string)
     local ped = GetPlayerPed(PlayerId())
 
@@ -60,11 +54,8 @@ RegisterCommand("weaponall", function(args, string)
     
 end, false)
 
+-- Remove weapons
 RegisterCommand("clear", function()
-    RemoveAllPedWeapons(ped, true)
-    
-    TriggerEvent('chat:addMessage', {
-        args = { "You have removed all weapons!" }
-    })
-
+    RemoveAllPedWeapons(GetPlayerPed(-1), true)
+    notify("You have removed all weapons!")
 end, false)
