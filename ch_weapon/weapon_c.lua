@@ -22,15 +22,41 @@ AddEventHandler('playerSpawned', function()
     GiveWeaponToPed(player, weapon, 1000, false, false)
 end)
 
-local ped = GetPlayerPed(PlayerId())
-RegisterCommand("weapon", function(args, hash)
+RegisterCommand("weapon", function(source, args)
 
-    GiveWeaponToPed(ped, GetHashKey("WEAPON_PISTOL"), 1000, false, false)
-    --GiveWeaponToPed(ped, "weapon_" .. hash, 1000, false, false)
+    --local ped = GetPlayerPed(PlayerId())
+    -- This almost works.
+    local ped = PlayerPedId()
+    local weaponName = "weapon_" .. tostring(args[1])
+    --local weaponName = GetHashKey(args[1])
+
+
+    -- Create a list of hash names.
+
+    -- Need to check if given weapon hash is valid
+    if not IsWeaponValid(weaponName) then
+        TriggerEvent('chat:addMessage', {
+            args = { 'Weapon not recognized \'' .. weaponName .. '\'' }
+        })
+        return
+    end
+    GiveWeaponToPed(ped, weaponName, 1000, false, false)
+
+    
+    --GiveWeaponToPed(ped, GetHashKey("WEAPON_PISTOL"), 1000, false, false)
 end, false)
+
+
 
 RegisterCommand("weaponall", function(args, string)
     local ped = GetPlayerPed(PlayerId())
+
+    -- Gets list of hash names from weapon_list.lua
+    for i=0, #allweapons do
+        GiveWeaponToPed(ped, GetHashKey(allweapons[i]), 999, false, false)
+    end
+
+    --for i, weapons in
     
 end, false)
 
