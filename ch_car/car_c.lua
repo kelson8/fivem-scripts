@@ -39,6 +39,41 @@ function spawnVehicle(vehicleName)
     SetModelAsNoLongerNeeded(vehicle)
 end
 
+function deleteCurrentVehicle(vehicleName)
+    local ped = GetPlayerPed(-1)
+    if DoesEntityExist(vehicleName) then
+        if IsPedSittingInAnyVehicle(ped) then
+            local vehicle = GetVehiclePedIsIn(ped, false)
+
+            SetEntityAsMissionEntity(vehicle)
+
+            DeleteVehicle(vehicle)
+        end
+    end
+end
+
+-- Random cars
+-- Fix this to where the cars delete the old ones as they spawn in.
+RegisterCommand('rndcar', function()
+    local cars = {"adder", "t20", "faggio", "cheetah"}
+    local car_random = (cars[math.random(#cars)])
+    local ped = GetPlayerPed(-1)
+
+    --if IsPedInVehicle(ped) then
+    if IsPedSittingInAnyVehicle(ped) then
+        local vehicle = GetVehiclePedIsIn(ped, false)
+        deleteCurrentVehicle(vehicle)
+        
+        -- SetEntityAsMissionEntity(vehicle, true, true)
+
+        -- DeleteVehicle(vehicle)
+    end
+
+    spawnVehicle(car_random)
+    notify("You have spawned a ~y~" .. car_random)
+
+end)
+
 RegisterCommand('car_menu', function (source, args)
     -- TODO figure out how to make a menu with a couple of cars in it.
 end)
@@ -60,13 +95,27 @@ RegisterCommand('car', function(source, args)
 	-- })
 end, false)
 
+-- RegisterCommand('dv', function()
+--     -- get the local player ped
+--     local playerPed = PlayerPedId()
+--     -- get the vehicle the player is in.
+--     local vehicle = GetVehiclePedIsIn(playerPed, false)
+--     -- delete the vehicle.
+--     DeleteEntity(vehicle)
+-- end, false)
+
 RegisterCommand('dv', function()
-    -- get the local player ped
-    local playerPed = PlayerPedId()
-    -- get the vehicle the player is in.
-    local vehicle = GetVehiclePedIsIn(playerPed, false)
-    -- delete the vehicle.
-    DeleteEntity(vehicle)
+
+    local ped = GetPlayerPed(-1)
+    if IsPedSittingInAnyVehicle(ped) then
+        local vehicleName = GetVehiclePedIsIn(ped, false)
+        deleteCurrentVehicle(vehicleName)
+
+        notify("~w~You have ~r~deleted~w~ your car!")
+    else
+        notify("~r~Error~w~: You need a car to use this command!")
+    end
+
 end, false)
 
 -- Adding suggestions to the command
@@ -77,3 +126,4 @@ TriggerEvent('chat:addSuggestion', '/car', 'help text', {
 
 TriggerEvent('chat:addSuggestion', '/dv', 'Delete vehicle')
 
+TriggerEvent('chat:addSuggestion', '/rndcar', 'Gives a random vehicle.')
