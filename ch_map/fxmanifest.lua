@@ -5,6 +5,6 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-resource_type 'map' { gameTypes = { ['ch_gamemode'] = true } }
+resource_type 'map' { gameTypes = { ['ch_spawn'] = true } }
 
 map 'map.lua'
