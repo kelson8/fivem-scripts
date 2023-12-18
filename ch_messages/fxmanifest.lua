@@ -6,6 +6,6 @@ client_scripts {
     'messages_c.lua',
 }
 
-server_scripts {
-    'messages_s.lua',
-}
+--server_scripts {
+--    'messages_s.lua',
+--}

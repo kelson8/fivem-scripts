@@ -14,20 +14,31 @@
 
 end)]]
 
--- This is working for spawning in with a pistol, but I don't have any ammo
+-- This is working for spawning in with a pistol
 AddEventHandler('playerSpawned', function()
     local player = GetPlayerPed(PlayerId())
-    local weapon = GetHashKey("WEAPON_PISTOL")
+    local weapon = GetHashKey("WEAPON_PISTOL", 1000, false, false)
 
     GiveWeaponToPed(player, weapon)
 end)
 
-RegisterCommand("weapon", function(args, string)
-    local ped = GetPlayerPed(PlayerId())
+local ped = GetPlayerPed(PlayerId())
+RegisterCommand("weapon", function(args, hash)
+
     GiveWeaponToPed(ped, GetHashKey("WEAPON_PISTOL"), 1000, false, false)
+    --GiveWeaponToPed(ped, "weapon_" .. hash, 1000, false, false)
 end, false)
 
 RegisterCommand("weaponall", function(args, string)
     local ped = GetPlayerPed(PlayerId())
+    
+end, false)
+
+RegisterCommand("clear", function()
+    RemoveAllPedWeapons(ped, true)
+    
+    TriggerEvent('chat:addMessage', {
+        args = { "You have removed all weapons!" }
+    })
 
 end, false)
