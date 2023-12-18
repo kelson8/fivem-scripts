@@ -4,4 +4,5 @@ lua54 'yes'
 
 client_scripts {
     'weapon_c.lua',
+    'weapon_list.lua',
 }
