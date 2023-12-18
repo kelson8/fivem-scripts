@@ -25,12 +25,26 @@ function spawnVehicle(vehicleName)
     local ped = GetPlayerPed(-1)
     local x,y,z = table.unpack(GetEntityCoords(ped))
     local heading = GetEntityHeading(ped)
+    -- Set this to true to spawn player into vehicle.
+    local spawnInVehicle = false
 
-    local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
+
+    -- TODO Setup spawn in vehicle check.
+    if (spawnInVehicle) then
+        -- Set the player into the drivers seat
+        local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
+        SetPedIntoVehicle(ped, vehicle, -1)
+
+        -- Not sure if these are needed twice.
+        SetEntityAsNoLongerNeeded(vehicle)
+
+        SetModelAsNoLongerNeeded(vehicle)
+    end
+
+    local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
+
+    
     -- local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-
-    -- Set the player into the drivers seat
-    SetPedIntoVehicle(ped, vehicle, -1)
 
     -- give the vehicle back to the game (This'll make the game decide when to despawn the vehicle)
     SetEntityAsNoLongerNeeded(vehicle)
