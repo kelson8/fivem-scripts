@@ -59,16 +59,14 @@ RegisterCommand('rndcar', function()
     local car_random = (cars[math.random(#cars)])
     local ped = GetPlayerPed(-1)
 
-    --if IsPedInVehicle(ped) then
+    -- Remove current vehicle before spawning a new one in.
     if IsPedSittingInAnyVehicle(ped) then
         local vehicle = GetVehiclePedIsIn(ped, false)
         deleteCurrentVehicle(vehicle)
-        
-        -- SetEntityAsMissionEntity(vehicle, true, true)
 
-        -- DeleteVehicle(vehicle)
     end
 
+    -- Spawns the vehicle and notify the player
     spawnVehicle(car_random)
     notify("You have spawned a ~y~" .. car_random)
 
@@ -81,6 +79,13 @@ end)
 RegisterCommand('car', function(source, args)
     -- account for the argument not being passed
     local vehicleName = args[1] or 'adder'
+    local ped = GetPlayerPed(-1)
+
+    -- Remove current vehicle before spawning a new one in.
+    if IsPedSittingInAnyVehicle(ped) then
+        local vehicle = GetVehiclePedIsIn(ped, false)
+        deleteCurrentVehicle(vehicle)
+    end
 
     -- Spawn the car
     spawnVehicle(vehicleName)
