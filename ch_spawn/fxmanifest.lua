@@ -6,4 +6,5 @@ resource_type 'gametype' { name = 'Tutorial Type!', }
 
 client_scripts {
     'spawn_c.lua',
+    --'spawns.lua',
 }
