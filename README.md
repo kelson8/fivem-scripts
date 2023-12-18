@@ -9,17 +9,31 @@ To enable these resources add the following to the server.cfg.
 
 * ensure ch_car
 * ensure ch_spawn
+* ensure ch_map
 * ensure ch_weapon
 * ensure help
+* ensure ch_test
+* ensure ch_vehiclecontrol
 
 # Resource list
 * ch_car - Basic car spawning and removal
-* ch_gamemode - Basic gamemode
 * ch_map - Basic map
-* ch_spawn - Basic player spawning
-* ch_weapon - Gives player weapon on spawn, and commands.
+* ch_spawn - Basic player spawning and gamemode
+* ch_weapon - Gives player weapon on spawn.
 * chat_stuff - I haven't added anything to this.
 * help - Help messages for my server.
+* ch_test - Testing scripts
+* ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons. Window
+
+
+# Features
+* ch_vehiclecontrol
+* Adds hood and trunk control with page up and page down buttons. 
+* Adds Window controls with delete and insert.
+
+# Commands
+* /car <name> -- Gives you a car with the specified name.
+* /weaponall -- Gives you all weapons.
 
 # Todo
 Add features:
