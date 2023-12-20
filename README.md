@@ -23,7 +23,7 @@ To enable these resources add the following to the server.cfg.
 * chat_stuff - I haven't added anything to this.
 * help - Help messages for my server.
 * ch_test - Testing scripts
-* ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons. Window
+* ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons.
 
 
 # Features
