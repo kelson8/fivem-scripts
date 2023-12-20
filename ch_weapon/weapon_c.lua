@@ -1,3 +1,4 @@
+-- Move these into functions, to be used later.
 function alert(msg)
     SetTextComponentFormat("STRING")
     AddTextComponentString(msg)
@@ -10,9 +11,17 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
--- Move this into function, to be used later.
+
 function giveWeapon(hash)
     GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
+end
+
+-- This should work.
+function giveWeaponComponent(weaponHash, component)
+    local ped = GetPlayerPed(-1)
+    if HasPedGotWeapon(ped, GetHashKey(weaponHash), false) then
+        GiveWeaponComponentToPed(ped, GetHashKey(weaponHash), GetHashKey(component))
+    end
 end
 
 -- This is working for spawning in with a pistol
@@ -59,3 +68,6 @@ RegisterCommand("clear", function()
     RemoveAllPedWeapons(GetPlayerPed(-1), true)
     notify("You have removed all weapons!")
 end, false)
+
+-- Weapon components (Attachments)
+--RegisterCommand('attachwep')
