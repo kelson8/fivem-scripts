@@ -1,0 +1,4 @@
+# Playing around with lua.
+lua_test/
+# Vscode launch.json
+.vscode/launch.json

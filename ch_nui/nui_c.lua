@@ -1,6 +1,9 @@
 -- https://www.youtube.com/watch?v=WxMOk-FuG2U&list=PLIpzpS7fwntTQOAh2bS8Tz-g8NP4WFhG2&index=2
 -- Basic gui for fivem
 
+-- TODO Fix this to where it doesn't show up until the on command is typed
+-- Currently it opens up without typing the command but it closes properly
+
 
 local display = false
 
