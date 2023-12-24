@@ -1,9 +1,36 @@
 -- TODO Setup toggle for being in the driver seat or spawning beside the player.
+-- Setup this to remove vehicle once new one is spawned, or set it to where only 2 can be spawned at a time.
+-- To prevent lag/crashes.
+
+-- This seems to work
+-- Setup to where the blip only shows up when the player isn't in the vehicle.
+-- Add car spawns on the map where the player spawns.
+
+-- https://docs.fivem.net/docs/game-references/blips/
+--local vehBlip = AddBlipForEntity(vehicle)
+--AddBlipForEntity(vehicle)
+
+-- Remove when car is deleted.
+--RemoveBlip(vehBlip)
+
+-- Set the sprite for the blip
+--SetBlipSprite(vehBlip, 225)
+
 
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
     DrawNotification(true, false)
+end
+
+function createVehBlip(blip, vehicle)
+    local vehBlip = AddBlipForEntity(vehicle)
+    AddBlipForEntity(vehBlip)
+    SetBlipSprite(vehBlip, blip)
+end
+
+function removeVehBlip(blip, vehicle)
+    RemoveBlip(blip)
 end
 
 function spawnVehicle(vehicleName)
@@ -26,31 +53,47 @@ function spawnVehicle(vehicleName)
     local x,y,z = table.unpack(GetEntityCoords(ped))
     local heading = GetEntityHeading(ped)
     -- Set this to true to spawn player into vehicle.
-    local spawnInVehicle = false
+    local spawnInVehicle = true
 
 
     -- TODO Setup spawn in vehicle check.
+    -- TODO Fix this to where it doesn't despawn when you walk a bit from it.
+    -- Setup persistant vehicle check, if enabled the current vehicle won't despawn.
     if (spawnInVehicle) then
+        -- Remove vehicle if player is in one.
+        if(IsPedSittingInAnyVehicle) then
+            deleteCurrentVehicle(GetVehiclePedIsIn(ped, false))
+        end
+
         -- Set the player into the drivers seat
         local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
         SetPedIntoVehicle(ped, vehicle, -1)
 
+        -- Add the blip for personal vehicle.
+        createVehBlip(225, vehicle)
+
         -- Not sure if these are needed twice.
         SetEntityAsNoLongerNeeded(vehicle)
+        SetModelAsNoLongerNeeded(vehicle)
+    -- Adding the else fixed the vehicle spawning in multiple times.
+    else
+        local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
 
+        -- Add the blip for personal vehicle.
+        createVehBlip(225, vehicle)
+
+        SetEntityAsNoLongerNeeded(vehicle)
         SetModelAsNoLongerNeeded(vehicle)
     end
-
-    local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
-
     
     -- local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
 
+    -- I commented these out since they are under the spawnInVehicle check.
     -- give the vehicle back to the game (This'll make the game decide when to despawn the vehicle)
-    SetEntityAsNoLongerNeeded(vehicle)
+    --SetEntityAsNoLongerNeeded(vehicle)
 
     -- Release the model
-    SetModelAsNoLongerNeeded(vehicle)
+    --SetModelAsNoLongerNeeded(vehicle)
 end
 
 function deleteCurrentVehicle(vehicleName)
@@ -58,9 +101,17 @@ function deleteCurrentVehicle(vehicleName)
     if DoesEntityExist(vehicleName) then
         if IsPedSittingInAnyVehicle(ped) then
             local vehicle = GetVehiclePedIsIn(ped, false)
+            --local vehBlip = GetBlipFromEntity(vehicle)
+
+            -- Will this work?
+            --if vehBlip == 0 then
+            if GetBlipFromEntity(vehicle) == 0 then
+                return
+            else
+                removeVehBlip()
+            end
 
             SetEntityAsMissionEntity(vehicle)
-
             DeleteVehicle(vehicle)
         end
     end
