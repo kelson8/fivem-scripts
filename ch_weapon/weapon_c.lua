@@ -69,5 +69,11 @@ RegisterCommand("clear", function()
     notify("You have removed all weapons!")
 end, false)
 
--- Weapon components (Attachments)
---RegisterCommand('attachwep')
+-- Weapon components (Attachments) [Incomplete]
+RegisterCommand('attachwep', function()
+    local player = GetPlayerPed(PlayerId())
+    -- Add a permission, not sure how this works yet.
+    if IsPlayerAceAllowed(player, "", true) then
+    
+    end
+end)
