@@ -11,9 +11,10 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
+--/////////
+-- Creating menus
+--/////////
 function AddSpartaMenu(menu)
-    -- This Is Sparta!!
-    --local newItem = NativeUI.CreateCheckboxItem("Is this sparta?", sparta, "")
     local checkbox = NativeUI.CreateCheckboxItem("Is this sparta?", sparta, "")
     menu:AddItem(checkbox)
     menu.OnCheckboxChange = function (sender, item, checked_)
@@ -67,6 +68,13 @@ Citizen.CreateThread(function()
     end
 end)
 
+--/////////
+-- End Creating Menus
+--/////////
+
+--/////////
+-- Menu Functions
+--/////////
 function spawnVehicle(vehicleName)
     -- Check if the vehicle actually exists
     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
@@ -88,7 +96,6 @@ function spawnVehicle(vehicleName)
     -- Set this to true to spawn player into vehicle.
     local spawnInVehicle = true
 
-
     -- TODO Setup spawn in vehicle check.
     -- TODO Fix this to where it doesn't despawn when you walk a bit from it.
     -- Setup persistant vehicle check, if enabled the current vehicle won't despawn.
@@ -98,7 +105,6 @@ function spawnVehicle(vehicleName)
             deleteCurrentVehicle(GetVehiclePedIsIn(ped, false))
             -- notify("Car deleted!")
         end
-
         -- Set the player into the drivers seat
         local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
         SetPedIntoVehicle(ped, vehicle, -1)
@@ -109,19 +115,9 @@ function spawnVehicle(vehicleName)
     -- Adding the else fixed the vehicle spawning in multiple times.
     else
         local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
-
         SetEntityAsNoLongerNeeded(vehicle)
         SetModelAsNoLongerNeeded(vehicle)
     end
-    
-    -- local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-
-    -- I commented these out since they are under the spawnInVehicle check.
-    -- give the vehicle back to the game (This'll make the game decide when to despawn the vehicle)
-    --SetEntityAsNoLongerNeeded(vehicle)
-
-    -- Release the model
-    --SetModelAsNoLongerNeeded(vehicle)
 end
 
 function deleteCurrentVehicle(vehicleName)
@@ -135,48 +131,6 @@ function deleteCurrentVehicle(vehicleName)
     end
 end
 
--- Will this work?
--- https://github.com/FrazzIe/NativeUILua
--- function createCarMenu()
-    
---     --UIMenu:AddWindow()
-
---     local mainMenu = UIMenu.New("Car Spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     local vehicleMenu = UIMenuItem.New("Car Spawner", "Spawns cars for you.")
-
---     --UIMenu.New("Car Spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     UIMenu:AddWindow(mainMenu)
---     UIMenu:AddItem(vehicleMenu)
-
---     --NativeUI.CreateMenu("Car spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     --NativeUI.CreateItem("Car spawner", "")
---     --notify("Test")
--- end
-
--- RegisterCommand('menutest', function()
---     AddMainMenu()
--- end)
-
--- Will this work?
--- https://github.com/FrazzIe/NativeUILua
--- function createCarMenu()
---     NativeUI.CreatePool()
-    
---     --UIMenu:AddWindow()
-
---     local mainMenu = UIMenu.New("Car Spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     local vehicleMenu = UIMenuItem.New("Car Spawner", "Spawns cars for you.")
-
---     --UIMenu.New("Car Spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     UIMenu:AddWindow(mainMenu)
---     UIMenu:AddItem(vehicleMenu)
-
---     --NativeUI.CreateMenu("Car spawner", "Spawns cars for you.", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
---     --NativeUI.CreateItem("Car spawner", "")
---     --notify("Test")
--- end
-
--- RegisterCommand('carsp', function (source, args)
---     createCarMenu()
---     -- TODO figure out how to make a menu with a couple of cars in it.
--- end)
+--/////////
+--End Menu Functions
+--/////////
