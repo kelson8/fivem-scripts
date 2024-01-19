@@ -58,9 +58,7 @@ RegisterCommand("weaponall", function(args, string)
     for i=0, #allweapons do
         GiveWeaponToPed(ped, GetHashKey(allweapons[i]), 999, false, false)
     end
-
-    --for i, weapons in
-    
+    notify("You have given yourself all weapons!")
 end, false)
 
 -- Remove weapons

@@ -31,8 +31,8 @@ function createCarMenu(menu)
     local carItem = NativeUI.CreateItem("Spawn car", "Spawn the selected car")
     carItem.Activated = function(sender, item)
         if item == carItem then
-            spawnVehicle("t20")
-            notify("Spawned in a t20")
+            spawnVehicle("720s")
+            notify("Spawned in a 720s")
         end
     end
     local colors1 = {255, 20, 20}

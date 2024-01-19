@@ -2,3 +2,7 @@
 lua_test/
 # Vscode launch.json
 .vscode/launch.json
+
+# Add files that I am working with.
+sync_changes.bat
+.vscode/settings.json
