@@ -6,3 +6,6 @@ lua_test/
 # Add files that I am working with.
 sync_changes.bat
 .vscode/settings.json
+
+# Add .dll files for C# project
+lemonui_test/

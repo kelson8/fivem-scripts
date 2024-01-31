@@ -1,4 +1,8 @@
 _menuPool = NativeUI.CreatePool()
+
+-- local mainMenu = UIMenu.New("ScaleformUI", "Test menu", 0, 0, "", "", 20, 200, 22, 22, 1)
+-- MenuPool:Add(mainMenu)
+
 -- mainMenu = NativeUI.CreateMenu("Native UI", "~b~NATIVEUI SHOWCASE", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
 mainMenu = NativeUI.CreateMenu("Native UI", "~b~NATIVEUI SHOWCASE", 0, 0, "", "", 20, 200, 22, 22, 1)
 _menuPool:Add(mainMenu)
@@ -14,7 +18,25 @@ end
 --/////////
 -- Creating menus
 --/////////
+
+-- function CreateMenu()
+--     local txd = CreateRunTimeTxd("scaleformui")
+--     local duiPanel = CreateDui("https://i.imgur.com/mH0Y65C.gif", 288, 160)
+--     CreateRuntimeTextureFromDuiHandle(txd, "sidepanel", GetDuiHandle(duiPanel))
+--     local duiBanner = CreateDui("https://i.imgur.com/3yrFYbF.gif", 288, 160)
+-- 	CreateRuntimeTextureFromDuiHandle(txd, "menuBanner", GetDuiHandle(duiBanner))
+
+--     local exampleMenu = UIMenu.New("ScaleformUI", "ScaleformUI Showcase", 50, 50, true, "scaleformui", "menubanner", true)
+--     exampleMenu:MaxItemsOnScreen(7)
+--     exampleMenu:AnimationEnabled(false)
+--     exampleMenu:BuildingAnimation(MenuBuildingAnimation.NONE)
+--     exampleMenu:ScrollingType(MenuScrollingType.CLASSIC)
+--     exampleMenu:CounterColor(SColor.Hud_Yellow)
+--     exampleMenu:MouseSettings(false, false, true, false, true)
+-- end
+
 function AddSpartaMenu(menu)
+    --UiMenu.New("Sparta Menu", "Is this sparta?", )
     local checkbox = NativeUI.CreateCheckboxItem("Is this sparta?", sparta, "")
     menu:AddItem(checkbox)
     menu.OnCheckboxChange = function (sender, item, checked_)
@@ -39,11 +61,13 @@ function createCarMenu(menu)
     local colors2 = {0, 140, 160}
     local seat = NativeUI.CreateSliderItem("Change seat", 1, seats, "Change your seat in the car.", false, colors1, colors2)
     submenu.OnSliderChange = function(sender, item, index)
+        -- if IsPedInAnyVehicle(sender, false) then
         if item == seat then
             vehSeat = item:IndexToItem(index)
             local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1), false)
             SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
         end
+    -- end
     end
     --This isn't working as a submenu for some reason.
     -- submenu:AddItem(carItem)
@@ -55,6 +79,12 @@ end
 AddSpartaMenu(mainMenu)
 createCarMenu(mainMenu)
 _menuPool:RefreshIndex()
+-- Fix rotating camera issue
+-- https://forum.cfx.re/t/camera-keeps-rotating-after-opening-a-menu-with-nativeui/779257
+_menuPool:MouseControlsEnabled(false)
+_menuPool:MouseEdgeEnabled(false)
+_menuPool:ControlDisablingEnabled(false)
+
 
 
 Citizen.CreateThread(function()

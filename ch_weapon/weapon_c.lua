@@ -27,7 +27,9 @@ end
 -- This is working for spawning in with a pistol
 AddEventHandler('playerSpawned', function()
     local player = GetPlayerPed(PlayerId())
-    local weapon = GetHashKey("WEAPON_PISTOL")
+    -- local weapon = GetHashKey("WEAPON_PISTOL")
+    local weapon = GetHashKey("WEAPON_COMBATPISTOL")
+    -- local weapon = GetHashKey("WEAPON_RPG")
 
     GiveWeaponToPed(player, weapon, 1000, false, false)
 end)

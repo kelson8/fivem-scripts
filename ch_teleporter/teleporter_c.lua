@@ -1,5 +1,5 @@
 -- command to go to another player
-RegistrCommand('goto', function(_, args)
+RegisterCommand('goto', function(_, args)
     local targetId = args[1]
 
     if not targetId then

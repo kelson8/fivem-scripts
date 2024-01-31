@@ -1,3 +1,6 @@
+-- Todo Set this to where it only runs the command if the player is in a vehicle.
+-- Todo Set this to where it doesn't show up in chat, I added a resource called fax-hidecmds that hides all
+-- commands from showing up in chat.
 RegisterCommand('+openhood', function()
     local playerId = PlayerPedId()
     local playerVehicle = GetVehiclePedIsIn(playerId, false)
