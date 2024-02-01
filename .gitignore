@@ -9,3 +9,8 @@ sync_changes.bat
 
 # Add .dll files for C# project
 lemonui_test/
+
+# Add images and example.lua in ScaleformUI_Test
+ScaleformUI_Test/data/chuunibyo1.gif
+ScaleformUI_Test/data/image1.jpeg
+ScaleformUI_Test/example.lua
