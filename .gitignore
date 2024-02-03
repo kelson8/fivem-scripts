@@ -6,6 +6,7 @@ lua_test/
 # Add files that I am working with.
 sync_changes.bat
 .vscode/settings.json
+StreetRaces/data
 
 # Add .dll files for C# project
 lemonui_test/
@@ -14,3 +15,4 @@ lemonui_test/
 ScaleformUI_Test/data/chuunibyo1.gif
 ScaleformUI_Test/data/image1.jpeg
 ScaleformUI_Test/example.lua
+
