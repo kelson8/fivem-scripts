@@ -1,9 +1,10 @@
 -- CLIENT CONFIGURATION
 config_cl = {
+    totalLaps = 2,                      -- Default total number of laps if no input set.
     joinProximity = 25,                 -- Proximity to draw 3D text and join race
     joinKeybind = 51,                   -- Keybind to join race ("E" by default)
 	markerKeybind = 51,                 -- Keybind to set markers ("E" by default)
-    joinDuration = 30000,               -- Duration in ms to allow players to join the race
+    joinDuration = 5000,               -- Duration in ms to allow players to join the race
     freezeDuration = 5000,              -- Duration in ms to freeze players and countdown start (set to 0 to disable)
     checkpointProximity = 25.0,         -- Proximity to trigger checkpoint in meters
     checkpointRadius = 25.0,            -- Radius of 3D checkpoints in meters (set to 0 to disable cylinder checkpoints)

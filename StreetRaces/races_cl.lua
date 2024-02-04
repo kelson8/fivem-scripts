@@ -205,7 +205,30 @@ AddEventHandler("StreetRaces:updatePos", function(position, allPlayers)
 	raceStatus.totalPlayers = allPlayers
 end)
 
--- Main thread
+-- Client event for unloading current race.
+-- Doesn't work...
+-- RegisterNetEvent("StreetRaces:unloadRace_cl")
+-- AddEventHandler("StreetRaces:unloadRace_cl", function(index)
+--     raceStatus.index = index
+--     raceStatus.state = RACE_STATE_NONE
+
+--     notify("Test, not working yet.")
+
+--     cleanupRecording()
+--     cleanupRace()
+
+--     for index1, checkpoint in pairs(recordedCheckpoints) do
+--         checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+--         RemoveBlip(checkpoint.blip)
+--         -- SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+--         -- SetBlipAsShortRange(checkpoint.blip, true)
+--         -- ShowNumberOnBlip(checkpoint.blip, index1)
+--     end
+--     SetWaypointOff()
+
+-- end)
+
+-- -- Main thread
 Citizen.CreateThread(function()
     -- Loop forever and update every frame
     while true do
@@ -380,89 +403,20 @@ Citizen.CreateThread(function()
 end)
 
 -- position update thread
--- Citizen.CreateThread(function()
---     while true do
---         Citizen.Wait(100)
---         -- When recording flag is set, save checkpoints
---         if raceStatus.state == RACE_STATE_RACING then
--- 			newpos = GetEntityCoords(PlayerPedId())
--- 			dist = GetDistanceBetweenCoords(oldpos.x, oldpos.y, oldpos.z, newpos.x, newpos.y, newpos.z, true)
--- 			oldpos = newpos
--- 			raceStatus.distanceTraveled = raceStatus.distanceTraveled + dist		
--- 			local value = raceStatus.totalCheckpoints + math.floor(raceStatus.distanceTraveled*1.33)/1000
--- 			TriggerServerEvent('StreetRaces:updatecheckpoitcount_sv', raceStatus.index, value)
--- 		end
--- 	end
--- end)
--- Checkpoint recording thread
--- Citizen.CreateThread(function()
---     -- Loop forever and record checkpoints every 100ms
---     while true do
---         Citizen.Wait(0)
-        
---         -- When recording flag is set, save checkpoints
---         if raceStatus.state == RACE_STATE_RECORDING then
---             -- Create new checkpoint when waypoint is set
---             if IsWaypointActive() then
---                 -- Get closest vehicle node to waypoint coordinates and remove waypoint
---                 local waypointCoords = GetBlipInfoIdCoord(GetFirstBlipInfoId(8))
---                 local retval, coords = GetClosestVehicleNode(waypointCoords.x, waypointCoords.y, waypointCoords.z, 1)
-				
---                 SetWaypointOff()
-
---                 -- Check if coordinates match any existing checkpoints
---                 for index, checkpoint in pairs(recordedCheckpoints) do
---                     if GetDistanceBetweenCoords(coords.x, coords.y, coords.z, checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z, false) < 1.0 then
---                         -- Matches existing checkpoint, remove blip and checkpoint from table
---                         RemoveBlip(checkpoint.blip)
---                         table.remove(recordedCheckpoints, index)
---                         coords = nil
-
---                         -- Update existing checkpoint blips
---                         for i = index, #recordedCheckpoints do
---                             ShowNumberOnBlip(recordedCheckpoints[i].blip, i)
---                         end
---                         break
---                     end
---                 end
-
---                 -- Add new checkpoint
---                 if (coords ~= nil) then
---                     -- Add numbered checkpoint blip
---                     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
---                     SetBlipColour(blip, config_cl.checkpointBlipColor)
---                     SetBlipAsShortRange(blip, true)
---                     ShowNumberOnBlip(blip, #recordedCheckpoints+1)
-
---                     -- Add checkpoint to array
---                     table.insert(recordedCheckpoints, {blip = blip, coords = coords})
---                 end
---             end
--- 			if IsControlJustReleased(0, config_cl.markerKeybind) then
--- 				local player = GetPlayerPed(-1)
--- 				local coords = GetEntityCoords(player)
-
---                 -- Add new checkpoint
---                 if (coords ~= nil) then
---                     -- Add numbered checkpoint blip
---                     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
---                     SetBlipColour(blip, config_cl.checkpointBlipColor)
---                     SetBlipAsShortRange(blip, true)
---                     ShowNumberOnBlip(blip, #recordedCheckpoints+1)
-
---                     -- Add checkpoint to array
---                     table.insert(recordedCheckpoints, {blip = blip, coords = coords})
---                 end
--- 				PlaySoundFrontend(-1, "RACE_PLACED", "HUD_AWARDS")
--- 			end
-				
-			
---         else
---             -- Not recording, do cleanup
---             cleanupRecording()
---         end
---     end
--- end)
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(100)
+        -- When recording flag is set, save checkpoints
+        if raceStatus.state == RACE_STATE_RACING then
+			newpos = GetEntityCoords(PlayerPedId())
+			dist = GetDistanceBetweenCoords(oldpos.x, oldpos.y, oldpos.z, newpos.x, newpos.y, newpos.z, true)
+			oldpos = newpos
+			raceStatus.distanceTraveled = raceStatus.distanceTraveled + dist		
+			local value = raceStatus.totalCheckpoints + math.floor(raceStatus.distanceTraveled*1.33)/1000
+			TriggerServerEvent('StreetRaces:updatecheckpoitcount_sv', raceStatus.index, value)
+		end
+	end
+end)
 
 -- Helper function to clean up race blips, checkpoints and status
 function cleanupRace()
@@ -542,3 +496,75 @@ function Draw2DText(x, y, text, scale)
     AddTextComponentString(text)
     DrawText(x, y)
 end
+
+
+
+-- -- Checkpoint recording thread
+Citizen.CreateThread(function()
+    -- Loop forever and record checkpoints every 100ms
+    while true do
+        Citizen.Wait(0)
+
+        -- When recording flag is set, save checkpoints
+        if raceStatus.state == RACE_STATE_RECORDING then
+            -- Create new checkpoint when waypoint is set
+            if IsWaypointActive() then
+                -- Get closest vehicle node to waypoint coordinates and remove waypoint
+                local waypointCoords = GetBlipInfoIdCoord(GetFirstBlipInfoId(8))
+                local retval, coords = GetClosestVehicleNode(waypointCoords.x, waypointCoords.y, waypointCoords.z, 1)
+
+                SetWaypointOff()
+
+                -- Check if coordinates match any existing checkpoints
+                for index, checkpoint in pairs(recordedCheckpoints) do
+                    if GetDistanceBetweenCoords(coords.x, coords.y, coords.z, checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z, false) < 1.0 then
+                        -- Matches existing checkpoint, remove blip and checkpoint from table
+                        RemoveBlip(checkpoint.blip)
+                        table.remove(recordedCheckpoints, index)
+                        coords = nil
+
+                        -- Update existing checkpoint blips
+                        for i = index, #recordedCheckpoints do
+                            ShowNumberOnBlip(recordedCheckpoints[i].blip, i)
+                        end
+                        break
+                    end
+                end
+
+                -- Add new checkpoint
+                if (coords ~= nil) then
+                    -- Add numbered checkpoint blip
+                    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+                    SetBlipColour(blip, config_cl.checkpointBlipColor)
+                    SetBlipAsShortRange(blip, true)
+                    ShowNumberOnBlip(blip, #recordedCheckpoints+1)
+
+                    -- Add checkpoint to array
+                    table.insert(recordedCheckpoints, {blip = blip, coords = coords})
+                end
+            end
+			if IsControlJustReleased(0, config_cl.markerKeybind) then
+				local player = GetPlayerPed(-1)
+				local coords = GetEntityCoords(player)
+
+                -- Add new checkpoint
+                if (coords ~= nil) then
+                    -- Add numbered checkpoint blip
+                    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+                    SetBlipColour(blip, config_cl.checkpointBlipColor)
+                    SetBlipAsShortRange(blip, true)
+                    ShowNumberOnBlip(blip, #recordedCheckpoints+1)
+
+                    -- Add checkpoint to array
+                    table.insert(recordedCheckpoints, {blip = blip, coords = coords})
+                end
+				PlaySoundFrontend(-1, "RACE_PLACED", "HUD_AWARDS")
+			end
+
+
+        else
+            -- Not recording, do cleanup
+            cleanupRecording()
+        end
+    end
+end)

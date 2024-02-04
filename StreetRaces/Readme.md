@@ -5,11 +5,11 @@ So far I have the following items working in the gui:
 * Saving races
 * Listing races
 * Deleting races
-
-Still needs done: 
-* Start race
 * Cancel race
 * Load race
+
+Still needs done: 
+* Start race -- Still doesn't work
 * Leave race
 
 Try to make this read the list of races from the json so the user can just select it from a list for loading, and deleting.
