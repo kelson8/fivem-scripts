@@ -1,7 +1,7 @@
 -- A lot of this base code came from the example.lua in ScaleformUI_Lua
 -- https://github.com/manups4e/ScaleformUI
 
-local timerBarPool = TimerBarPool.New()
+-- local timerBarPool = TimerBarPool.New()
 
 function notify(msg)
     SetNotificationTextEntry("STRING")
@@ -270,28 +270,8 @@ end
 Citizen.CreateThread(function()
     local pos = GetEntityCoords(PlayerPedId(), true)
     local vector3_pos = vector3(236.19, -872.25, 30.49)
-    -- I don't want the text at the same coordniates so I add one to it, makes it slightly above the marker.
-    local text_pos = vector3(236.19, -872.25, 30.49 + 1)
-    -- Gets the current player position
-    -- local marker = Marker.New(1, pos, vector3(2,2,2), 100.0, {R=0, G= 100, B=50, A=255}, true, false, false, false, true)
-    -- Gets the postition from vector3_pos
-    -- I wonder if it would be possible to interate over these values in a loop like I was doing in ch_warps
-    -- local marker = Marker.New(1, vector3_pos, vector3(2,2,2), 100.0, {R=0, G= 100, B=50, A=255}, true, false, false, false, true)
-
-
 
     local fib_teleport = { x = 121.6, y = -759.33, z = 45.75 }
-
-    -- example for working timerBars.. you can disable them by setting :Enabled(false).. to hide and show them while drawing :)
-	-- This textBar could be used for placement in a race.
-    -- local textBar = TextTimerBar.New("Race", "{Place}")
-    -- These don't seem to update in real time though.
-    -- local textBar = TextTimerBar.New("Health", GetEntityHealth(PlayerPedId()))
-    -- local textBar1 = TextTimerBar.New("Armor", GetPedArmour(PlayerPedId()))
-	-- local progrBar = ProgressTimerBar.New("Label", nil, nil, 1, 1000)
-	-- timerBarPool:AddBar(textBar)
-    -- timerBarPool:AddBar(textBar1)
-	-- timerBarPool:AddBar(progrBar)
 
     -- Usage example
     while true do
@@ -311,45 +291,51 @@ Citizen.CreateThread(function()
             )
             marker:Draw()
 
+            -- This puts the text above the markers using the location text position, slightly above the marker
+            -- And adds the location text name
+            ScaleformUI.Notifications:DrawText3D(loc.text_pos, {R=0, G=100, B=50, A=255}, loc.text_name, 7, 10)
+
             local x, y, z = table.unpack(loc.tpto)
             local playerCoord = GetEntityCoords(PlayerPedId(), false)
             if Vdist2(playerCoord, loc.pos) < loc.scale * 1.12 and GetVehiclePedIsIn(PlayerPedId(), false) == 0 then
                 -- Code that runs when we are in the markers radius.
                 SetEntityCoords(PlayerPedId(), x, y, z, true, true, true, false)
                 SetEntityHeading(PlayerPedId(), 0)
-                notify("You have been teleported to location ~b~" .. i)
+                -- notify("You have been teleported to location ~b~" .. i)
+                notify("You have been teleported to location ~b~" .. loc.text_name)
             end
         end
 
         -- This places a marker where the player is when the menu starts.
-        local player = PlayerPedId()
+        -- local player = PlayerPedId()
         --marker:Draw()
         -- I got the text drawing above the marker.
         -- ScaleformUI.Notifications:DrawText3D(pos, {R=0, G=100, B=50, A=255}, "Teleporter", 7, 10)
         -- Shows "Teleporter" above the marker that I placed
-        ScaleformUI.Notifications:DrawText3D(text_pos, {R=0, G=100, B=50, A=255}, "Teleporter", 7, 10)
-
-        -- if marker.IsInMarker then
-        --     SetEntityCoords(player, fib_teleport.x, fib_teleport.y, fib_teleport.z, true, true, true, false)
-        --     ScaleformUI.Notifications:ShowNotification("You stepped into the marker!", false, false)
-        -- end
-        -- if marker.IsInMarker then
-        --     SetEntityCoords(player, 236.2, -874.9, 29.49, true, true, true, false)
-        -- end
-
-        -- I got this to work
-        -- ScaleformUI.Notifications:DrawText(0.2, 0.9, "Ped is in marker => " .. tostring(marker.IsInMarker))
+        -- ScaleformUI.Notifications:DrawText3D(text_pos, {R=0, G=100, B=50, A=255}, "Teleporter", 7, 10)
 
         -- Draw the timer bar
-        timerBarPool:Draw()
+        -- timerBarPool:Draw()
 
-        -- E key, draw the regular menu
-        if IsControlJustPressed(0, 51) and not MenuHandler:IsAnyMenuOpen() then
+        -- Disabled controller support for now since it uses B on the controller.
+        -- https://forum.cfx.re/t/how-to-disable-controller-input-for-scripts/182364/5
+        -- F3 key, draw the regular menu
+        -- Menu for keyboard
+        if IsControlJustPressed(0, 170) and not MenuHandler:IsAnyMenuOpen() and GetLastInputMethod(0) then
             CreateMenu()
         end
 
+        -- https://forum.cfx.re/t/help-use-multiple-keys-in-lua/4856396
+        -- Controller menu X button and RB, this is working now but for some reason "RT" activates the options?
+        -- This is partially working for multiple keypresses, makes the menu delayed though
+        if IsControlJustPressed(0, 179) and not GetLastInputMethod(2) and not MenuHandler:IsAnyMenuOpen() then
+            if IsControlJustPressed(0, 183) and not GetLastInputMethod(2) and not MenuHandler:IsAnyMenuOpen() then
+            CreateMenu()
+            end
+        end
+
         -- F6 key, draw the lobby menu
-        if IsControlJustPressed(0, 167) and not MenuHandler:IsAnyMenuOpen() then
+        if IsControlJustPressed(0, 167) and not MenuHandler:IsAnyMenuOpen() and GetLastInputMethod(0) then
             CreateLobbyMenu()
         end
     end
