@@ -7,6 +7,7 @@ lua_test/
 sync_changes.bat
 .vscode/settings.json
 StreetRaces/data
+*.bak
 
 # Add .dll files for C# project
 lemonui_test/

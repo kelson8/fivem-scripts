@@ -47,18 +47,25 @@ RegisterCommand('pos', function(source, args)
     
 end, false)
 
+RegisterCommand("spawn", function()
+    local ped = GetPlayerPed(PlayerId())
+    -- middle_ls1 = vector3(222.2027, -864.0162, 30.2922)
+    SetEntityCoords(PlayerPedId(), 222.2027, -864.0162, 29.2922, true, true, true, false)
+    notify("You have been teleported to the spawn!")
+end)
+
 -- Create markers
 -- https://forum.cfx.re/t/best-way-of-creating-markers/1961883/2
 -- https://docs.fivem.net/natives/?_0x28477EC23D892089
 -- This works! Now to figure out how to make this teleport the player
 local target = {x = -676.0, y = 94.0, z = 54.5}
 
-Citizen.CreateThread(function()
-    while true do
-        DrawMarker(1, target.x, target.y, target.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 255, 255, 255, 255, false, false, 2, true, nil, nil, false)
-    Citizen.Wait(1)
-    end
-end)
+-- Citizen.CreateThread(function()
+--     while true do
+--         DrawMarker(1, target.x, target.y, target.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 255, 255, 255, 255, false, false, 2, true, nil, nil, false)
+--     Citizen.Wait(1)
+--     end
+-- end)
 
 -- Disabled god mode
 -- RegisterCommand('god', function(source, args)
@@ -80,6 +87,10 @@ end)
         -- notify("~r~God Mode Off")
     -- end
   -- end, false)
+
+RegisterCommand("getstatus", function()
+    notify("Max wanted level: " .. GetMaxWantedLevel())
+end)
 
 RegisterCommand('kms', function()
     local ped = GetPlayerPed(PlayerId())

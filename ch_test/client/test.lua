@@ -39,3 +39,29 @@ SetPlayerRoutingBucket(player, bucket)
 GetPlayerRoutingBucket(player)
 GetEntityRoutingBucket(entity)
 ]]
+
+function notify(msg)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(msg)
+    DrawNotification(true, false)
+end
+
+-- This did nothing
+
+-- Start gps multi route: https://docs.fivem.net/natives/?_0x3D3D15AF7BCAAF83
+-- Add point to gps multi route: https://docs.fivem.net/natives/?_0xA905192A6781C41B
+-- RegisterCommand("setmarker", function()
+--     StartGpsMultiRoute(1, true, false)
+--     SetGpsMultiRouteRender(true, 16, 16)
+
+--     notify("Marker set!")
+-- end)
+
+-- RegisterCommand("addtomarker", function()
+--     -- Add option for custom coords such as clicking an area on the map,
+--     -- Or on the player position
+--     posX, posY, posZ = GetEntityCoords(PlayerId())
+--     AddPointToGpsMultiRoute(posX, posY, posZ)
+
+--     notify("You added your coords to the current marker!")
+-- end)
