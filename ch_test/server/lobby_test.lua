@@ -25,10 +25,22 @@ RegisterCommand('lobby', function(source, args)
     local routingBucket = tonumber(args[2])
 
     SetPlayerRoutingBucket(targetId, routingBucket)
-    sendMessage(source, "You have set your routing bucket to " .. args[1])
-
+    -- SetPlayerRoutingBucket(source, routingBucket)
+    -- if args[2] ~= nil then
+        sendMessage(source, "You have set your routing bucket to " .. routingBucket)
+    -- end
 end)
 
+RegisterCommand('lobbyentity', function(source, args)
+    local entityId = NetworkGetEntityFromNetworkId(args[1])
+    local routingBucket = tonumber(args[2])
+
+    SetEntityRoutingBucket(entityId, routingBucket)
+    -- SetPlayerRoutingBucket(source, routingBucket)
+    -- if args[2] ~= nil then
+        sendMessage(source, "Entity " ..  entityId .. "(Net ID " .. args[1] .. ") has been moved to routing bucket " .. routingBucket)
+    -- end
+end)
 
 -- Set this to work on entities also.
 -- This isn't working, I'm quite sure this is needed on the server side and not the client.

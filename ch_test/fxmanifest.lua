@@ -3,7 +3,7 @@ game 'gta5'
 lua54 'yes'
 
 client_scripts{
-    -- 'client/lobby_test.lua',
+    'client/lobby_test.lua',
     -- "@NativeUILua_Reloaded/src/NativeUIReloaded.lua",
     --'client/menu_test.lua',
     'client/test.lua',
