@@ -253,6 +253,27 @@ AddEventHandler("StreetRaces:loadRace_sv", function(name)
     end
 end)
 
+-- Server event for unloading race
+RegisterNetEvent("StreetRaces:unloadRace_sv")
+AddEventHandler("StreetRaces:unloadRace_sv", function(name)
+    -- Get saved player races and load race
+    local playerRaces = loadPlayerData(source)
+    local race = playerRaces[name]
+
+    -- If race was found send it to the client
+    if race ~= nil then
+        -- Send race data to client
+        TriggerClientEvent("StreetRaces:unloadRace_cl", source, race)
+
+        -- Send notification to player
+        -- local msg = "Loaded " .. name
+        -- notifyPlayer(source, msg)
+    else
+        local msg = "No race found with name " .. name
+        notifyPlayer(source, msg)
+    end
+end)
+
 -- Server event for updating positions
 RegisterNetEvent("StreetRaces:updatecheckpoitcount_sv")
 AddEventHandler("StreetRaces:updatecheckpoitcount_sv", function(index,amount)

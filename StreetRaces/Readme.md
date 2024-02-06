@@ -7,10 +7,13 @@ So far I have the following items working in the gui:
 * Deleting races
 * Cancel race
 * Load race
+* Start race
 
 Still needs done: 
-* Start race -- Still doesn't work
 * Leave race
+* Unload race - Unload the race if it's not started
+
+I disabled the races_cl.lua in the fxmanifest and moved all the functions over to my gui, it started working once I did that.
 
 Try to make this read the list of races from the json so the user can just select it from a list for loading, and deleting.
 

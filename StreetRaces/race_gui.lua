@@ -16,6 +16,29 @@ end
 -- https://docs.fivem.net/docs/scripting-manual/working-with-events/listening-for-events/
 -- https://docs.fivem.net/docs/scripting-manual/working-with-events/triggering-events/
 
+-- I fixed this by moving all the functions from races_cl into here, it works great with my gui now. 
+-- I wonder if I could setup loading the list of strings from json into a ScaleformList
+
+-- Todo The unload event and the remove events don't seem to delete the yellow markers off the map, try to fix that.
+
+
+
+---
+-- https://github.com/0324bence/Fivem-json-handler/blob/main/json_handler/server.lua
+-- function GetJsonTest(filename, itemname)
+--     local loaded_data = LoadResourceFile(GetCurrentResourceName(), "data/" .. filename .. ".json")
+--     local file_data = json.decode(loaded_data or "{}")
+--     return file_data[itemname]
+-- end
+
+function sendMessage(source, msg)
+    TriggerEvent('chat:addMessage', source, {
+        args = {msg, },
+    })
+end
+
+---
+
 RegisterNetEvent("notifyClient")
 AddEventHandler("notifyClient",
     function (msg)
@@ -243,7 +266,9 @@ function CreateMenu()
     unloadRaceItem.Activated = function(sender, item, index)
         if item == unloadRaceItem then
             -- I had to change it to trigger event.
-            -- TriggerEvent('StreetRaces:unloadRace_cl')
+            TriggerEvent("StreetRaces:removeRace_cl")
+            -- TriggerServerEvent('StreetRaces:unloadRace_sv')
+            -- TriggerEvent('StreetRaces:unloadRace_sv')
         end
     end
 
@@ -264,6 +289,30 @@ Citizen.CreateThread(function()
             CreateMenu()
         end
     end
+
+end)
+
+
+-- This unload event and the remove events don't seem to delete the yellow markers off the map, try to fix that.
+RegisterNetEvent("StreetRaces:unloadRace_cl")
+AddEventHandler("StreetRaces:unloadRace_cl", function(index)
+    raceStatus.index = index
+    raceStatus.state = RACE_STATE_NONE
+
+    -- This doesn't even print
+    notify("Test.")
+
+    cleanupRecording()
+    cleanupRace()
+
+    -- for index1, checkpoint in pairs(recordedCheckpoints) do
+    --     checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+    --     RemoveBlip(checkpoint.blip)
+    --     -- SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+    --     -- SetBlipAsShortRange(checkpoint.blip, true)
+    --     -- ShowNumberOnBlip(checkpoint.blip, index1)
+    -- end
+    SetWaypointOff()
 
 end)
 
@@ -297,49 +346,172 @@ end
 
 -- Test unloadRace function in this file
 
--- Copied below code from races_cl, most of these have been disabled in that file.
+-- Copied below code from races_cl, I disabled the races_cl in the fxmanifest so I could test this out
 
 -----
--- function Draw3DText(x, y, z, text)
---     -- Check if coords are visible and get 2D screen coords
---     local onScreen, _x, _y = World3dToScreen2d(x, y, z)
---     if onScreen then
---         -- Calculate text scale to use
---         local dist = GetDistanceBetweenCoords(GetGameplayCamCoords(), x, y, z, 1)
---         local scale = 1.8*(1/dist)*(1/GetGameplayCamFov())*100
 
---         -- Draw text on screen
---         SetTextScale(scale, scale)
---         SetTextFont(4)
---         SetTextProportional(1)
---         SetTextColour(255, 255, 255, 255)
---         SetTextDropShadow(0, 0, 0, 0,255)
---         SetTextDropShadow()
---         SetTextEdge(4, 0, 0, 0, 255)
---         SetTextOutline()
---         SetTextEntry("STRING")
---         SetTextCentre(1)
---         AddTextComponentString(text)
---         DrawText(_x, _y)
---     end
--- end
+-- Client event for when a race is created
+RegisterNetEvent("StreetRaces:createRace_cl")
+AddEventHandler("StreetRaces:createRace_cl", function(index, amount, startDelay, startCoords, TotalLaps, checkpoints)
+    -- Create race struct and add to array
+    local race = {
+		laps = TotalLaps,
+        amount = amount,
+        started = false,
+        startTime = GetGameTimer() + startDelay,
+        startCoords = startCoords,
+        checkpoints = checkpoints		
+    }
 
--- -- Draw 2D text on screen
--- function Draw2DText(x, y, text, scale)
---     -- Draw text on screen
---     SetTextFont(4)
---     SetTextProportional(7)
---     SetTextScale(scale, scale)
---     SetTextColour(255, 255, 255, 255)
---     SetTextDropShadow(0, 0, 0, 0,255)
---     SetTextDropShadow()
---     SetTextEdge(4, 0, 0, 0, 255)
---     SetTextOutline()
---     SetTextEntry("STRING")
---     AddTextComponentString(text)
---     DrawText(x, y)
--- end
------
+	raceStatus.totalLaps = laps
+	raceStatus.totalCheckpoints = 0
+    races[index] = race
+end)
+
+-- Client event for loading a race
+RegisterNetEvent("StreetRaces:loadRace_cl")
+AddEventHandler("StreetRaces:loadRace_cl", function(checkpoints)
+    -- Cleanup recording, save checkpoints and set state to recording
+    cleanupRecording()
+    recordedCheckpoints = checkpoints
+    raceStatus.state = RACE_STATE_RECORDING
+	raceStatus.currentLap = 1
+    -- Add map blips
+    for index, checkpoint in pairs(recordedCheckpoints) do
+        checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+        SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+        SetBlipAsShortRange(checkpoint.blip, true)
+        ShowNumberOnBlip(checkpoint.blip, index)
+    end
+
+    -- Clear waypoint and add route for first checkpoint blip
+    SetWaypointOff()
+    SetBlipRoute(checkpoints[1].blip, true)
+    SetBlipRouteColour(checkpoints[1].blip, config_cl.checkpointBlipColor)
+end)
+
+
+-- Client event for when a race is joined
+RegisterNetEvent("StreetRaces:joinedRace_cl")
+AddEventHandler("StreetRaces:joinedRace_cl", function(index)
+    -- Set index and state to joined
+    raceStatus.index = index
+    raceStatus.state = RACE_STATE_JOINED
+	raceStatus.currentLap = 1
+    -- Add map blips
+    local race = races[index]
+    local checkpoints = race.checkpoints
+    for index, checkpoint in pairs(checkpoints) do
+        checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+        SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+        SetBlipAsShortRange(checkpoint.blip, true)
+        ShowNumberOnBlip(checkpoint.blip, index)
+    end
+
+    -- Clear waypoint and add route for first checkpoint blip
+    SetWaypointOff()
+    SetBlipRoute(checkpoints[1].blip, true)
+    SetBlipRouteColour(checkpoints[1].blip, config_cl.checkpointBlipColor)
+end)
+
+
+-- Client event for when a race is removed
+RegisterNetEvent("StreetRaces:removeRace_cl")
+AddEventHandler("StreetRaces:removeRace_cl", function(index)
+    -- Check if index matches active race
+    if index == raceStatus.index then
+        -- Cleanup map blips and checkpoints
+        cleanupRace()
+
+        -- Reset racing state
+        raceStatus.index = 0
+        raceStatus.checkpoint = 0
+        raceStatus.state = RACE_STATE_NONE
+		raceStatus.currentLap = 0
+    elseif index < raceStatus.index then
+        -- Decrement raceStatus.index to match new index after removing race
+        raceStatus.index = raceStatus.index - 1
+    end
+    
+    -- Remove race from table
+    table.remove(races, index)
+end)
+
+-- Client event for updated position
+RegisterNetEvent("StreetRaces:updatePos")
+AddEventHandler("StreetRaces:updatePos", function(position, allPlayers)
+	raceStatus.myPosition = position
+	raceStatus.totalPlayers = allPlayers
+end)
+
+function Draw3DText(x, y, z, text)
+    -- Check if coords are visible and get 2D screen coords
+    local onScreen, _x, _y = World3dToScreen2d(x, y, z)
+    if onScreen then
+        -- Calculate text scale to use
+        local dist = GetDistanceBetweenCoords(GetGameplayCamCoords(), x, y, z, 1)
+        local scale = 1.8*(1/dist)*(1/GetGameplayCamFov())*100
+
+        -- Draw text on screen
+        SetTextScale(scale, scale)
+        SetTextFont(4)
+        SetTextProportional(1)
+        SetTextColour(255, 255, 255, 255)
+        SetTextDropShadow(0, 0, 0, 0,255)
+        SetTextDropShadow()
+        SetTextEdge(4, 0, 0, 0, 255)
+        SetTextOutline()
+        SetTextEntry("STRING")
+        SetTextCentre(1)
+        AddTextComponentString(text)
+        DrawText(_x, _y)
+    end
+end
+
+-- Draw 2D text on screen
+function Draw2DText(x, y, text, scale)
+    -- Draw text on screen
+    SetTextFont(4)
+    SetTextProportional(7)
+    SetTextScale(scale, scale)
+    SetTextColour(255, 255, 255, 255)
+    SetTextDropShadow(0, 0, 0, 0,255)
+    SetTextDropShadow()
+    SetTextEdge(4, 0, 0, 0, 255)
+    SetTextOutline()
+    SetTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawText(x, y)
+end
+
+
+-- Helper function to clean up race blips, checkpoints and status
+function cleanupRace()
+    -- Cleanup active race
+    if raceStatus.index ~= 0 then
+        -- Cleanup map blips and checkpoints
+        local race = races[raceStatus.index]
+        local checkpoints = race.checkpoints
+        for _, checkpoint in pairs(checkpoints) do
+            if checkpoint.blip then
+                RemoveBlip(checkpoint.blip)
+            end
+            if checkpoint.checkpoint then
+                DeleteCheckpoint(checkpoint.checkpoint)
+            end
+        end
+
+        -- Set new waypoint to finish if racing
+        if raceStatus.state == RACE_STATE_RACING then
+            local lastCheckpoint = checkpoints[#checkpoints]
+            SetNewWaypoint(lastCheckpoint.coords.x, lastCheckpoint.coords.y)
+        end
+
+        -- Unfreeze vehicle
+        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+        FreezeEntityPosition(vehicle, false)
+    end
+end
 
 -- Helper function to clean up recording blips
 function cleanupRecording()
@@ -350,6 +522,10 @@ function cleanupRecording()
     end
     recordedCheckpoints = {}
 end
+
+-----
+
+
 
 -- Position update thread
 Citizen.CreateThread(function()
