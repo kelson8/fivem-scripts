@@ -48,7 +48,7 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
         Wait(500)
     end
 
-        SetEntityAsNoLongerNeeded(car)
+        -- SetEntityAsNoLongerNeeded(car)
         SetModelAsNoLongerNeeded(car)
 
         SetVehicleTyresCanBurst(vehicleName, true)
@@ -269,6 +269,7 @@ TriggerEvent('chat:addSuggestion', '/spawnpv', 'Spawns a personal vehicle that s
 -- This is currently working, not sure how to do custom colors though
 -- Spawn vehicle with specific colors.
 -- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
+
 Citizen.CreateThread(function()
     -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do" 
     -- loop if I don't want it constantly running.
@@ -323,5 +324,44 @@ AddEventHandler("ch_car:getVehicle", function()
         -- I have no idea if i did this right
         return carLabel, color1, color2
     end
+end)
+
+-- I got this working without a specific ID in the database, I would like to add multiple ID's so the players can do /car 1-<amount> or
+-- Do it in the menu that I have.
+RegisterNetEvent("ch_car:savepv")
+AddEventHandler("ch_car:savepv", function(vehicle)
+    local model = GetEntityModel(vehicle)
+    local x,y,z = table.unpack(GetEntityCoords(vehicle))
+    local heading = GetEntityHeading(vehicle)
+
+    local carDisplayName = GetDisplayNameFromVehicleModel(model)
+    local carLabel = GetLabelText(carDisplayName)
+
+    local color1, color2 = GetVehicleColours(vehicle)
+    TriggerServerEvent("ch_car:savepv", model, x, y, z, heading, color1, color2)
+
+    -- notify("Vehicle has been saved")
+end)
+
+RegisterCommand("savepv", function()
+    ped = GetPlayerPed(-1)
+    local vehicle = 0
+    if IsPedSittingInAnyVehicle(ped) then
+        vehicle = GetVehiclePedIsUsing(ped)
+        TriggerEvent("ch_car:savepv", vehicle)
+        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+    end
+end)
+
+-- Todo Setup these two commands to work
+
+-- Spawn personal vehicle
+RegisterCommand("pv", function()
 
 end)
+
+-- Delete personal vehicle.
+RegisterCommand("deletepv", function()
+
+end)
+
