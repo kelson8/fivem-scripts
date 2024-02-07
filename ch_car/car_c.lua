@@ -211,12 +211,12 @@ RegisterCommand('rndcar', function()
 end)
 
 -- Todo Set this to where it adds the car to a database and only lets the player spawn one at a time, set it to get values from a database
-RegisterCommand("spawnpv", function()
-    vehName = "t20"
-    spawnPersonalVehicleWithBlip(vehName)
-    notify("Enjoy your new ~y~" .. vehName .. "~w~!")
+-- RegisterCommand("spawnpv", function()
+--     vehName = "t20"
+--     spawnPersonalVehicleWithBlip(vehName)
+--     notify("Enjoy your new ~y~" .. vehName .. "~w~!")
 
-end)
+-- end)
 
 RegisterCommand('car', function(source, args)
     -- account for the argument not being passed
@@ -279,4 +279,49 @@ Citizen.CreateThread(function()
             spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
             -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
     end
+end)
+
+-- Custom events
+RegisterNetEvent("ch_car:spawn")
+AddEventHandler("ch_car:spawn", function(vehicleName)
+    spawnVehicleWithBlip(vehicleName)
+end)
+
+-- Notify client event
+RegisterNetEvent("ch_car:notifyClient")
+AddEventHandler("ch_car:notifyClient",
+    function (msg)
+        SetNotificationTextEntry("STRING")
+        AddTextComponentString(msg)
+        DrawNotification(true, false)
+end)
+
+-- Get players vehicle
+RegisterNetEvent("ch_car:getVehicle")
+-- AddEventHandler("ch_car:getVehicle", function()
+AddEventHandler("ch_car:getVehicle", function()
+    local ped = GetPlayerPed(-1)
+    if IsPedSittingInAnyVehicle(ped) then
+        local vehicle = GetVehiclePedIsIn(ped, false)
+
+        -- Cancel if the vehicle doesn't exist.
+        if not DoesEntityExist(vehicle) then return end
+
+        local model = GetEntityModel(vehicle)
+        local carDisplayName = GetDisplayNameFromVehicleModel(model)
+        local carLabel = GetLabelText(carDisplayName)
+
+        -- I kept trying to get the colors from the ped lol.
+        -- https://forum.cfx.re/t/help-configure-showroom-vehicle-colors/4915586/5
+        -- Both of these seem to work, first one grabs the primary and secondary color, second one gives the color in rgb format.
+        local color1, color2 = GetVehicleColours(vehicle)
+        local r,g,b = GetVehicleColor(vehicle)
+
+        notify("You are in a " .. carLabel .. " with colors: " .. color1 .. " " .. color2)
+        -- notify("You are in a " .. carLabel .. " with colors: " .. r .. " " .. g .. " " .. b)
+
+        -- I have no idea if i did this right
+        return carLabel, color1, color2
+    end
+
 end)
