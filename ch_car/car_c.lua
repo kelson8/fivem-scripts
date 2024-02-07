@@ -33,7 +33,87 @@ function removeVehBlip(blip, vehicle)
     RemoveBlip(blip)
 end
 
-function spawnVehicle(vehicleName)
+-- function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading, r, g, b)
+function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
+    local car = GetHashKey(vehicleName)
+
+    -- Check if the vehicle actually exists
+    if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then return end
+
+    -- Load the model
+    RequestModel(vehicleName)
+
+    -- If model hasn't loaded, wait on it.
+    while not HasModelLoaded(vehicleName) do
+        Wait(500)
+    end
+
+        SetEntityAsNoLongerNeeded(car)
+        SetModelAsNoLongerNeeded(car)
+
+        SetVehicleTyresCanBurst(vehicleName, true)
+
+        -- These color options don't seem to work.
+        -- SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
+        -- SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
+        CreateVehicle(vehicleName, x, y, z, heading, true, false)
+end
+
+
+function spawnPersonalVehicleWithBlip(vehicleName)
+    -- Check if the vehicle actually exists
+    if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
+    notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
+    end
+
+    -- Load the model
+    RequestModel(vehicleName)
+
+    -- If model hasn't loaded, wait on it.
+    while not HasModelLoaded(vehicleName) do
+        Wait(500)
+    end
+
+    local ped = GetPlayerPed(-1)
+    local x,y,z = table.unpack(GetEntityCoords(ped))
+    local heading = GetEntityHeading(ped)
+
+    -- Set this to true to spawn player into vehicle.
+    local spawnInVehicle = true
+
+
+    -- TODO Setup spawn in vehicle check.
+    -- TODO Fix this to where it doesn't despawn when you walk a bit from it.
+    -- Setup persistant vehicle check, if enabled the current vehicle won't despawn.
+    if (spawnInVehicle) then
+        -- Remove vehicle if player is in one.
+        if(IsPedSittingInAnyVehicle) then
+            deleteCurrentVehicle(GetVehiclePedIsIn(ped, false))
+        end
+
+        -- Set the player into the drivers seat
+        local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
+        SetPedIntoVehicle(ped, vehicle, -1)
+
+        -- Add the blip for personal vehicle.
+        createVehBlip(225, vehicle)
+
+        -- This should stop despawning of personal vehicles that get spawned in.
+        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+    -- Adding the else fixed the vehicle spawning in multiple times.
+    else
+        local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
+
+        -- Add the blip for personal vehicle.
+        createVehBlip(225, vehicle)
+        -- This should stop despawning of personal vehicles that get spawned in.
+        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+
+    end
+end
+
+-- Todo Set this to where the personal vehicle marker gets removed if the car explodes.
+function spawnVehicleWithBlip(vehicleName)
     local car = GetHashKey(vehicleName)
 
     -- Check if the vehicle actually exists
@@ -52,6 +132,7 @@ function spawnVehicle(vehicleName)
     local ped = GetPlayerPed(-1)
     local x,y,z = table.unpack(GetEntityCoords(ped))
     local heading = GetEntityHeading(ped)
+
     -- Set this to true to spawn player into vehicle.
     local spawnInVehicle = true
 
@@ -73,8 +154,8 @@ function spawnVehicle(vehicleName)
         createVehBlip(225, vehicle)
 
         -- Not sure if these are needed twice.
-        SetEntityAsNoLongerNeeded(vehicle)
-        SetModelAsNoLongerNeeded(vehicle)
+        SetEntityAsNoLongerNeeded(car)
+        SetModelAsNoLongerNeeded(car)
     -- Adding the else fixed the vehicle spawning in multiple times.
     else
         local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
@@ -82,18 +163,9 @@ function spawnVehicle(vehicleName)
         -- Add the blip for personal vehicle.
         createVehBlip(225, vehicle)
 
-        SetEntityAsNoLongerNeeded(vehicle)
-        SetModelAsNoLongerNeeded(vehicle)
+        SetEntityAsNoLongerNeeded(car)
+        SetModelAsNoLongerNeeded(car)
     end
-    
-    -- local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-
-    -- I commented these out since they are under the spawnInVehicle check.
-    -- give the vehicle back to the game (This'll make the game decide when to despawn the vehicle)
-    --SetEntityAsNoLongerNeeded(vehicle)
-
-    -- Release the model
-    --SetModelAsNoLongerNeeded(vehicle)
 end
 
 function deleteCurrentVehicle(vehicleName)
@@ -124,6 +196,8 @@ RegisterCommand('rndcar', function()
     local car_random = (cars[math.random(#cars)])
     local ped = GetPlayerPed(-1)
 
+    -- Todo Add check to see if a vehicle is already spawned in, if so remove it before spawning more.
+
     -- Remove current vehicle before spawning a new one in.
     if IsPedSittingInAnyVehicle(ped) then
         local vehicle = GetVehiclePedIsIn(ped, false)
@@ -132,8 +206,15 @@ RegisterCommand('rndcar', function()
     end
 
     -- Spawns the vehicle and notify the player
-    spawnVehicle(car_random)
+    spawnVehicleWithBlip(car_random)
     notify("You have spawned a ~y~" .. car_random)
+end)
+
+-- Todo Set this to where it adds the car to a database and only lets the player spawn one at a time, set it to get values from a database
+RegisterCommand("spawnpv", function()
+    vehName = "t20"
+    spawnPersonalVehicleWithBlip(vehName)
+    notify("Enjoy your new ~y~" .. vehName .. "~w~!")
 
 end)
 
@@ -149,26 +230,14 @@ RegisterCommand('car', function(source, args)
     end
 
     -- Spawn the car
-    spawnVehicle(vehicleName)
+    spawnVehicleWithBlip(vehicleName)
 
     -- Set the player into the drivers seat
     --SetPedIntoVehicle(ped, vehicleName, -1)
 
     -- tell the player
     notify("You have spawned a ~y~" .. vehicleName)
-    -- TriggerEvent('chat:addMessage', {
-	-- 	args = { 'You have spawned a ^* ^3' .. vehicleName }
-	-- })
 end, false)
-
--- RegisterCommand('dv', function()
---     -- get the local player ped
---     local playerPed = PlayerPedId()
---     -- get the vehicle the player is in.
---     local vehicle = GetVehiclePedIsIn(playerPed, false)
---     -- delete the vehicle.
---     DeleteEntity(vehicle)
--- end, false)
 
 RegisterCommand('dv', function()
 
@@ -193,3 +262,21 @@ TriggerEvent('chat:addSuggestion', '/car', 'help text', {
 TriggerEvent('chat:addSuggestion', '/dv', 'Delete vehicle')
 
 TriggerEvent('chat:addSuggestion', '/rndcar', 'Gives a random vehicle.')
+
+TriggerEvent('chat:addSuggestion', '/spawnpv', 'Spawns a personal vehicle that shouldn\'t despawn.')
+
+-- Add cars to the map
+-- This is currently working, not sure how to do custom colors though
+-- Spawn vehicle with specific colors.
+-- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
+Citizen.CreateThread(function()
+    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do" 
+    -- loop if I don't want it constantly running.
+        Wait(1)
+        for i = 1, #vehicle_spawns, 1 do
+            spawns = vehicle_spawns[i]
+            local x,y,z = table.unpack(spawns.pos)
+            spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
+            -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
+    end
+end)
