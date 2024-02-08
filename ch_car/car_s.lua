@@ -1,5 +1,8 @@
 -- Auto increment MySQL: https://www.heidisql.com/forum.php?t=34221
 
+-- I used a piece of this code as a reference: 
+-- https://github.com/sesipod/FiveM/blob/master/resources/%5BStart-4%5D/esx_vehicleshop/server/main.lua
+
 function notifyPlayer(source, msg)
     -- Add custom notification here (use chat by default)
     -- TriggerClientEvent('chatMessage', source, "[StreetRaces]", {255, 0, 0}, msg)
@@ -7,26 +10,57 @@ function notifyPlayer(source, msg)
     TriggerClientEvent("ch_car:notifyClient", source, msg)
 end
 
+-- RegisterServerEvent("ch_car:spawn")
+-- AddEventHandler("ch_car:spawn", function(model, x, y, z, heading)
+
+-- end)
+
 RegisterCommand("spawnpv", function(source, args, rawCommand)
     local playerID = GetPlayerIdentifierByType(source, "license")
 
-    local sqlQuery = "SELECT * FROM vehicles WHERE id=@id"
+    local sqlQuery = "SELECT * FROM vehicles WHERE playerID=@id AND vehicleID=@vehID"
 
     -- This shows up the vehicles but, it always errors out if the value is null, I will need to figure out how to fix that.
     if args ~=nil then
-    MySQL.Query(1, "SELECT * FROM vehicles WHERE playerID=@id AND vehicleID=@vehID", {
-        ["@id"] = playerID,
-        ["@vehID"] = args or 1
-    },
+        MySQL.Query(1, sqlQuery, {
+            ["@id"] = playerID,
+            ["@vehID"] = args
+        }, function(result)
 
-    function(result)
-        tprint(result, 1)
-    end)
+            -- With this loop the values are printing properly
+            -- Todo Figure out how to spawn the vehicles, I'm not sure how to trigger the client event for it.
+            for i=1, #result, 1 do
+                -- local vehicle = CreateVehicle(result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading, true, false)
+
+                -- while not DoesEntityExist(vehicle) do
+                --     Wait(0)
+                -- end
+                -- TriggerClientEvent("ch_car:spawn", source) --result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading)
+
+                print("X: " .. result[i].xPos .. " Y: " .. result[i].yPos .. " Z: " ..result[i].zPos)
+                print("Heading: " .. result[i].heading .. " color1: " .. result[i].color1 .. " color2: " .. result[i].color2 .. " Car model: " .. result[i].model )
+                -- tprint(vehicles, 1)
+            end
+        end
+    )
+    -- -- Working code below
+    -- MySQL.Query(1, "SELECT xPos, yPos, zPos FROM vehicles WHERE playerID=@id AND vehicleID=@vehID", {
+    --     ["@id"] = playerID,
+    --     ["@vehID"] = args or 1
+    -- },
+
+    -- function(result)
+    --     tprint(result, 1)
+    -- end)
 end
-
     -- MySQL.AwaitInsert(1, "INSERT INTO `vehicles` (`playerID`, `model`, xPos, yPos, zPos, heading, colorR, colorG, colorB)")
 
 end)
+
+-- This command isn't implemented yet, make this to where it it'll despawn the car and come up with a different name for it.
+-- RegisterCommand("unspawnpv", function(source, args, rawCommand)
+
+-- end)
 
 
 -- tprint which prints a table.
@@ -64,6 +98,8 @@ function insertValues (model, x, y, z, heading, color1, color2)
         ["@heading"] = heading,
         ["@color1"] = color1,
         ["@color2"] = color2,
+        -- Add this later, so the name also gets stored (Not neccessary, just to know which vehicles are which in the tables.)
+        -- ["@vehName"] = vehName,
     })
 end
 

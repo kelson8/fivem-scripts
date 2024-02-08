@@ -284,8 +284,9 @@ end)
 
 -- Custom events
 RegisterNetEvent("ch_car:spawn")
-AddEventHandler("ch_car:spawn", function(vehicleName)
-    spawnVehicleWithBlip(vehicleName)
+AddEventHandler("ch_car:spawn", function(vehicleName, x, y, z, heading)
+    -- spawnVehicleWithBlip(vehicleName)
+    spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
 end)
 
 -- Notify client event
@@ -328,6 +329,8 @@ end)
 
 -- I got this working without a specific ID in the database, I would like to add multiple ID's so the players can do /car 1-<amount> or
 -- Do it in the menu that I have.
+-- Todo Set this to where it'll notify the user on a success or failure.
+-- Todo Set this to where it'll update the id of a car that already exists instead of making a bunch of new ones.
 RegisterNetEvent("ch_car:savepv")
 AddEventHandler("ch_car:savepv", function(vehicle)
     local model = GetEntityModel(vehicle)
@@ -338,9 +341,8 @@ AddEventHandler("ch_car:savepv", function(vehicle)
     local carLabel = GetLabelText(carDisplayName)
 
     local color1, color2 = GetVehicleColours(vehicle)
-    TriggerServerEvent("ch_car:savepv", model, x, y, z, heading, color1, color2)
 
-    -- notify("Vehicle has been saved")
+    TriggerServerEvent("ch_car:savepv", model, x, y, z, heading, color1, color2)
 end)
 
 RegisterCommand("savepv", function()
