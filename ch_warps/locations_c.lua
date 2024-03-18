@@ -1,3 +1,19 @@
+-- Pos is the position to set the marker at.
+
+-- Tpto is the position to teleport the player to.
+
+-- Submarker - Not exactly sure what this one is, I think it's a secondary marker.
+
+-- Marker - Is the id of the marker for the waypoint.
+-- Using this one below
+-- Vertical Cylinder:
+-- https://docs.fivem.net/docs/game-references/markers/
+
+
+-- Scale - The size of the marker.
+-- Rgba - Colors of the marker.
+-- Todo Add location names to these markers later.
+
 locations = {
     {
         pos = {x = -676.2, y = 94.2, z = 54.5},

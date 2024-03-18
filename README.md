@@ -15,6 +15,17 @@ To enable these resources add the following to the server.cfg.
 * ensure ch_test
 * ensure ch_vehiclecontrol
 
+* New:
+* ensure ch_player
+* ensure StreetRaces
+* ensure ch_warps
+
+
+* Custom menu that I am working on in lua with ScaleformUI
+start ScaleformUI_Assets
+start ScaleformUI_Lua
+start ScaleformUI_Test
+
 # Resource list
 * ch_car - Basic car spawning and removal
 * ch_map - Basic map
@@ -25,17 +36,64 @@ To enable these resources add the following to the server.cfg.
 * ch_test - Testing scripts
 * ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons.
 
+New:
+* Assets and files needed for ScaleformUI_Test
+* ScaleformUI_Assets -- Download from https://github.com/manups4e/ScaleformUI for latest version.
+* ScaleformUI_Lua -- Download from https://github.com/manups4e/ScaleformUI for latest version.
+* ScaleformUI_Test -- Custom resouce that I am working on using a gui that can give the players god mode, eventually spawn in cars and stuff like that.
+
 
 # Features
 * ch_vehiclecontrol
 * Adds hood and trunk control with page up and page down buttons. 
 * Adds Window controls with delete and insert.
 
+---
+* ch_warps - Add support for the custom teleport markers on the map that can be defined in [locations_c.lua](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_warps/locations_c.lua)
+
+*  ch_teleporter - Basic teleport system for players located in [ch_teleporter](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_teleporter)
+
+* ch_car - Add save personal vehicles, spawn vehicles with command, spawn random car from list.
+ This can add a vehicle with a custom blip, I don't think I figured out how to make the blip disappear if the vehicle explodes though. Located here [ch_car](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_car)
+
+
+* ch_gamemode - Basic onClientMapStart resource
+* ch_map - Basic map with locations, this needs to be setup to work with a config.
+---
+* ch_menu - Basic menu using nativeui, I would rather use the ScaleformUi one
+* ch_messages - Currently just death messages.
+
+* ch_player - Get players interior, current position, teleport to spawn, suicide option, check max wanted level.
+
+* ch_weapon - Give players a weapon with a command, attatchment option not working yet. This needs to be setup to get the weapon to spawn in with from the config.
+
+
+
+#### Testing Features
+* ch_database - Testing database functions, currently prints vehicles out of the database.
+* ch_typescript - Testing typescript fivem functions.
+* ch_nui - Testing nui functions with javascript.
+* ch_test - 
+
+---
+* [Original creator](https://github.com/bepo13/FiveM-StreetRaces) for below resource, I did not create this, I have modified it to have a gui.
+* Street races - I am working on making a custom gui for the StreetRaces resource
+
 # Commands
+#### Car
 * /car <name> -- Gives you a car with the specified name.
+* /rndcar -- Give you a random car from the list
+* /dv -- Remove your current vehicle
+* /savepv -- Save your current vehicle as a personal vehicle into the database. I don't think this make a persistant blip for it.
+
+#### Not implemented
+* /pv -- Spawn in your vehicle with the id from the database.
+* /deletepv -- Delete your vehicle with the id from the database.
+
+#### Weapon
 * /weaponall -- Gives you all weapons.
+* /clear -- Removes all weapons from your inventory.
 
 # Todo
 Add features:
-* Give all weapons command.
 * Custom menus for car spawning, weapon spawning, player skins, god mode toggles and stuff like that.
