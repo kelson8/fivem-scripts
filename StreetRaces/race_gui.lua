@@ -39,8 +39,8 @@ end
 
 ---
 
-RegisterNetEvent("notifyClient")
-AddEventHandler("notifyClient",
+RegisterNetEvent("StreetRaces:notifyClient")
+AddEventHandler("StreetRaces:notifyClient",
     function (msg)
         SetNotificationTextEntry("STRING")
         AddTextComponentString(msg)

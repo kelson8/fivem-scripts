@@ -1,5 +1,5 @@
 -- Added text position to be above the markers a bit
--- Added text name
+-- Added text name to the markers.
 -- Todo Simplify this like they do in online-interiors/teleports.lua
 
 locations = {
@@ -52,6 +52,21 @@ locations = {
         text_pos = vector3(236.2, -874.9, 31.49),
         text_name = "FIB Building",
         tpto = vector3(121.6, -759.33, 45.75),
+        submarker = {
+            marker = 29,
+            poz = 15.25,
+        },
+        marker = 1,
+        scale = 2.0,
+        rgba = {120, 255, 120, 155}
+    },
+
+    {
+        -- Middle of Los Santos marker #2 teleport to CEO Office
+        pos = vector3(234.11, -881.61, 29.49),
+        text_pos = vector3(234.11, -881.61, 31.49),
+        text_name = "CEO Office",
+        tpto = vector3(-1378, -504.27, 33.16),
         submarker = {
             marker = 29,
             poz = 15.25,

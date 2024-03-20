@@ -4,6 +4,8 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
+-- Todo Make this set the heading too.
+
 Citizen.CreateThread(function()
     while true do
         Wait(1)

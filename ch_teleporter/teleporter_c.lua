@@ -1,3 +1,5 @@
+-- Todo Try and fix this and teleporter_s later
+
 -- command to go to another player
 RegisterCommand('goto', function(_, args)
     local targetId = args[1]
@@ -28,7 +30,7 @@ end)
 -- an event that teleports us to a specific location
 --RegisterNetEvent('ch_teleporter:teleport')
 RegisterNetEvent('ch_teleporter:teleport', function(targetCoordinates)
-    local playerPed = playerPedId()
+    local playerPed = PlayerPedId(PlayerId())
 
     SetEntityCoords(playerPed, targetCoordinates)
 end)

@@ -58,7 +58,7 @@ function notifyPlayer(source, msg)
     -- Add custom notification here (use chat by default)
     -- TriggerClientEvent('chatMessage', source, "[StreetRaces]", {255, 0, 0}, msg)
     -- This works! My first time doing client to server events.
-    TriggerClientEvent("notifyClient", source, msg)
+    TriggerClientEvent("StreetRaces:notifyClient", source, msg)
 end
 
 

@@ -282,6 +282,25 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- https://forum.cfx.re/t/checking-if-someone-is-an-area/127087/4
+-- https://forum.cfx.re/t/help-disable-control/43052
+-- Prompt player to exit garage and disable car movement if in the Ceo Office garage
+-- I figured out how to disable car movement, I had to do the action for vehicle accelerate and vehicle braking on the fivem controls page. 
+-- Well this disables it for outside of the garage also, I would need to fix that
+-- Citizen.CreateThread(function()
+--     while true do
+--         Wait(0)
+--         local ped = GetPlayerPed(-1)
+--             if GetDistanceBetweenCoords(-1370.4, -474.18, 49.1, GetEntityCoords(ped)) < 15 and IsPedInAnyVehicle(ped) then
+--                 DisableControlAction(2, 71, true) -- W (Vehicle accelerate)
+--                 DisableControlAction(2, 72, true) -- S (Vehicle brake)
+--             else
+--                 DisableControlAction(1, 71, false) -- W (Vehicle accelerate)
+--                 DisableControlAction(1, 72, false) -- S (Vehicle brake)
+--         end
+--     end
+-- end)
+
 -- Custom events
 RegisterNetEvent("ch_car:spawn")
 AddEventHandler("ch_car:spawn", function(vehicleName, x, y, z, heading)

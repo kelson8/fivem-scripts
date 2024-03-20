@@ -30,12 +30,13 @@ RegisterCommand("spawnpv", function(source, args, rawCommand)
             -- With this loop the values are printing properly
             -- Todo Figure out how to spawn the vehicles, I'm not sure how to trigger the client event for it.
             for i=1, #result, 1 do
+
                 -- local vehicle = CreateVehicle(result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading, true, false)
 
                 -- while not DoesEntityExist(vehicle) do
                 --     Wait(0)
                 -- end
-                -- TriggerClientEvent("ch_car:spawn", source) --result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading)
+                -- TriggerClientEvent("ch_car:spawn", result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading)
 
                 print("X: " .. result[i].xPos .. " Y: " .. result[i].yPos .. " Z: " ..result[i].zPos)
                 print("Heading: " .. result[i].heading .. " color1: " .. result[i].color1 .. " color2: " .. result[i].color2 .. " Car model: " .. result[i].model )
