@@ -10,8 +10,21 @@ spawn_locations = {
     -- },
 
     {
-        pos = {x = -666.15, y = 46.65, z = 40.40},
+        -- Middle of Los santos
+        -- pos = {x = -666.15, y = 46.65, z = 40.40},
+        pos = {x = 222.2027, y = -864.0162, z = 30.2922},
         model_name = 'player_one'
+    },
+
+    {
+        -- Parking lot middle of los santos
+        pos = {x = 226.27, y = -807.3, z = 30.58},
+        model_name = 'a_m_m_bevhills_02'
+    },
+
+    {
+        pos = {x = -666.15, y = 46.65, z = 40.40},
+        model_name = 'a_m_y_hipster_01'
     },
 
     -- FIB Building Los Santos

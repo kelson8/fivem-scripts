@@ -155,6 +155,14 @@ GetEntityRoutingBucket(entity)
 -- OpenPatrolRoute() -- https://docs.fivem.net/natives/?_0xBDA5DF49D080FE4E
 ----
 
+-- Patrol route test
+-- Todo Figure out how this works sometime.
+-- function SecurityRoute1()
+    -- This is in the military base.
+    -- AddPatrolRouteNode(1, "", -2207.33, 3282.05, 33.5, -2201.06, 3263.41, 32.81)
+    -- AddPatrolRouteLink()
+-- end
+
 -- Phone test (Testing creating and removing a phone like in SP)
 -- Todo Test this later.
 RegisterCommand("cphone", function()
@@ -174,8 +182,14 @@ end)
 -- I'm not exactly sure how to do that yet.
 -- Source link: https://github.com/Vortex-z/Holograms-Floating-Text/blob/master/holograms/holograms.lua
 Citizen.CreateThread(function()
+
     -- holograms()
-    holoTest()
+    local playerCoords = GetEntityCoords(GetPlayerPed(-1))
+    local x,y,z = table.unpack(playerCoords)
+    holograms(x,y,z)
+
+
+    -- holoTest()
 end)
 
 -- This seems to only work in the thread above.
@@ -192,6 +206,7 @@ function holoTest()
 end
 
 -- Todo Try to add this to the thread above with these parameters.
+-- This almost works on my current character but doesn't update the location to it.
 function holograms(ped_x, ped_y, ped_z)
     -- , text_x, text_y, text_z
     local playerCoords = GetEntityCoords(GetPlayerPed(-1))
@@ -201,7 +216,7 @@ function holograms(ped_x, ped_y, ped_z)
         Citizen.Wait(0)
         if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
         -- if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, x, y, z) < 10.0 then
-            Draw3DText(ped_x, ped_y, ped_z - 1.8, "Mother fucker", 4, 0.1, 0.1)
+            Draw3DText(ped_x, ped_y, ped_z , "Mother fucker", 4, 0.1, 0.1)
         end
     end
 end

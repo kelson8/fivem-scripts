@@ -2,6 +2,10 @@
 -- player_one is franklin
 -- Los Santos
 spawnpoint 'player_one' { x = 222.2027, y = -864.0162, z = 30.2922 } -- Middle of Los Santos
+spawnpoint 'a_m_m_bevhills_02' {x = 226.27, y = -807.3, z = 30.58}  -- Middle of Los Santos parking lot
+
+
+
 -- spawnpoint 'player_one' {x = 925.329, y = 46.152, z = 80.908 } -- Casino
 -- spawnpoint 'player_one' {x = -695.025, y = 82.955, z = 55.855 } -- Epsilon Building
 

@@ -3,6 +3,9 @@ local RACE_STATE_NONE = 0
 local RACE_STATE_JOINED = 1
 local RACE_STATE_RACING = 2
 local RACE_STATE_RECORDING = 3
+-- Add this to remove the waypoint recording when a race is loaded.
+-- I need to add a seperate edit race option to the menu.
+local RACE_STATE_LOADED = 4
 local RACE_CHECKPOINT_TYPE = 45
 local RACE_CHECKPOINT_FINISH_TYPE = 9
 
@@ -19,7 +22,8 @@ end
 -- I fixed this by moving all the functions from races_cl into here, it works great with my gui now. 
 -- I wonder if I could setup loading the list of strings from json into a ScaleformList
 
--- Todo The unload event and the remove events don't seem to delete the yellow markers off the map, try to fix that.
+-- The unload event and the remove events don't seem to delete the yellow markers off the map, try to fix that.
+-- Fixed above on 3-28-2024 @ 5:35AM
 
 
 
@@ -65,7 +69,8 @@ local raceStatus = {
 local recordedCheckpoints = {}
 
 -- Todo:
--- Add option for unloading the races.
+-- Add a edit race option to the menu
+
 
 function CreateMenu()
     local txd = CreateRuntimeTxd("scaleformui")
@@ -266,7 +271,7 @@ function CreateMenu()
     unloadRaceItem.Activated = function(sender, item, index)
         if item == unloadRaceItem then
             -- I had to change it to trigger event.
-            TriggerEvent("StreetRaces:removeRace_cl")
+            TriggerEvent("StreetRaces:removeRace_cl", raceStatus.index)
             -- TriggerServerEvent('StreetRaces:unloadRace_sv')
             -- TriggerEvent('StreetRaces:unloadRace_sv')
         end
@@ -293,27 +298,28 @@ Citizen.CreateThread(function()
 end)
 
 
--- This unload event and the remove events don't seem to delete the yellow markers off the map, try to fix that.
+-- This unload event doesn't seem to delete the yellow markers off the map, try to fix that.
+-- Is this needed? The remove race function seems to work fine for this.
 RegisterNetEvent("StreetRaces:unloadRace_cl")
 AddEventHandler("StreetRaces:unloadRace_cl", function(index)
-    raceStatus.index = index
-    raceStatus.state = RACE_STATE_NONE
-
-    -- This doesn't even print
-    notify("Test.")
-
-    cleanupRecording()
-    cleanupRace()
-
-    -- for index1, checkpoint in pairs(recordedCheckpoints) do
-    --     checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
-    --     RemoveBlip(checkpoint.blip)
-    --     -- SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
-    --     -- SetBlipAsShortRange(checkpoint.blip, true)
-    --     -- ShowNumberOnBlip(checkpoint.blip, index1)
-    -- end
-    SetWaypointOff()
-
+    if raceStatus.state == RACE_STATE_JOINED or raceStatus.state == RACE_STATE_RACING then
+        raceStatus.index = index
+        raceStatus.state = RACE_STATE_NONE
+    
+        -- This doesn't even print
+        notify("Test.")
+        cleanupRecording()
+        cleanupRace()
+    
+        -- for index1, checkpoint in pairs(recordedCheckpoints) do
+        --     checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+        --     RemoveBlip(checkpoint.blip)
+        --     -- SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+        --     -- SetBlipAsShortRange(checkpoint.blip, true)
+        --     -- ShowNumberOnBlip(checkpoint.blip, index1)
+        -- end
+        SetWaypointOff()
+    end
 end)
 
 -- https://forum.cfx.re/t/use-displayonscreenkeyboard-properly/51143/2
@@ -369,12 +375,17 @@ AddEventHandler("StreetRaces:createRace_cl", function(index, amount, startDelay,
 end)
 
 -- Client event for loading a race
+-- Todo Fix this to where the race isn't in a recording state so pressing
+-- right on the DPAD order "E" key doesn't make new markers.
 RegisterNetEvent("StreetRaces:loadRace_cl")
 AddEventHandler("StreetRaces:loadRace_cl", function(checkpoints)
     -- Cleanup recording, save checkpoints and set state to recording
     cleanupRecording()
     recordedCheckpoints = checkpoints
+    -- I tried setting this to RACE_STATE_NONE and it just breaks the loading.
+    -- Race state loaded is not implemented yet, this should disable the recording when loading a race once I figure it out.
     raceStatus.state = RACE_STATE_RECORDING
+    -- raceStatus.state = RACE_STATE_LOADED
 	raceStatus.currentLap = 1
     -- Add map blips
     for index, checkpoint in pairs(recordedCheckpoints) do
@@ -416,6 +427,9 @@ end)
 
 
 -- Client event for when a race is removed
+-- This seems to work fine now, more testing may be needed.
+-- I added the index to the parameters in the menu item.
+-- 3-28-2024 @ 5:35AM
 RegisterNetEvent("StreetRaces:removeRace_cl")
 AddEventHandler("StreetRaces:removeRace_cl", function(index)
     -- Check if index matches active race
@@ -434,6 +448,7 @@ AddEventHandler("StreetRaces:removeRace_cl", function(index)
     end
     
     -- Remove race from table
+    -- Is this needed? These values don't seem to be in use, at least the races one doesn't
     table.remove(races, index)
 end)
 
@@ -548,7 +563,7 @@ Citizen.CreateThread(function()
     -- Loop forever and record checkpoints every 100ms
     while true do
         Citizen.Wait(0)
-        
+
         -- When recording flag is set, save checkpoints
         if raceStatus.state == RACE_STATE_RECORDING then
             -- Create new checkpoint when waypoint is set
@@ -556,7 +571,7 @@ Citizen.CreateThread(function()
                 -- Get closest vehicle node to waypoint coordinates and remove waypoint
                 local waypointCoords = GetBlipInfoIdCoord(GetFirstBlipInfoId(8))
                 local retval, coords = GetClosestVehicleNode(waypointCoords.x, waypointCoords.y, waypointCoords.z, 1)
-				
+
                 SetWaypointOff()
 
                 -- Check if coordinates match any existing checkpoints
@@ -607,6 +622,59 @@ Citizen.CreateThread(function()
         else
             -- Not recording, do cleanup
             cleanupRecording()
+        end
+    end
+end)
+
+-- Create load race thread
+-- Will this possibly work? 
+-- No it didn't, i'm not sure how to implement this to where
+--  it only loads the race and not add the recording waypoints.
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+
+        if raceStatus.state == RACE_STATE_LOADED then
+            -- if IsWaypointActive() then
+
+            local waypointCoords = GetBlipInfoIdCoord(GetFirstBlipInfoId(8))
+            local _, coords = GetClosestVehicleNode(waypointCoords.x, waypointCoords.y, waypointCoords.z, 1)
+            -- local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+
+
+            -- Check if coordinates match any existing checkpoints
+                for index, checkpoint in pairs(recordedCheckpoints) do
+                    if GetDistanceBetweenCoords(coords.x, coords.y, coords.z, checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z, false) < 1.0 then
+                    -- Matches existing checkpoint, remove blip and checkpoint from table
+                        RemoveBlip(checkpoint.blip)
+                            table.remove(recordedCheckpoints, index)
+                                coords = nil
+                
+                                -- Update existing checkpoint blips
+                                for i = index, #recordedCheckpoints do
+                                        ShowNumberOnBlip(recordedCheckpoints[i].blip, i)
+                                    end
+                                break
+                        end
+                    end
+
+
+            -- -- SetNewWaypoint(coords.x, coords.y)
+            -- SetBlipColour(blip, config_cl.checkpointBlipColor)
+
+            -- for index, checkpoint in pairs(recordedCheckpoints) do
+            --     checkpoint.blip = AddBlipForCoord(checkpoint.coords.x, checkpoint.coords.y, checkpoint.coords.z)
+            --     SetBlipColour(checkpoint.blip, config_cl.checkpointBlipColor)
+            --     SetBlipAsShortRange(checkpoint.blip, true)
+            --     ShowNumberOnBlip(checkpoint.blip, index)
+            -- end
+        
+            -- Clear waypoint and add route for first checkpoint blip
+            SetWaypointOff()
+            SetBlipRoute(checkpoints[1].blip, true)
+            SetBlipRouteColour(checkpoints[1].blip, config_cl.checkpointBlipColor)
+
+            -- end
         end
     end
 end)
