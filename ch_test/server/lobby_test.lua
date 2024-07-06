@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 -- This seems to be working, test with two clients when I get home.
 function notify(msg)
     SetNotificationTextEntry("STRING")
@@ -11,6 +12,8 @@ function sendMessage(source, msg)
     })
 end
 
+-- TODO Setup permissions for these commands, players should not be able to set routing buckets I don't think.
+
 RegisterCommand('getrtr', function(source, args)
     local targetId = args[1] or source
     local routingBucket = GetPlayerRoutingBucket(targetId)
@@ -18,7 +21,7 @@ RegisterCommand('getrtr', function(source, args)
     --notify("Your routing bucket is currently " .. routingBucket .. ".")
     sendMessage(source, ("Your routing bucket is currently " .. routingBucket .. "."))
 
-end)
+end, false)
 
 RegisterCommand('lobby', function(source, args)
     local targetId = args[1] or source
@@ -29,7 +32,20 @@ RegisterCommand('lobby', function(source, args)
     -- if args[2] ~= nil then
         sendMessage(source, "You have set your routing bucket to " .. routingBucket)
     -- end
-end)
+end, false)
+
+RegisterCommand('gettargetid', function(source, args)
+    --TODO Isn't this useless? Remapping source...
+    -- local targetId = source
+    sendMessage(source, "Your target id is: " .. source)
+end, false)
+
+RegisterCommand('getentityid', function(source, args)
+    -- Is this correct?
+    -- network
+    -- local entityId = NetworkGetNetworkIdFromEntity(source)
+    sendMessage(source, "Your entity id is: " .. entityId)
+end, false)
 
 RegisterCommand('lobbyentity', function(source, args)
     local entityId = NetworkGetEntityFromNetworkId(args[1])
@@ -40,7 +56,7 @@ RegisterCommand('lobbyentity', function(source, args)
     -- if args[2] ~= nil then
         sendMessage(source, "Entity " ..  entityId .. "(Net ID " .. args[1] .. ") has been moved to routing bucket " .. routingBucket)
     -- end
-end)
+end, false)
 
 -- Set this to work on entities also.
 -- This isn't working, I'm quite sure this is needed on the server side and not the client.

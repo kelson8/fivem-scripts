@@ -8,6 +8,12 @@ client_scripts{
     --'client/menu_test.lua',
     'client/test.lua',
     'client/spawntables.lua',
+    -- Helicopter testing
+    'client/heli_test.lua',
+    -- Other test
+    'client/checkpoint_test.lua',
+    'client/ped_test.lua',
+
     'client/text.lua',
 }
 

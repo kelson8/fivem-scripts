@@ -19,7 +19,7 @@ RegisterCommand('+openhood', function()
         -- It's closed, open it.
         SetVehicleDoorOpen(playerVehicle, 4, false, false)
     end
-end)
+end, false)
 
 RegisterCommand('+opentrunk', function()
     local playerId = PlayerPedId()
@@ -39,7 +39,7 @@ RegisterCommand('+opentrunk', function()
         -- It's closed, open it.
         SetVehicleDoorOpen(playerVehicle, 5, false, false)
     end
-end)
+end, false)
 
 -- These below can be setup to use controller mappings.
 RegisterKeyMapping('+openhood', 'Open Vehicle Hood', 'keyboard' ,'PAGEUP')
@@ -87,7 +87,7 @@ RegisterCommand('+closewindows', function()
     end
 
 
-end)
+end, false)
 
 RegisterKeyMapping('+openwindows', 'Open Vehicle Windows', 'keyboard', 'DELETE')
 RegisterKeyMapping('+closewindows', 'Close Vehicle Windows', 'keyboard', 'INSERT')

@@ -57,6 +57,10 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
         -- SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
         -- SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
         CreateVehicle(vehicleName, x, y, z, heading, true, false)
+
+        -- 6-24-2024 @ 3:28PM
+        -- Possibly add this at the bottom
+        -- SetModelAsNoLongerNeeded(car)
 end
 
 
@@ -208,7 +212,7 @@ RegisterCommand('rndcar', function()
     -- Spawns the vehicle and notify the player
     spawnVehicleWithBlip(car_random)
     notify("You have spawned a ~y~" .. car_random)
-end)
+end, false)
 
 -- Todo Set this to where it adds the car to a database and only lets the player spawn one at a time, set it to get values from a database
 -- RegisterCommand("spawnpv", function()
@@ -372,17 +376,17 @@ RegisterCommand("savepv", function()
         TriggerEvent("ch_car:savepv", vehicle)
         SetVehicleHasBeenOwnedByPlayer(vehicle, true)
     end
-end)
+end, false)
 
 -- Todo Setup these two commands to work
 
 -- Spawn personal vehicle
 RegisterCommand("pv", function()
 
-end)
+end, false)
 
 -- Delete personal vehicle.
 RegisterCommand("deletepv", function()
 
-end)
+end, false)
 

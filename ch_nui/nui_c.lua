@@ -26,9 +26,10 @@ end)
 
 -- Key bindings
 
+-- This just breaks focus for the game. I cannot seem to fix it.
 RegisterCommand("+openteleporter", function()
     SetNuiFocus(true, true)
-end)
+end, false)
 
 RegisterKeyMapping("+openteleporter", "Open Teleporter", "keyboard", "F7")
 

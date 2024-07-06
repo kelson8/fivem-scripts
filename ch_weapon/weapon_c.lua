@@ -71,9 +71,10 @@ end, false)
 
 -- Weapon components (Attachments) [Incomplete]
 RegisterCommand('attachwep', function()
-    local player = GetPlayerPed(PlayerId())
+    -- local player = GetPlayerPed(PlayerId())
+    local player = GetPlayerPed(-1)
     -- Add a permission, not sure how this works yet.
-    if IsPlayerAceAllowed(player, "", true) then
+    -- if IsPlayerAceAllowed(player, "") then
     
-    end
-end)
+    -- end
+end, false)
