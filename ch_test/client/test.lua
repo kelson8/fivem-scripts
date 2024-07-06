@@ -163,17 +163,62 @@ GetEntityRoutingBucket(entity)
     -- AddPatrolRouteLink()
 -- end
 
+-- 7-3-2024
+-- GetLastRammedVehicle(): 
+-- GetLastDrivenVehicle(): https://nativedb.dotindustries.dev/gta5/natives/0xB2D06FAEDE65B577 
+-- GetLastPedInVehicleSeat(): https://nativedb.dotindustries.dev/gta5/natives/0x83F969AA1EE2A664
+-- This could be useful: https://docs.fivem.net/docs/scripting-manual/networking/ids/
+
+-- 7-4-2024
+-- IsPedShootingInArea(): https://nativedb.dotindustries.dev/gta5/natives/0x7E9DFE24AC1E58EF
+-- IsAnyPedShootingInArea(): https://nativedb.dotindustries.dev/gta5/natives/0xA0D3D71EA1086C55
+-- IsPedShooting(): https://nativedb.dotindustries.dev/gta5/natives/0x34616828CD07F1A1
+
+
+-- 7-6-2024
+-- TODO Setup some kind of job invite system like in GTA Online 
+--  whenever I learn more and how to create missions and stuff.
+
+-- SetVehicleGravityAmount():  https://nativedb.dotindustries.dev/gta5/natives/0x89F149B6131E57DA
+-- SetVehicleKersAllowed(): https://nativedb.dotindustries.dev/gta5/natives/0x99C82F8A139F3E4E
+
+-- These could be fun
+-- Plane and helicopter
+-- TaskPlaneChase(): https://nativedb.dotindustries.dev/gta5/natives/0x2D2386F273FF7A25
+-- TaskPlaneLand(): https://nativedb.dotindustries.dev/gta5/natives/0xBF19721FA34D32C0
+-- TaskPlaneTaxi()
+-- TaskHeliChase(): https://nativedb.dotindustries.dev/gta5/natives/0xAC83B1DB38D0ADA0
+
+-- Other
+-- TaskHandsUp()
+
+
 -- Phone test (Testing creating and removing a phone like in SP)
--- Todo Test this later.
+-- TODO Fix this to have apps or something on it, like a basic calcuator as a test.
 RegisterCommand("cphone", function()
     CreateMobilePhone(0)
-    SetMobilePhoneScale(200.0)
+    SetMobilePhoneScale(60.0)
+    SetMobilePhonePosition(-11.0, 0.0, -11.0)
     -- SetMobilePhonePosition(231.12, -860.9, 33)
-end)
+end, false)
 
 RegisterCommand("dphone", function()
     DestroyMobilePhone()
-end)
+end, false)
+
+-- Will this work?
+-- This didn't seem to work :\
+RegisterCommand("addblip", function()
+    local player = getPlayerPed(-1)
+    local playerCoords = GetEntityCoords(player)
+    local playerx = playerCoords.x
+    local playery = playerCoords.y
+    local playerz = playerCoords.z
+
+    local destination1 = AddBlipForCoord(117.38, -811.85, 30.43)
+    -- AddBlipForCoord(playerx, playery + 10, playerz)
+    
+end, false)
 
 ----
 
@@ -186,7 +231,7 @@ Citizen.CreateThread(function()
     -- holograms()
     local playerCoords = GetEntityCoords(GetPlayerPed(-1))
     local x,y,z = table.unpack(playerCoords)
-    holograms(x,y,z)
+    -- holograms(x,y,z)
 
 
     -- holoTest()
@@ -199,7 +244,8 @@ function holoTest()
 
     while true do
         Citizen.Wait(0)
-        if GetDistanceBetweenCoords(570.2, -986.29, 10.53 + 2, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
+        -- if GetDistanceBetweenCoords(570.2, -986.29, 10.53 + 2, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
+        if GetDistanceBetweenCoords(570.2, -986.29, 10.53 + 2, x, y, z, false) < 10.0 then
             Draw3DText(570.2, -986.29, 10.53 - 1.8, "If you found this, you win! Nothing!!!!", 4, 0.1, 0.1)
         end
     end
@@ -214,7 +260,9 @@ function holograms(ped_x, ped_y, ped_z)
 
     while true do
         Citizen.Wait(0)
-        if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
+        -- if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
+        -- Will this still work? I fixed the errors in vscode.
+        if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, x, y, z, false) < 10.0 then
         -- if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, x, y, z) < 10.0 then
             Draw3DText(ped_x, ped_y, ped_z , "Mother fucker", 4, 0.1, 0.1)
         end
@@ -224,20 +272,21 @@ end
 
 function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
     local px,py,pz=table.unpack(GetGameplayCamCoords())
-    local dist = GetDistanceBetweenCoords(px,py,pz, x,y,z, 1)    
+    local dist = GetDistanceBetweenCoords(px, py, pz, x, y, z, true)
     local scale = (1/dist)*20
     local fov = (1/GetGameplayCamFov())*100
-    local scale = scale*fov   
+    local scale = scale*fov
     SetTextScale(scaleX*scale, scaleY*scale)
     SetTextFont(fontId)
-    SetTextProportional(1)
+    SetTextProportional(true)
+    -- SetTextProportional(1)
     SetTextColour(250, 250, 250, 255)		-- You can change the text color here
     SetTextDropshadow(1, 1, 1, 1, 255)
     SetTextEdge(2, 0, 0, 0, 150)
     SetTextDropShadow()
     SetTextOutline()
     SetTextEntry("STRING")
-    SetTextCentre(1)
+    SetTextCentre(true)
     AddTextComponentString(textInput)
     SetDrawOrigin(x,y,z+2, 0)
     DrawText(0.0, 0.0)
@@ -261,60 +310,9 @@ RegisterCommand("test111", function()
     SetMpGamerTagVisibility(playerId, 0, true)
     SetMpGamerTagVisibility(playerId, 1, true)
     SetMpGamerTagVisibility(playerId, 16, true)
-end)
+end, false)
 
 -- Ped functions
-
--- Spawn a ped with 1000 health
--- Todo Setup health bar above the ped.
--- This might be useful for what I'm trying to do: https://github.com/Lanzaned-Enterprises/LENT-PedSpawner/blob/main/client/cl_main.lua
-RegisterCommand("spawnped", function()
-    -- Create a lester ped at the players current location
-    local playerCoords = GetEntityCoords(GetPlayerPed(-1))
-    local playerHeading = GetEntityHeading(GetPlayerPed(-1))
-    local x,y,z = table.unpack(playerCoords)
-    -- local x_1, y_1, z_1 = -1441.38, -1385.25, 7.5
-
-    local lesterModel = GetHashKey("ig_lestercrest")
-    -- local lesterPed = CreatePed(1, lesterModel, x_1, y_1, z_1, 10.0, true, true)
-    local lesterPed = CreatePed(1, lesterModel, z, y+1, z, playerHeading, true, true)
-    -- Oops, I had this set to request the ped instead of the model hash.
-    RequestModel(lesterModel)
-
-    while not DoesEntityExist(lesterPed) or NetworkGetNetworkIdFromEntity(lesterPed) == 0 do
-        Citizen.Wait(1)
-    end
-
-    -- SetEntityCoords(lesterPed, x_1, y_1, z_1, true, false, false, false)
-    SetEntityCoords(lesterPed, x, y+1, z, true, false, false, false)
-    SetEntityHealth(lesterPed, 1000)
-
-    -- Hologram test
-    lesterPedCoords = GetEntityCoords(lesterPed)
-    lesterPedHeading = GetEntityHeading(lesterPed)
-
-    -- Add 3 to the Z value to be above the ped.
-    -- Create the hologram
-    -- Citizen.CreateThread(function()
-
-    -- end)
-    -- local x_1, y_1, z_1 = table.unpack(lesterPedCoords)
-    -- holograms(x_1, y_1, z_1 + 3)
-
-    -- SetModelAsNoLongerNeeded(lesterPed)
-    SetEntityAsNoLongerNeeded(lesterPed)
-
-
-    while true do
-        holograms(x_1, y_1, z_1 + 3)
-        end
-
-    -- SetEntityCoords(lesterPed, x, y, z, true, false, false, false)
-
-    -- Test function
-    -- notify("Coords: " .. x .. " " .. y .. " " .. z .. " Heading: " .. playerHeading)
-
-end)
 
 -- Get the current health of the ped
 -- GetEntityHealth()
@@ -334,14 +332,14 @@ RegisterCommand("getradio", function(source, args, rawCommand)
 
     -- Playing around with getting the police radio to show up on here.
     -- PlayPoliceReport("LAMAR_1_POLICE_LOST", 0)
-end)
+end, false)
 
 -- This is supposed to show the radio track playtime but I don't think it tracks properly.
 RegisterCommand("radiotime", function()
     -- This should convert the time into seconds
     notify(GetCurrentRadioTrackPlaybackTime(
         GetRadioStationName(GetPlayerRadioStationIndex()) ) / 1000 )
-end)
+end, false)
 
 -- Adds a portable radio to the game.
 -- 3-27-2024 @ 3:07PM
@@ -349,20 +347,20 @@ end)
 -- https://github.com/FAXES/MobileRadio/blob/master/client.lua
 RegisterCommand("radio", function(source, args, rawCommand)
     TriggerEvent("ch_test:ToggleMobileRadio")
-end)
+end, false)
 
 RegisterNetEvent("ch_test:ToggleMobileRadio")
 AddEventHandler("ch_test:ToggleMobileRadio", function ()
     if IsMobilePhoneRadioActive() then
-        SetMobilePhoneRadioState(0)
-        SetMobileRadioEnabledDuringGameplay(0)
+        SetMobilePhoneRadioState(false)
+        SetMobileRadioEnabledDuringGameplay(false)
         notify("Radio disabled")
         -- I don't think these are needed.
         -- SetAudioFlag("MobileRadioInGame", 0)
 		-- SetAudioFlag("AllowRadioDuringSwitch", 0)
 	else
-		SetMobilePhoneRadioState(1)
-        SetMobileRadioEnabledDuringGameplay(1)
+		SetMobilePhoneRadioState(true)
+        SetMobileRadioEnabledDuringGameplay(true)
         notify("Radio enabled")
         -- I don't think these are needed.
 		-- SetAudioFlag("MobileRadioInGame", 1)
@@ -382,7 +380,27 @@ RegisterCommand("skipradio", function()
         -- end
         SkipRadioForward()
     end
-end)
+end, false)
+
+RegisterCommand("toggletraffic", function()
+    
+    -- Not sure how to set this up yet.
+    -- if GetVehicleDensityMultiplier() == 0.0 then
+
+    -- end
+end, true)
+
+
+-- Disable the vehicles and peds
+-- 
+-- Citizen.CreateThread(function()
+--     while true do
+--         SetVehicleDensityMultiplierThisFrame(0.0)
+--         SetPedDensityMultiplierThisFrame(0.0)
+--         Wait(0)
+--     end
+-- end)
+
 
 function notify(msg)
     SetNotificationTextEntry("STRING")

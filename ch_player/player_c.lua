@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-parameter
 -- Make the player invincible
 --[[
 local isInvincible = false
@@ -42,9 +43,18 @@ end, false)
 
 RegisterCommand('pos', function(source, args)
     local ped = GetPlayerPed(PlayerId())
-    
-    notify("Your coords are: " .. GetEntityCoords(ped))
-    
+    local playerX = GetEntityCoords(ped).x
+    local playerY = GetEntityCoords(ped).y
+    local playerZ = GetEntityCoords(ped).z
+
+    test = true
+    -- Run test code, somewhat mimics C# preprocessors.
+    if not test then
+        notify("Your coords are: " .. GetEntityCoords(ped))
+    else
+        
+        notify("Your coords are: " .. "X: " .. playerX .. " Y: " .. playerY .. " Z: " .. playerZ)
+    end
 end, false)
 
 RegisterCommand("spawn", function()
