@@ -33,11 +33,13 @@ start ScaleformUI_Test
 * ch_weapon - Gives player weapon on spawn.
 * chat_stuff - I haven't added anything to this.
 * help - Help messages for my server.
-* ch_test - Testing scripts
+* ch_test - Testing scripts, tons of test commands and features.
 * ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons.
 
 New:
+* Your client will most likely crash when rejoining due to the ScaleformUI: https://github.com/manups4e/ScaleformUI/issues/213
 * Assets and files needed for ScaleformUI_Test
+------
 * ScaleformUI_Assets -- Download from https://github.com/manups4e/ScaleformUI for latest version.
 * ScaleformUI_Lua -- Download from https://github.com/manups4e/ScaleformUI for latest version.
 * ScaleformUI_Test -- Custom resouce that I am working on using a gui that can give the players god mode, eventually spawn in cars and stuff like that.
@@ -74,10 +76,18 @@ New:
 * ch_typescript - Testing typescript fivem functions.
 * ch_nui - Testing nui functions with javascript.
 * ch_test - 
+* Population functions - taken the idea for a config and for enabling/disabling police into my own resource so I know where it is at.
+* Helicopter testing - check if vehicle has searchlight, toggle searchlight.
+* Ped Test - spawn peds to fight. 
+* Spawn a ped to drive you to a marker. If you get out of the car they'll keep going. I need to figure out how to make them stop. Possibly lock the player inside and make make a /stopvehicle command for it or something.
+Spawn ped and return its Entity ID
+* Player test - So far I just have alerts, advanced notifcations, busy spinners and subtitles in this, I need to move these somewhere else.
+* test.lua - Misc testing and random stuff in here.
+
 
 ---
-* [Original creator](https://github.com/bepo13/FiveM-StreetRaces) for below resource, I did not create this, I have modified it to have a gui.
-* Street races - I am working on making a custom gui for the StreetRaces resource
+* [Original link](https://github.com/bepo13/FiveM-StreetRaces) for below resource, I did not create this, I have modified it to have a gui, credit goes to [bepo13](https://github.com/bepo13) on github.
+* Street races - I am working on making a custom gui for the StreetRaces resource, this mostly works but a few bugs need fixed before I will make a release for it, I haven't figured out how to make it to where markers aren't placed when a race is loaded.
 
 # Commands
 #### Car
