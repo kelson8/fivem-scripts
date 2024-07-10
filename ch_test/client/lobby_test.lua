@@ -2,6 +2,7 @@
 -- Eventually I would like to add saving my own vehicles into the database.
 -- This works!! I had to move it into a client script
 -- https://github.com/itsJarrett/FiveM-boot_vehicles
+
 Citizen.CreateThread(function()
     Wait(0)
     spawnVehicle("nemesis")

@@ -9,6 +9,9 @@ sync_changes.bat
 StreetRaces/data
 *.bak
 
+# This is temporary
+ch_typescript/
+
 # Add .dll files for C# project
 lemonui_test/
 

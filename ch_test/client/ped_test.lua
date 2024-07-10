@@ -232,19 +232,31 @@ RegisterCommand("drivingped", function()
     local blipX = 0.0
     local blipY = 0.0
 
+    -- Test
+    local blipZ = 0.0
+
     -- This should fix the problem
     local driveToMarker = true
 
     -- Test driving to marker, this works!
     if driveToMarker then
 
+        -- TODO Fix this to work.
+        -- Show the subtitle, this doesn't work.
+        showSubtitle("The driving ped will go to your ~p~Marker~s~", 2000)
+        
         -- Idea for this came from here: https://forum.cfx.re/t/get-gps-waypoint-coords/79387/2
         if (blip ~= 0) then
             local coord = GetBlipCoords(blip)
             blipX = coord.x
             blipY = coord.y
-            speed = 60.0
-            TaskVehicleDriveToCoord(lesterPed, pedDrivingVeh1, blipX, blipY, 35.0, speed, 0, vehicleName, drivingStyleIgnoreLights, 15, -1)
+            blipZ = coord.z
+            -- Mph = speed * 2.236936
+            -- Kph = speed * 3.6
+            -- speed = 60.0
+            speed = 45.0
+            TaskVehicleDriveToCoord(lesterPed, pedDrivingVeh1, blipX, blipY, blipZ, speed, 0, vehicleName, drivingStyleIgnoreLights, 15, -1)
+            -- TaskVehicleDriveToCoord(lesterPed, pedDrivingVeh1, blipX, blipY, 35.0, speed, 0, vehicleName, drivingStyleIgnoreLights, 15, -1)
         end
     end
 
@@ -305,8 +317,6 @@ function test()
             -- Will this work?
             if previousVeh == pedDrivingVeh1 then
                 -- I'm not sure how to make the ped stop and go.
-
-
         end
             
         end

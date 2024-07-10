@@ -1,0 +1,3 @@
+TestConfig = {
+    PoliceEnabled = true,
+}
