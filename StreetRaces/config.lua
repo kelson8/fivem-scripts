@@ -2,7 +2,7 @@
 config_cl = {
     totalLaps = 2,                      -- Default total number of laps if no input set.
     joinProximity = 25,                 -- Proximity to draw 3D text and join race
-    joinKeybind = 51,                   -- Keybind to join race ("E" by default)
+    joinKeybind = 51,                   -- Keybind to join race ("E" by default, D-PAD Right on Xbox controller)
 	markerKeybind = 51,                 -- Keybind to set markers ("E" by default)
     joinDuration = 5000,               -- Duration in ms to allow players to join the race
     freezeDuration = 5000,              -- Duration in ms to freeze players and countdown start (set to 0 to disable)

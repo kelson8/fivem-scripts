@@ -74,9 +74,13 @@ local recordedCheckpoints = {}
 
 function CreateMenu()
     local txd = CreateRuntimeTxd("scaleformui")
+    -- These weren't in use.
     local duiPanel = CreateDui("https://i.imgur.com/mH0Y65C.gif", 288, 160)
     CreateRuntimeTextureFromDuiHandle(txd, "sidepanel", GetDuiHandle(duiPanel))
-	local duiBanner = CreateDui("https://i.imgur.com/3yrFYbF.gif", 288, 160)
+    -- Original
+    -- local duiBanner = CreateDui("https://i.imgur.com/3yrFYbF.gif", 288, 160)
+    -- Anime gif background
+    local duiBanner = CreateDui("https://i.pinimg.com/originals/a3/1d/7f/a31d7f5c20b885859e84ceea2d71d7b6.gif", 288, 160)
 	CreateRuntimeTextureFromDuiHandle(txd, "menuBanner", GetDuiHandle(duiBanner))
 
     -- Initalize the menu
@@ -259,12 +263,18 @@ function CreateMenu()
 
     -- This one seems to be working now.
     -- A marker can be set with this using "E", instead of clicking on the map
+
+    -- TODO Setup this to where it won't wipe the current race if RACE_STATE_RECORDING is active.
     createRaceItem.Activated = function(sender, item, index)
         if item == createRaceItem then
-            SetWaypointOff()
-            cleanupRecording()
-            raceStatus.state = RACE_STATE_RECORDING
-            notify("Record active: Set markers on the map for waypoints. Or press E to place them at your position.")
+            if raceStatus.state == RACE_STATE_RECORDING then
+                notify("You are currently recording a race! Unload it first.")
+            else
+                SetWaypointOff()
+                cleanupRecording()
+                raceStatus.state = RACE_STATE_RECORDING
+                notify("Record active: Set markers on the map for waypoints. Or press E to place them at your position.")
+            end
         end
     end
 
@@ -292,6 +302,15 @@ Citizen.CreateThread(function()
         -- F5 key, draw the main menu
         if IsControlJustPressed(0, 166) and not MenuHandler:IsAnyMenuOpen() and GetLastInputMethod(0) then
             CreateMenu()
+        end
+
+        -- TODO This sometimes activates and sometimes doesn't, try to fix that.
+        -- Controller, Need to setup key
+        -- RB + DPAD UP
+        if IsControlJustPressed(1, 44) and IsControlJustPressed(1, 172)
+         and not MenuHandler:IsAnyMenuOpen()
+         and not GetLastInputMethod(0) then
+                CreateMenu()
         end
     end
 
@@ -448,7 +467,7 @@ AddEventHandler("StreetRaces:removeRace_cl", function(index)
     end
     
     -- Remove race from table
-    -- Is this needed? These values don't seem to be in use, at least the races one doesn't
+    -- TODO Is this needed? These values don't seem to be in use, at least the races one doesn't
     table.remove(races, index)
 end)
 
@@ -602,7 +621,7 @@ Citizen.CreateThread(function()
                     table.insert(recordedCheckpoints, {blip = blip, coords = coords})
                 end
             end
-			if IsControlJustReleased(0, config_cl.markerKeybind) then
+			if IsControlJustReleased(0, config_cl.markerKeybind) or IsControlJustReleased(1, config_cl.markerKeybind) then
 				local player = GetPlayerPed(-1)
 				local coords = GetEntityCoords(player)
 
@@ -838,7 +857,7 @@ Citizen.CreateThread(function()
                     if proximity < config_cl.joinProximity and currentTime < race.startTime then
                         -- Draw 3D text
                         local count = math.ceil((race.startTime - currentTime)/1000.0)
-                        local temp, zCoord = GetGroundZFor_3dCoord(race.startCoords.x, race.startCoords.y, 9999.9, 0)
+                        local temp, zCoord = GetGroundZFor_3dCoord(race.startCoords.x, race.startCoords.y, 9999.9, false)
                         Draw3DText(race.startCoords.x, race.startCoords.y, zCoord+1.0, ("Race for ~g~$%d~w~ starting in ~y~%d~w~s"):format(race.amount, count))
                         Draw3DText(race.startCoords.x, race.startCoords.y, zCoord+0.80, "Press [~g~E~w~] to join")
 
