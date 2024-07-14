@@ -23,180 +23,23 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
-function createVehBlip(blip, vehicle)
-    local vehBlip = AddBlipForEntity(vehicle)
-    AddBlipForEntity(vehBlip)
-    SetBlipSprite(vehBlip, blip)
-end
-
-function removeVehBlip(blip, vehicle)
-    RemoveBlip(blip)
-end
-
--- function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading, r, g, b)
-function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
-    local car = GetHashKey(vehicleName)
-
-    -- Check if the vehicle actually exists
-    if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then return end
-
-    -- Load the model
-    RequestModel(vehicleName)
-
-    -- If model hasn't loaded, wait on it.
-    while not HasModelLoaded(vehicleName) do
-        Wait(500)
-    end
-
-        -- SetEntityAsNoLongerNeeded(car)
-        SetModelAsNoLongerNeeded(car)
-
-        SetVehicleTyresCanBurst(vehicleName, true)
-
-        -- These color options don't seem to work.
-        -- SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
-        -- SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
-        CreateVehicle(vehicleName, x, y, z, heading, true, false)
-
-        -- 6-24-2024 @ 3:28PM
-        -- Possibly add this at the bottom
-        -- SetModelAsNoLongerNeeded(car)
-end
-
-
-function spawnPersonalVehicleWithBlip(vehicleName)
-    -- Check if the vehicle actually exists
-    if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-    notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
-    end
-
-    -- Load the model
-    RequestModel(vehicleName)
-
-    -- If model hasn't loaded, wait on it.
-    while not HasModelLoaded(vehicleName) do
-        Wait(500)
-    end
-
-    local ped = GetPlayerPed(-1)
-    local x,y,z = table.unpack(GetEntityCoords(ped))
-    local heading = GetEntityHeading(ped)
-
-    -- Set this to true to spawn player into vehicle.
-    local spawnInVehicle = true
-
-
-    -- TODO Setup spawn in vehicle check.
-    -- TODO Fix this to where it doesn't despawn when you walk a bit from it.
-    -- Setup persistant vehicle check, if enabled the current vehicle won't despawn.
-    if (spawnInVehicle) then
-        -- Remove vehicle if player is in one.
-        if(IsPedSittingInAnyVehicle) then
-            deleteCurrentVehicle(GetVehiclePedIsIn(ped, false))
-        end
-
-        -- Set the player into the drivers seat
-        local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
-        SetPedIntoVehicle(ped, vehicle, -1)
-
-        -- Add the blip for personal vehicle.
-        createVehBlip(225, vehicle)
-
-        -- This should stop despawning of personal vehicles that get spawned in.
-        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-    -- Adding the else fixed the vehicle spawning in multiple times.
-    else
-        local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
-
-        -- Add the blip for personal vehicle.
-        createVehBlip(225, vehicle)
-        -- This should stop despawning of personal vehicles that get spawned in.
-        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-
-    end
-end
-
--- Todo Set this to where the personal vehicle marker gets removed if the car explodes.
-function spawnVehicleWithBlip(vehicleName)
-    local car = GetHashKey(vehicleName)
-
-    -- Check if the vehicle actually exists
-    if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-    notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
-    end
-
-    -- Load the model
-    RequestModel(vehicleName)
-
-    -- If model hasn't loaded, wait on it.
-    while not HasModelLoaded(vehicleName) do
-        Wait(500)
-    end
-
-    local ped = GetPlayerPed(-1)
-    local x,y,z = table.unpack(GetEntityCoords(ped))
-    local heading = GetEntityHeading(ped)
-
-    -- Set this to true to spawn player into vehicle.
-    local spawnInVehicle = true
-
-
-    -- TODO Setup spawn in vehicle check.
-    -- TODO Fix this to where it doesn't despawn when you walk a bit from it.
-    -- Setup persistant vehicle check, if enabled the current vehicle won't despawn.
-    if (spawnInVehicle) then
-        -- Remove vehicle if player is in one.
-        if(IsPedSittingInAnyVehicle) then
-            deleteCurrentVehicle(GetVehiclePedIsIn(ped, false))
-        end
-
-        -- Set the player into the drivers seat
-        local vehicle = CreateVehicle(vehicleName, x, y, z, heading, true, false)
-        SetPedIntoVehicle(ped, vehicle, -1)
-
-        -- Add the blip for personal vehicle.
-        createVehBlip(225, vehicle)
-
-        -- Not sure if these are needed twice.
-        SetEntityAsNoLongerNeeded(car)
-        SetModelAsNoLongerNeeded(car)
-    -- Adding the else fixed the vehicle spawning in multiple times.
-    else
-        local vehicle = CreateVehicle(vehicleName, x + 3, y + 3, z + 1, heading, true, false)
-
-        -- Add the blip for personal vehicle.
-        createVehBlip(225, vehicle)
-
-        SetEntityAsNoLongerNeeded(car)
-        SetModelAsNoLongerNeeded(car)
-    end
-end
-
-function deleteCurrentVehicle(vehicleName)
+RegisterCommand("deleteveh", function()
     local ped = GetPlayerPed(-1)
     if DoesEntityExist(vehicleName) then
         if IsPedSittingInAnyVehicle(ped) then
             local vehicle = GetVehiclePedIsIn(ped, false)
             --local vehBlip = GetBlipFromEntity(vehicle)
 
-            -- Will this work?
-            --if vehBlip == 0 then
-            if GetBlipFromEntity(vehicle) == 0 then
-                return
-            else
-                removeVehBlip()
-            end
-
             SetEntityAsMissionEntity(vehicle)
             DeleteVehicle(vehicle)
         end
-    end
-end
+    end    
+end, false)
 
 -- Random cars
 -- Fix this to where the cars delete the old ones as they spawn in.
 RegisterCommand('rndcar', function()
-    local cars = {"adder", "t20", "faggio", "cheetah"}
+    local cars = { "adder", "t20", "faggio", "cheetah" }
     local car_random = (cars[math.random(#cars)])
     local ped = GetPlayerPed(-1)
 
@@ -206,7 +49,6 @@ RegisterCommand('rndcar', function()
     if IsPedSittingInAnyVehicle(ped) then
         local vehicle = GetVehiclePedIsIn(ped, false)
         deleteCurrentVehicle(vehicle)
-
     end
 
     -- Spawns the vehicle and notify the player
@@ -224,27 +66,75 @@ end, false)
 
 RegisterCommand('car', function(source, args)
     -- account for the argument not being passed
-    local vehicleName = args[1] or 'adder'
-    local ped = GetPlayerPed(-1)
 
-    -- Remove current vehicle before spawning a new one in.
-    if IsPedSittingInAnyVehicle(ped) then
-        local vehicle = GetVehiclePedIsIn(ped, false)
-        deleteCurrentVehicle(vehicle)
-    end
+    local category = args[1]
+    local player = GetPlayerPed(-1)
 
-    -- Spawn the car
-    spawnVehicleWithBlip(vehicleName)
 
-    -- Set the player into the drivers seat
-    --SetPedIntoVehicle(ped, vehicleName, -1)
+    if category == "spawn" then
+        local vehicleName = args[2] or 'adder'
 
-    -- tell the player
-    notify("You have spawned a ~y~" .. vehicleName)
+        -- Remove current vehicle before spawning a new one in.
+        if IsPedSittingInAnyVehicle(player) then
+            local vehicle = GetVehiclePedIsIn(player, false)
+            deleteCurrentVehicle(vehicle)
+        end
+
+        -- Spawn the car
+        spawnVehicleWithBlip(vehicleName)
+
+        -- Set the player into the drivers seat
+        --SetPedIntoVehicle(ped, vehicleName, -1)
+
+        -- tell the player
+        notify("You have spawned a ~y~" .. vehicleName)
+
+        -- Check if player is in a vehicle before running these.
+        -- if IsPedInAnyVehicle(player) then
+
+        elseif category == "customize" then
+            local vehicle = GetVehiclePedIsIn(player)
+            SetVehicleModKit(vehicle, 0)
+            for modType = 0, 10, 1 do
+                local bestMod = GetNumVehicleMods(vehicle, modType) - 1
+                SetVehicleMod(vehicle, modType, bestMod, false)
+            end
+
+        elseif category == "extras" then -- /vehicle extras
+            local vehicle = GetVehiclePedIsIn(player)
+            for id = 0, 20 do
+                if DoesExtraExist(vehicle, id) then
+                    -- Turn it on with 1, turn off with 0
+                    SetVehicleExtra(vehicle, id, 1)
+                end
+                sendMessage("You have added all extras to the vehicle.")
+            end
+
+        elseif category == "repair" then
+            local vehicle = GetVehiclePedIsIn(player)
+            SetVehicleFixed(vehicle)
+            SetVehicleEngineHealth(vehicle, 1000.0)
+            sendMessage("Repaired your vehicle.")
+        
+        
+        -- Open the doors
+        elseif category == "doors" then
+            local vehicle = GetVehiclePedIsIn(player)
+            local closed = GetVehicleDoorAngleRatio(vehicle, 0) < 0.1
+            if closed then
+                for i=0, 7 do
+                    SetVehicleDoorOpen(vehicle, i, false, false)
+                end
+            else
+                SetVehicleDoorsShut(vehicle, false)
+            end
+        end
+
+   
+    -- end
 end, false)
 
 RegisterCommand('dv', function()
-
     local ped = GetPlayerPed(-1)
     if IsPedSittingInAnyVehicle(ped) then
         local vehicleName = GetVehiclePedIsIn(ped, false)
@@ -254,13 +144,15 @@ RegisterCommand('dv', function()
     else
         notify("~r~Error~w~: You need a car to use this command!")
     end
-
 end, false)
 
 -- Adding suggestions to the command
 -- Note, the command has to start with `/`.
 TriggerEvent('chat:addSuggestion', '/car', 'help text', {
-    { name="carName", help="name of the car to spawn" }
+    -- { name = "spawn", help = "name of the car to spawn" }
+    -- { name = "customize", help = "Customize current vehicle" },
+    { name = "spawn", help = "Spawn a car" },
+    { name = "name",  help = "Car name to spawn" }
 })
 
 TriggerEvent('chat:addSuggestion', '/dv', 'Delete vehicle')
@@ -275,21 +167,21 @@ TriggerEvent('chat:addSuggestion', '/spawnpv', 'Spawns a personal vehicle that s
 -- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
 
 Citizen.CreateThread(function()
-    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do" 
+    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do"
     -- loop if I don't want it constantly running.
-        Wait(1)
-        for i = 1, #vehicle_spawns, 1 do
-            spawns = vehicle_spawns[i]
-            local x,y,z = table.unpack(spawns.pos)
-            spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
-            -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
+    Wait(1)
+    for i = 1, #vehicle_spawns, 1 do
+        spawns = vehicle_spawns[i]
+        local x, y, z = table.unpack(spawns.pos)
+        spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
+        -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
     end
 end)
 
 -- https://forum.cfx.re/t/checking-if-someone-is-an-area/127087/4
 -- https://forum.cfx.re/t/help-disable-control/43052
 -- Prompt player to exit garage and disable car movement if in the Ceo Office garage
--- I figured out how to disable car movement, I had to do the action for vehicle accelerate and vehicle braking on the fivem controls page. 
+-- I figured out how to disable car movement, I had to do the action for vehicle accelerate and vehicle braking on the fivem controls page.
 -- Well this disables it for outside of the garage also, I would need to fix that
 -- Citizen.CreateThread(function()
 --     while true do
@@ -315,11 +207,11 @@ end)
 -- Notify client event
 RegisterNetEvent("ch_car:notifyClient")
 AddEventHandler("ch_car:notifyClient",
-    function (msg)
+    function(msg)
         SetNotificationTextEntry("STRING")
         AddTextComponentString(msg)
         DrawNotification(true, false)
-end)
+    end)
 
 -- Get players vehicle
 RegisterNetEvent("ch_car:getVehicle")
@@ -340,7 +232,7 @@ AddEventHandler("ch_car:getVehicle", function()
         -- https://forum.cfx.re/t/help-configure-showroom-vehicle-colors/4915586/5
         -- Both of these seem to work, first one grabs the primary and secondary color, second one gives the color in rgb format.
         local color1, color2 = GetVehicleColours(vehicle)
-        local r,g,b = GetVehicleColor(vehicle)
+        local r, g, b = GetVehicleColor(vehicle)
 
         notify("You are in a " .. carLabel .. " with colors: " .. color1 .. " " .. color2)
         -- notify("You are in a " .. carLabel .. " with colors: " .. r .. " " .. g .. " " .. b)
@@ -357,7 +249,7 @@ end)
 RegisterNetEvent("ch_car:savepv")
 AddEventHandler("ch_car:savepv", function(vehicle)
     local model = GetEntityModel(vehicle)
-    local x,y,z = table.unpack(GetEntityCoords(vehicle))
+    local x, y, z = table.unpack(GetEntityCoords(vehicle))
     local heading = GetEntityHeading(vehicle)
 
     local carDisplayName = GetDisplayNameFromVehicleModel(model)
@@ -389,4 +281,3 @@ end, false)
 RegisterCommand("deletepv", function()
 
 end, false)
-
