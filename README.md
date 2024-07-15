@@ -7,34 +7,36 @@ The ch_gamemode and ch_map resources aren't needed to be loaded in, I fixed ch_s
 
 To enable these resources add the following to the server.cfg.
 
-* ensure ch_car
-* ensure ch_spawn
-* ensure ch_map
-* ensure ch_weapon
+* ensure kc_car
+* ensure kc_spawn
+* ensure kc_map
+* ensure kc_weapon
 * ensure help
-* ensure ch_test
-* ensure ch_vehiclecontrol
+* ensure kc_test
+* ensure kc_vehiclecontrol
+
 
 * New:
-* ensure ch_player
+* ensure kc_player
 * ensure StreetRaces
-* ensure ch_warps
+* ensure kc_warps
+* ensure kc_test
 
 
-* Custom menu that I am working on in lua with ScaleformUI
-start ScaleformUI_Assets
-start ScaleformUI_Lua
-start ScaleformUI_Test
+Custom menu that I am working on in lua with ScaleformUI
+* ensure ScaleformUI_Assets
+* ensure ScaleformUI_Lua
+* ensure ScaleformUI_Test
 
 # Resource list
-* ch_car - Basic car spawning and removal
-* ch_map - Basic map
-* ch_spawn - Basic player spawning and gamemode
-* ch_weapon - Gives player weapon on spawn.
+* kc_car - Basic car spawning and removal
+* kc_map - Basic map
+* kc_spawn - Basic player spawning and gamemode
+* kc_weapon - Gives player weapon on spawn.
 * chat_stuff - I haven't added anything to this.
 * help - Help messages for my server.
-* ch_test - Testing scripts, tons of test commands and features.
-* ch_vehiclecontrol - Adds hood and trunk control with page up and page down buttons.
+* kc_test - Testing scripts, tons of test commands and features.
+* kc_vehiclecontrol - Adds hood and trunk control with page up and page down buttons.
 
 New:
 * Your client will most likely crash when rejoining due to the ScaleformUI: https://github.com/manups4e/ScaleformUI/issues/213
@@ -46,36 +48,36 @@ New:
 
 
 # Features
-* ch_vehiclecontrol
+* kc_vehiclecontrol
 * Adds hood and trunk control with page up and page down buttons. 
 * Adds Window controls with delete and insert.
 
 ---
-* ch_warps - Add support for the custom teleport markers on the map that can be defined in [locations_c.lua](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_warps/locations_c.lua)
+* kc_warps - Add support for the custom teleport markers on the map that can be defined in [locations_c.lua](https://github.com/kelson8/fivem-scripts/blob/main/kc_warps/locations_c.lua)
 
-*  ch_teleporter - Basic teleport system for players located in [ch_teleporter](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_teleporter)
+*  kc_teleporter - Basic teleport system for players located in [kc_teleporter](https://github.com/kelson8/fivem-scripts/tree/main/kc_teleporter)
 
-* ch_car - Add save personal vehicles, spawn vehicles with command, spawn random car from list.
- This can add a vehicle with a custom blip, I don't think I figured out how to make the blip disappear if the vehicle explodes though. Located here [ch_car](https://git.internal.kelsoncraft.net/kelson8/fivem-scripts/src/branch/main/ch_car)
+* kc_car - Add save personal vehicles, spawn vehicles with command, spawn random car from list.
+ This can add a vehicle with a custom blip, I don't think I figured out how to make the blip disappear if the vehicle explodes though. Located here [kc_car](https://github.com/kelson8/fivem-scripts/tree/main/kc_car)
 
 
-* ch_gamemode - Basic onClientMapStart resource
-* ch_map - Basic map with locations, this needs to be setup to work with a config.
+* kc_gamemode - Basic onClientMapStart resource
+* kc_map - Basic map with locations, this needs to be setup to work with a config.
 ---
-* ch_menu - Basic menu using nativeui, I would rather use the ScaleformUi one
-* ch_messages - Currently just death messages.
+* kc_menu - Basic menu using nativeui, I would rather use the ScaleformUi one
+* kc_messages - Currently just death messages.
 
-* ch_player - Get players interior, current position, teleport to spawn, suicide option, check max wanted level.
+* kc_player - Get players interior, current position, teleport to spawn, suicide option, check max wanted level.
 
-* ch_weapon - Give players a weapon with a command, attatchment option not working yet. This needs to be setup to get the weapon to spawn in with from the config.
+* kc_weapon - Give players a weapon with a command, attatchment option not working yet. This needs to be setup to get the weapon to spawn in with from the config.
 
 
 
 #### Testing Features
-* ch_database - Testing database functions, currently prints vehicles out of the database.
-* ch_typescript - Testing typescript fivem functions.
-* ch_nui - Testing nui functions with javascript.
-* ch_test - 
+* kc_database - Testing database functions, currently prints vehicles out of the database.
+* kc_typescript - Testing typescript fivem functions.
+* kc_nui - Testing nui functions with javascript.
+* kc_test - 
 * Population functions - taken the idea for a config and for enabling/disabling police into my own resource so I know where it is at.
 * Helicopter testing - check if vehicle has searchlight, toggle searchlight.
 * Ped Test - spawn peds to fight. 
@@ -94,7 +96,7 @@ Spawn ped and return its Entity ID
 * /car <name> -- Gives you a car with the specified name.
 * /rndcar -- Give you a random car from the list
 * /dv -- Remove your current vehicle
-* /savepv -- Save your current vehicle as a personal vehicle into the database. I don't think this make a persistant blip for it.
+* /savepv -- Save your current vehicle as a personal vehicle into the database. I don't think this makes a persistant blip for it.
 
 #### Not implemented
 * /pv -- Spawn in your vehicle with the id from the database.
