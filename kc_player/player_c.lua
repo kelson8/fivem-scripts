@@ -58,9 +58,15 @@ RegisterCommand('pos', function(source, args)
 end, false)
 
 RegisterCommand("spawn", function()
-    local ped = GetPlayerPed(PlayerId())
+    local player = GetPlayerPed(PlayerId())
     -- middle_ls1 = vector3(222.2027, -864.0162, 30.2922)
-    SetEntityCoords(PlayerPedId(), 222.2027, -864.0162, 29.2922, true, true, true, false)
+    if IsPedInAnyVehicle(player, false) then
+        local vehicle = GetVehiclePedIsIn(player, false)
+        SetEntityCoords(vehicle, 222.2027, -864.0162, 29.2922, true, true, true, false)
+    else
+        SetEntityCoords(player, 222.2027, -864.0162, 29.2922, true, true, true, false)
+
+    end
     notify("You have been teleported to the spawn!")
 end)
 

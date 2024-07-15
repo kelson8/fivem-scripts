@@ -22,6 +22,8 @@ client_scripts{
     'client/player_test.lua',
     'client/vehicle_test.lua',
     'client/time_functions.lua',
+
+    'client/data/warps.lua',
 }
 
 server_scripts{

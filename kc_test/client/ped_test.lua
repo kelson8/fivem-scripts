@@ -164,7 +164,8 @@ RegisterCommand("drivingped", function()
     -- Oops, I had this set to request the ped instead of the model hash.
     RequestModel(lesterModel)
 
-    while not DoesEntityExist(lesterPed) or NetworkGetNetworkIdFromEntity(lesterPed) == 0 do
+    while not DoesEntityExist(lesterPed) or NetworkGetNetworkIdFromEntity(lesterPed) == 0 
+    or not HasModelLoaded(lesterModel) do
         Citizen.Wait(100)
     end
 
@@ -190,10 +191,11 @@ RegisterCommand("drivingped", function()
     RequestModel(vehicleName)
 
     -- -- If model hasn't loaded, wait on it.
-    while not HasModelLoaded(vehicleName) do
+    while not HasModelLoaded(car) do
         Wait(500)
     end
-        SetModelAsNoLongerNeeded(car)
+    
+    SetModelAsNoLongerNeeded(car)
         -- SetVehicleTyresCanBurst(vehicleName, true)
     -- local pedDrivingVeh1 = CreateVehicle(vehicleName, x + 3, y + 3, z, heading, true, false)
     pedDrivingVeh1 = CreateVehicle(vehicleName, x + 3, y + 3, z, heading, true, false)

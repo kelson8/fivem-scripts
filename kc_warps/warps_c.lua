@@ -5,6 +5,7 @@ function notify(msg)
 end
 
 -- Todo Make this set the heading too.
+-- TODO Setup this to where it prints the location name instead of a number
 
 Citizen.CreateThread(function()
     while true do
@@ -44,7 +45,8 @@ Citizen.CreateThread(function()
                 -- Code that runs when we are in the markers radius.
                 SetEntityCoords(PlayerPedId(), loc.tpto.x, loc.tpto.y, loc.tpto.z, true, true, true, false)
                 SetEntityHeading(PlayerPedId(), 0)
-                notify("You have been teleported to location ~b~" .. i)
+                -- notify("You have been teleported to location ~b~" .. i)
+                notify("You have been teleported to location ~b~" .. #locations)
             end
         end
     end

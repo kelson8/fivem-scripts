@@ -189,8 +189,35 @@ GetEntityRoutingBucket(entity)
 -- TaskPlaneTaxi()
 -- TaskHeliChase(): https://nativedb.dotindustries.dev/gta5/natives/0xAC83B1DB38D0ADA0
 
--- Other
--- TaskHandsUp()
+-- Tasks
+-- TaskHandsUp():
+
+-- Radio
+-- SetRadioStationMusicOnly() -- https://nativedb.dotindustries.dev/gta5/natives/0x774BD811F656A122
+-- LockRadioStation() -- https://nativedb.dotindustries.dev/gta5/natives/0x477D9DB48F889591
+-- SetRadioStationIsVisible()
+-- IsRadioStationFavourited()
+-- GetPlayerRadioStationGenre() -- https://nativedb.dotindustries.dev/gta5/natives/0xA571991A7FE6CCEB
+-- GetPlayerRadioStationIndex() -- https://nativedb.dotindustries.dev/gta5/natives/0xE8AF77C4C06ADC93
+-- GetPlayerRadioStationName() -- https://nativedb.dotindustries.dev/gta5/natives/0xF6D733C32076AD03
+
+-- Cops
+-- SetCreateRandomCopsOnScenarios(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x444CB7D7DBE6973D
+-- SetCreateRandomCopsNotOnScenarios(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x8A4986851C4EF6E7
+-- SetCreateRandomCops(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x102E68B2024D536D
+
+
+-- Clearing area, these could possibly be useful for cleanup of old peds that I play around with or vehicles.
+-- ClearAreaOfCops() -- https://nativedb.dotindustries.dev/gta5/natives/0x04F8FC8FCF58F88D
+-- ClearAreaOfObjects() -- https://nativedb.dotindustries.dev/gta5/natives/0xDD9B9B385AAC7F5B
+-- ClearAreaOfProjectiles() -- https://nativedb.dotindustries.dev/gta5/natives/0x0A1CB9094635D1A6
+-- ClearAreaOfVehicles() -- https://nativedb.dotindustries.dev/gta5/natives/0x01C7B9B38428AEB6
+-- ClearAngledAreaOfVehicles() --  https://nativedb.dotindustries.dev/gta5/natives/0x11DB3500F042A8AA
+-- ClearArea() -- https://nativedb.dotindustries.dev/gta5/natives/0xA56F01F3765B93A0
+
+
+-- 7-7-2024
+-- GetRandomVehicleInSphere()
 
 
 -- Phone test (Testing creating and removing a phone like in SP)
@@ -269,7 +296,6 @@ function holograms(ped_x, ped_y, ped_z)
     end
 end
 
-
 function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
     local px,py,pz=table.unpack(GetGameplayCamCoords())
     local dist = GetDistanceBetweenCoords(px, py, pz, x, y, z, true)
@@ -295,6 +321,8 @@ function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
 
 ----
 
+-- exports.ch_messages:Draw3DText()
+
 -- MP Gamer tag functions
 -- Not sure how this below one works.
 RegisterCommand("test111", function()
@@ -304,7 +332,7 @@ RegisterCommand("test111", function()
         repeat Wait(0) until IsMpGamerTagFree(playerId)
     end
 
-    CreateMpGamerTagWithCrewColor(GetPlayerPed(-1), "Mother_Fucker", false, true, "Bastards", 0, 50, 20, 0)
+    CreateMpGamerTagWithCrewColor(GetPlayerPed(-1), "", false, true, "", 0, 50, 20, 0)
 
     -- set the name, crew and typing indicator components as visible
     SetMpGamerTagVisibility(playerId, 0, true)
@@ -390,17 +418,181 @@ RegisterCommand("toggletraffic", function()
     -- end
 end, true)
 
+-- Set the player to not be able to enter any vehicle
+-- TODO Test this.
+RegisterCommand("novehicleenter", function()
+    local player = GetPlayerPed(-1)
+        SetPlayerMayNotEnterAnyVehicle(player)
+        -- This one might be fun to screw with, 
+        -- SetPlayerMayOnlyEnterThisVehicle()
+end)
 
--- Disable the vehicles and peds
--- 
+-- Spawn a car on the tracks
+-- This didn't work
+-- TODO Setup this to spawn a car on the tracks so a train can hit it.
+-- function spawnCarOnTracks()
+--     local car = GetHashKey("dominator")
+
+--     -- Check if the vehicle actually exists
+--     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then return end
+
+--     -- Load the model
+--     RequestModel(vehicleName)
+
+--     -- If model hasn't loaded, wait on it.
+--     while not HasModelLoaded(vehicleName) do
+--         Wait(500)
+--     end
+--     SetModelAsNoLongerNeeded(car)
+
+--     CreateVehicle(car, 2663.38, 291.77, 96.62, 85.31, true, false)
+--     -- CreateVehicle("zentorno", 2663.38, 291.77, 94.62, 85.31, true, false)
+-- end
+-- spawnCarOnTracks()
+
+-- /mstoseconds 2000 [1]
+
+-- This didn't work like this
+-- RegisterCommand("mstoseconds", function(_, args, rawCommand)
+--     if args[1] ~= nil then
+--         if type(args[1]) == "number" then
+--             notify(convertMsToSeconds(args[1]))
+--         else
+--             notify("You need a number for this!")
+--         end
+--     else
+--         notify("You didn't enter any arguments!")
+--     end
+-- end, false)
+
+-- https://forum.cfx.re/t/disable-traffic-in-certain-area/1380615
+-- This doesn't seem to work.
+
+-- TODO Mess around with this and try to get it working.
+-- RegisterCommand("toggleroads1", function()
+--     local player = GetPlayerPed(-1)
+--     local playerCoords = GetEntityCoords(player)
+--     -- local x_1, y_1, z_1 = table.unpack(playerCoords)
+
+--     -- Middle of Los Santos road corner #1
+--     local x_1, y_1, z_1 = 173.63, -819.3, 33.17
+--     -- Middle of Los Santos road corner #2
+--     local x_2, y_2, z_2 = 225.01, -1059.49, 29.16
+
+--     SetRoadsInArea(x_1, y_1, z_1, x_2, y_2, z_2, false, false)
+--     SetAllVehicleGeneratorsActiveInArea(x_1, y_1, z_1, x_2, y_2, z_2, false, true)
+--     notify("You have disabled roads the area.")
+
+--     -- Should re-enable it
+--     -- SetRoadsInArea(x_1, y_1, z_1, x_2, y_2, z_2, true, false)
+-- end)
+
+-- I have moved this to routing bucket 2.
+-- This works! I created a basic command that can toggle peds and vehicles on/off using a boolean.
+-- local peds = true
+-- RegisterCommand("togglepeds", function()
+--     if peds then
+--         notify("Peds disabled!")
+--         peds = false
+--     else
+--         notify("Peds enabled!")
+--         peds = true
+--     end
+-- end, true)
+
+-- -- Disable the vehicles and peds
 -- Citizen.CreateThread(function()
---     while true do
---         SetVehicleDensityMultiplierThisFrame(0.0)
---         SetPedDensityMultiplierThisFrame(0.0)
---         Wait(0)
+--         while true do
+--             if not peds then
+--                 SetVehicleDensityMultiplierThisFrame(0.0)
+--                 SetPedDensityMultiplierThisFrame(0.0)
+--                 Wait(0)
+--                 -- Revert back to normal
+--             else
+--                 -- Taken values from calm-ai config.lua, this will probably override it.
+--                 -- I wonder if I can get the values from its config.
+--                 SetVehicleDensityMultiplierThisFrame(0.85)
+--                 SetPedDensityMultiplierThisFrame(0.75)
+--                 Wait(0)
+--         end
 --     end
 -- end)
 
+RegisterCommand("handsup", function()
+    local player = GetPlayerPed(-1)
+        TaskHandsUp(player, 2000, -1, -1, false)
+end)
+
+-- This works
+-- TODO Add this to one of my menus, possibly the scaleformUI one
+RegisterCommand("getvehicleid", function()
+    local player = GetPlayerPed(-1)
+    if IsPedInAnyVehicle(player, false) then
+        local vehicle = GetVehiclePedIsIn(player, false)
+        local netId = NetworkGetNetworkIdFromEntity(vehicle)
+        sendMessage(("Your vehicle entity id is: %s"):format(vehicle, netId))
+        -- notify(netId)
+    end
+end, false)
+
+-- TODO Test this later.
+-- RegisterCommand("settargetr", function(_, args)
+--     local targetId = tonumber(args[1])
+--     -- local targetId = tonumber(args[1])
+--     -- local vehicleId = tonumber(args[2])
+--     local routingBucket = tonumber(args[2])
+
+--     if IsPedInAnyVehicle(targetId, false) then
+--         local vehicle = GetVehiclePedIsIn(targetId, false)
+--     end
+-- end, true)
+
+-- TODO Figure out how to get vehicle id of other player.
+RegisterCommand("setentityr", function(_, args)
+    local player = GetPlayerPed(-1)
+    -- local entityId = NetworkGetEntityFromNetworkId(tonumber(args[1]))
+    local entityId = tonumber(args[1])
+    local routingBucket = tonumber(args[2])
+
+    if IsPedInAnyVehicle(player, false) then
+        local vehicle = GetVehiclePedIsIn(player, false)
+        local netId = NetworkGetNetworkIdFromEntity(vehicle)
+        if args[1] ~= nil then
+            TriggerServerEvent("ch_test:setEntityRtr", entityId, routingBucket)
+            sendMessage(("You have set the entity id of entity %s to %s"):format(entityId, routingBucket))
+        else
+            TriggerServerEvent("ch_test:setEntityRtr", netId, routingBucket)
+            sendMessage(("You have set the entity id of your vehicle to %s"):format(netId, routingBucket))
+        end
+    end
+end, true)
+
+-- Ping
+-- https://www.youtube.com/watch?v=_R6dK32bE8M&list=PLIpzpS7fwntTQOAh2bS8Tz-g8NP4WFhG2&index=12
+
+-- This didn't work.
+-- RegisterNetEvent("ch_test:returnPing")
+-- AddEventHandler("ch_test:returnPing", function(ping)
+--     pingNumber = ping
+-- end)
+
+
+-- RegisterCommand("ping", function()
+--     TriggerServerEvent("ch_test:ping")
+--     notify("Current ping: " .. pingNumber)
+-- end, false)
+
+-- Enable explosive melee and weapons
+-- This didn't work.
+-- Citizen.CreateThread(function()
+--     local player = GetPlayerPed(-1)
+--     while true do
+--         Wait(1)
+--         SetExplosiveAmmoThisFrame(player)
+--         -- SetExplosiveMeleeThisFrame(player)
+--         SetExplosiveMeleeThisFrame(PlayerId())
+--     end
+-- end)
 
 function notify(msg)
     SetNotificationTextEntry("STRING")

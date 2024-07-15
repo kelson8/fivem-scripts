@@ -1,12 +1,18 @@
+-- TODO Play around with this later
+-- TODO Move this into LemonUI in C#
+
+-- Create the menu pool
 _menuPool = NativeUI.CreatePool()
 
 -- local mainMenu = UIMenu.New("ScaleformUI", "Test menu", 0, 0, "", "", 20, 200, 22, 22, 1)
 -- MenuPool:Add(mainMenu)
 
 -- mainMenu = NativeUI.CreateMenu("Native UI", "~b~NATIVEUI SHOWCASE", 0, 0, "commonmenu", "interaction_bgd", 20, 200, 22, 22, 1)
+-- Create the menu and add it.
 mainMenu = NativeUI.CreateMenu("Native UI", "~b~NATIVEUI SHOWCASE", 0, 0, "", "", 20, 200, 22, 22, 1)
 _menuPool:Add(mainMenu)
 
+-- Sparta test, this is just for playing around with.
 sparta = false
 
 function notify(msg)
@@ -47,25 +53,38 @@ function AddSpartaMenu(menu)
     end
 end
 
+
+-- Add custom cars to list, this will be spawned in the random list below
+local customCars = {"720s", "polbuffwb"}
+local carRandom = (customCars[math.random(#customCars)])
+
 seats = {-1,0,1,2}
 function createCarMenu(menu)
     local submenu = _menuPool:AddSubMenu(menu, "~b~Car menu")
-    local carItem = NativeUI.CreateItem("Spawn car", "Spawn the selected car")
+    -- local carItem = NativeUI.CreateItem("Spawn car", "Spawn the selected car")
+    local carItem = NativeUI.CreateItem("Spawn random vehicle", "Spawn a custom vehicle")
+
+
     carItem.Activated = function(sender, item)
         if item == carItem then
-            spawnVehicle("720s")
-            notify("Spawned in a 720s")
+            spawnVehicle(carRandom)
+            -- spawnVehicle("720s")
+            notify("Spawned in a " .. carRandom)
+            -- notify("Spawned in a 720s")
         end
     end
-    local colors1 = {255, 20, 20}
-    local colors2 = {0, 140, 160}
-    local seat = NativeUI.CreateSliderItem("Change seat", 1, seats, "Change your seat in the car.", false, colors1, colors2)
+    -- local colors1 = {255, 20, 20}
+    local colors1 = {255, 0, 0}
+    -- local colors2 = {0, 140, 160}
+    local colors2 = {0, 140, 0}
+    local seat = NativeUI.CreateSliderItem("Change seat", 3, seats, "Change your seat in the car.", false, colors1, colors2)
     submenu.OnSliderChange = function(sender, item, index)
         -- if IsPedInAnyVehicle(sender, false) then
         if item == seat then
             vehSeat = item:IndexToItem(index)
             local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-            SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
+            SetPedIntoVehicle(GetPlayerPed(-1), pedsCar, vehSeat)
+            -- SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
         end
     -- end
     end
