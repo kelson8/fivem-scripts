@@ -23,7 +23,16 @@ client_scripts{
     'client/vehicle_test.lua',
     'client/time_functions.lua',
 
+    'client/stats_test.lua',
+    'client/get_killed_ped.lua',
+
     'client/data/warps.lua',
+
+    -- Events
+    'client/events.lua',
+
+    -- Test
+    'client/misc/scaleform_test.lua',
 }
 
 server_scripts{

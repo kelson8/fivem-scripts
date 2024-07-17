@@ -29,9 +29,34 @@ end)
 -- This just breaks focus for the game. I cannot seem to fix it.
 RegisterCommand("+openteleporter", function()
     SetNuiFocus(true, true)
+    
+    SendNUIMessage({
+        type = "position",
+        display = true
+    })
+end, false)
+
+RegisterCommand("+closeteleporter", function()
+
 end, false)
 
 RegisterKeyMapping("+openteleporter", "Open Teleporter", "keyboard", "F7")
+
+-- CreateThread(function()
+--     while true do
+--         Wait(100)
+--         if IsNuiFocused then
+--             RegisterKeyMapping("+closeteleporter", "Close Teleporter", "keyboard", "F7")
+--         else
+--             RegisterKeyMapping("+openteleporter", "Open Teleporter", "keyboard", "F7")
+--         end
+--     end
+
+
+-- end)
+
+
+
 
 -- This had to be changed to the below since it was giving errors
 -- https://forum.cfx.re/t/invalid-json-passed-in-frame/1914037
@@ -60,9 +85,14 @@ RegisterKeyMapping("+openteleporter", "Open Teleporter", "keyboard", "F7")
 
 RegisterNuiCallback('releaseFocus', function(data, cb)
     -- Call back is required even if we aren't getting any data from it
-    cb({})
+    -- cb({})
 
     SetNuiFocus(false, false)
+    
+    SendNUIMessage({
+        type = "position",
+        display = false
+    })
 end)
 
 RegisterNuiCallback('teleport', function(data, cb)
@@ -78,47 +108,47 @@ end)
 -- I will disable it for now.
 -- local display = false
 
--- RegisterCommand("on", function()
---     CreateThread(function()
---         display = true
---         TriggerEvent("nui:on", true)
---     end)
--- end)
+RegisterCommand("on", function()
+    CreateThread(function()
+        display = true
+        TriggerEvent("nui:on", true)
+    end)
+end)
 
--- RegisterCommand("off", function()
---     CreateThread(function()
---         display = false
---         TriggerEvent("nui:off", true)
---     end)
--- end)
+RegisterCommand("off", function()
+    CreateThread(function()
+        display = false
+        TriggerEvent("nui:off", true)
+    end)
+end)
 
--- RegisterNetEvent("nui:on")
--- AddEventHandler("nui:on", function()
---     CreateThread(function()
---         while display do
---         -- while true do
---             Wait(500)
+RegisterNetEvent("nui:on")
+AddEventHandler("nui:on", function()
+    CreateThread(function()
+        while display do
+        -- while true do
+            Wait(500)
 
---             local playerId = GetPlayerPed(-1)
---             local playerCoords = GetEntityCoords(playerId)
---             local playerHeading = GetEntityHeading(playerId)
+            local playerId = GetPlayerPed(-1)
+            local playerCoords = GetEntityCoords(playerId)
+            local playerHeading = GetEntityHeading(playerId)
 
---             SendNUIMessage({
---                 type = "position",
---                 x = playerCoords.x,
---                 y = playerCoords.y,
---                 z = playerCoords.z,
---                 heading = playerHeading,
---                 display = true
---             })
---         end
---     end)
--- end)
+            SendNUIMessage({
+                type = "position",
+                x = playerCoords.x,
+                y = playerCoords.y,
+                z = playerCoords.z,
+                heading = playerHeading,
+                display = true
+            })
+        end
+    end)
+end)
 
--- RegisterNetEvent("nui:off")
--- AddEventHandler("nui:off", function(value)
---     SendNUIMessage({
---         type = "position",
---         display = false
---     })
--- end)
+RegisterNetEvent("nui:off")
+AddEventHandler("nui:off", function(value)
+    SendNUIMessage({
+        type = "position",
+        display = false
+    })
+end)

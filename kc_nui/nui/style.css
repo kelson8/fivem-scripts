@@ -13,6 +13,16 @@
 	padding: 10px;
 }
 
+#mainText {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 25px;
+	color: white;
+	font-size: 18px;
+	font-family: sans-serif;
+	width: 450px;
+	padding: 10px;
+}
+
 .profile-photo {
 	width: 100px;
 	position: absolute;

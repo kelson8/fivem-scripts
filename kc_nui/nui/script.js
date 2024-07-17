@@ -8,16 +8,16 @@ $(function() {
             var item = event.data;
             // if(item !== undefined && item.type === "ui") {
                 if(item !== undefined && item.type === "position") {
-                // if (item.display === true) {
+                if (item.display === true) {
                     $("#pos-x-output").text(Math.round(item.x));
                     $("#pos-y-output").text(Math.round(item.y));
                     $("#pos-z-output").text(Math.round(item.z));
                     $("#heading-output").text(Math.round(item.heading));
 
-                //     $('.position').show();
-                // } else {
-                //     $('.position').hide();
-                // }
+                    $('.position').show();
+                } else {
+                    $('.position').hide();
+                }
             }
 
             // if(item.type === "ping"){
@@ -45,26 +45,26 @@ $("#destination-submit").click(() => {
     });
 });
 
-// document.getElementById('destination-cancel').addEventListener('click', () => {
-//         axios.post(`https://${GetParentResourceName()/releaseFocus}`, {});
-//     });
+document.getElementById('destination-cancel').addEventListener('click', () => {
+        axios.post(`https://${GetParentResourceName()/releaseFocus}`, {});
+    });
 
-// document.getElementById('destination-submit').addEventListener('click', () => {
-//         axios.post(`https://${GetParentResourceName()/teleport}`, {
-//             x: document.getElementById('destination-x').value,
-//             y: document.getElementById('destination-y').value,
-//             z: document.getElementById('destination-z').value,
+document.getElementById('destination-submit').addEventListener('click', () => {
+        axios.post(`https://${GetParentResourceName()/teleport}`, {
+            x: document.getElementById('destination-x').value,
+            y: document.getElementById('destination-y').value,
+            z: document.getElementById('destination-z').value,
 
-//         });
-//     });
+        });
+    });
 
-// window.addEventListener('message', (event) => {
-//     const data = event.data;
+window.addEventListener('message', (event) => {
+    const data = event.data;
 
-//     if (data.type === "position"){
-//         document.getElementById('heading-output').textContent = data.heading;
-//         document.getElementById('pos-x-output').textContent = data.x;
-//         document.getElementById('pos-y-output').textContent = data.y;
-//         document.getElementById('pos-z-output').textContent = data.z;
-//     }
-// });
+    if (data.type === "position"){
+        document.getElementById('heading-output').textContent = data.heading;
+        document.getElementById('pos-x-output').textContent = data.x;
+        document.getElementById('pos-y-output').textContent = data.y;
+        document.getElementById('pos-z-output').textContent = data.z;
+    }
+});
