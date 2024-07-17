@@ -9,16 +9,25 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
+function sendMessage(msg)
+    TriggerEvent('chat:addMessage', {
+        args = {msg, },
+    })
+end
+
 -- Create the menu
 function CreateMenu()
     local txd = CreateRuntimeTxd("scaleformui")
     local duiPanel = CreateDui("https://i.imgur.com/mH0Y65C.gif", 288, 160)
     CreateRuntimeTextureFromDuiHandle(txd, "sidepanel", GetDuiHandle(duiPanel))
-	local duiBanner = CreateDui("https://i.imgur.com/3yrFYbF.gif", 288, 160)
-	CreateRuntimeTextureFromDuiHandle(txd, "menuBanner", GetDuiHandle(duiBanner))
+    -- Original
+    -- local duiBanner = CreateDui("https://i.imgur.com/3yrFYbF.gif", 288, 160)
+    -- Anime gif background
+    local duiBanner = CreateDui("https://i.pinimg.com/originals/a3/1d/7f/a31d7f5c20b885859e84ceea2d71d7b6.gif", 288, 160)
+    CreateRuntimeTextureFromDuiHandle(txd, "menuBanner", GetDuiHandle(duiBanner))
 
     -- Initalize the menu
-    local testMenu = UIMenu.New("ScaleformUI", "KelsonCraftFiveM Test", 50, 50, true, "scaleformui", "menubanner", true)
+    local testMenu = UIMenu.New("KCNet-UI", "KelsonCraftFiveM Test", 50, 50, true, "scaleformui", "menubanner", true)
     testMenu:MaxItemsOnScreen(7)
     testMenu:AnimationEnabled(false)
     testMenu:BuildingAnimation(MenuBuildingAnimation.NONE)
@@ -114,6 +123,9 @@ function CreateMenu()
     local healPlayerItem = UIMenuItem.New("Heal player", "Gives the player full health and armor")
     playerMenu:AddItem(healPlayerItem)
 
+    local getVehicleIdItem = UIMenuItem.New("Get vehicle id", "Shows the current vehicle id in a notification.")
+    playerMenu:AddItem(getVehicleIdItem)
+
     -- Heal player on item select
     playerMenu.OnItemSelect = function(sender, item, index)
         if item == healPlayerItem then
@@ -122,6 +134,14 @@ function CreateMenu()
             SetPedArmour(PlayerPedId(), 100)
             ScaleformUI.Notifications:ShowNotification("You have been healed", false, false)
             -- notify("You have been healed!")
+        elseif item == getVehicleIdItem then
+            local player = GetPlayerPed(-1)
+            if IsPedInAnyVehicle(player, false) then
+                local vehicle = GetVehiclePedIsIn(player, false)
+                local netId = NetworkGetNetworkIdFromEntity(vehicle)
+                sendMessage(("Your vehicle entity id is: %s"):format(vehicle, netId))
+                -- notify(netId)
+            end
         end
     end
 
@@ -281,6 +301,8 @@ function CreateLobbyMenu()
 	lobbyMenu:Visible(true)
 end
 
+--
+
 -- Ls Customs menu test
 function CreateLsCustomsMenu()
     local txd = CreateRuntimeTxd("scaleformui")
@@ -366,20 +388,29 @@ Citizen.CreateThread(function()
         -- I even got the teleporting working by unpacking the vector3.
         -- https://docs.fivem.net/docs/scripting-reference/runtimes/lua/functions/vector3/
 
+        -- I changed this to get the RGBA values from the config, I don't know why I hard coded these values.
+
         for i = 1, #locations, 1 do
             loc = locations[i]
             marker = Marker.New(loc.marker,
             loc.pos,
             vector3(2,2,2),
             loc.scale,
-            {R=0, G= 100, B=50, A=255},
+            {R=loc.rgba[1], G=loc.rgba[2], B=loc.rgba[3], A=loc.rgba[4]},
+            -- {R=0, G= 100, B=50, A=255},
             true, false, false, false, true
             )
             marker:Draw()
 
             -- This puts the text above the markers using the location text position, slightly above the marker
             -- And adds the location text name
-            ScaleformUI.Notifications:DrawText3D(loc.text_pos, {R=0, G=100, B=50, A=255}, loc.text_name, 7, 10)
+            -- ScaleformUI.Notifications:DrawText3D(loc.text_pos, {R=0, G=100, B=50, A=255}, loc.text_name, 7, 10)
+            ScaleformUI.Notifications:DrawText3D(loc.text_pos, {R=loc.text_rgba[1],
+            G=loc.text_rgba[2],
+            B=loc.text_rgba[3],
+            A=loc.text_rgba[4]},
+            loc.text_name, 7, 10)
+            
 
             local x, y, z = table.unpack(loc.tpto)
             local playerCoord = GetEntityCoords(PlayerPedId(), false)
@@ -421,9 +452,9 @@ Citizen.CreateThread(function()
         end
 
         -- F6 key, draw the lobby menu
-        if IsControlJustPressed(0, 167) and not MenuHandler:IsAnyMenuOpen() and GetLastInputMethod(0) then
-            CreateLobbyMenu()
-        end
+        -- if IsControlJustPressed(0, 167) and not MenuHandler:IsAnyMenuOpen() and GetLastInputMethod(0) then
+        --     CreateLobbyMenu()
+        -- end
 
         -- Los Santos Customs menu (This is incomplete, so far I just have the marker setup.)
 
