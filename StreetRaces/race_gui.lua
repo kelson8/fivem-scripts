@@ -175,7 +175,8 @@ function CreateMenu()
                 -- if amount then   // GetPlayerPed(-1)
                     local startCoords = GetEntityCoords(PlayerPedId())
                     local startDelay = 5000 --config_cl.joinDuration
-                    local TotalLaps = 2 --config_cl.totalLaps
+                    -- local TotalLaps = 2 --config_cl.totalLaps
+                    local TotalLaps = config_cl.totalLaps
                     
 
                     if #recordedCheckpoints > 0 then
@@ -238,8 +239,19 @@ function CreateMenu()
     -- Todo make this get the data from the json file and list it off, instead of needing keyboard input
     loadRaceItem.Activated = function(sender, item, index)
         if item == loadRaceItem then
-            local raceName = KeyboardInput("Race to load", "", 10)
+            local raceName = KeyboardInput("Race to load", "", 20)
             TriggerServerEvent('StreetRaces:loadRace_sv', raceName)
+            -- Move vehicle routing bucket test
+            -- if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+            --     local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+            --     local netId = NetworkGetNetworkIdFromEntity(vehicle)
+            --     local entityFromNetId = NetworkGetEntityFromNetworkId(netId)
+
+            --     -- TODO Test this, it should bring the players vehicle with them when doing load race.
+            --     -- This says invalid entity id, I wonder how to fix it.
+            --     TriggerServerEvent('StreetRaces:moveVehicle_sv', entityFromNetId, 2)
+            -- end
+            
         end
     end
 
@@ -273,7 +285,7 @@ function CreateMenu()
                 SetWaypointOff()
                 cleanupRecording()
                 raceStatus.state = RACE_STATE_RECORDING
-                notify("Record active: Set markers on the map for waypoints. Or press E to place them at your position.")
+                notify("Record active: Set markers on the map for waypoints. Or press E/DPAD-Right to place them at your position.")
             end
         end
     end
@@ -282,8 +294,8 @@ function CreateMenu()
         if item == unloadRaceItem then
             -- I had to change it to trigger event.
             TriggerEvent("StreetRaces:removeRace_cl", raceStatus.index)
-            -- TriggerServerEvent('StreetRaces:unloadRace_sv')
-            -- TriggerEvent('StreetRaces:unloadRace_sv')
+            TriggerServerEvent('StreetRaces:unloadRace_sv', raceStatus.index)
+            
         end
     end
 

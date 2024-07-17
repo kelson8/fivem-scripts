@@ -36,6 +36,16 @@ RegisterCommand("deleteveh", function()
     end    
 end, false)
 
+-- Test
+-- https://stackoverflow.com/questions/43107953/checking-for-items-in-tables-lua
+
+-- Check if the vehicle color is in the table
+function hasKey(table, color)
+    return table[color] ~= nil
+end
+
+--
+
 -- Random cars
 -- Fix this to where the cars delete the old ones as they spawn in.
 RegisterCommand('rndcar', function()
@@ -53,6 +63,13 @@ RegisterCommand('rndcar', function()
 
     -- Spawns the vehicle and notify the player
     spawnVehicleWithBlip(car_random)
+
+    -- if args[1] or args[2] ~= nil then
+        -- SetVehicleColours(vehicle, colors.classic[args[1]], colors.classic[args[2]])
+    -- end
+
+    -- Light blue and Yellow
+    -- spawnVehicleWithBlip(car_random, 0, 128, 255, 255, 255, 0)
     notify("You have spawned a ~y~" .. car_random)
 end, false)
 

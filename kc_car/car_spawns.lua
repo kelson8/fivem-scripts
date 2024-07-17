@@ -2,6 +2,10 @@
 -- Todo Fix colors to work for this, I tried a couple of things and couldn't figure it out.
 
 vehicle_spawns = {
+
+    --------
+    -- Ceo office garage floor 1
+    --------
     {
         -- Ceo office garage, vehicle #1
         pos = vector3(-1370.4, -474.18, 49.1),
@@ -39,7 +43,59 @@ vehicle_spawns = {
         vehiclename = "massacro2",
         -- Red
         colors = {r = 255, g = 0, b = 0},
-    }
+    },
+
+    --------
+    --
+    --------
+
+
+    --------
+    -- Casino garage
+    --------
+
+    -- Casino garage spot #1
+    {
+        pos = vector3(1380.35, 211.69, -48.99),
+        heading = 91.19,
+        -- vehicleName = "jackal",
+        -- Super car
+        vehiclename = "tigon",
+        -- Red
+        colors = {r = 255, g = 0, b = 0},
+
+    },
+
+    -- Casino garage spot #2
+    {
+        pos = vector3(1380.35, 207.55, -48.99),
+        heading = 91.19,
+        -- vehicleName = "jackal",
+        -- Tow truck
+        vehiclename = "towtruck2",
+        -- Red
+        colors = {r = 255, g = 0, b = 0},
+    },
+
+    -- Casino garage spot #3
+    {
+        pos = vector3(1380.35, 217.31, -48.99),
+        heading = 91.19,
+        vehiclename = "gauntlet4",
+        -- Red
+        colors = {r = 255, g = 0, b = 0},
+    },
+    -- Casino garage spot #4
+    {
+        pos = vector3(1380.35, 221.27, -48.99),
+        heading = 91.19,
+        vehiclename = "dominator",
+        -- Red
+        colors = {r = 255, g = 0, b = 0},
+    },
+    --------
+    --
+    --------
 
     
 

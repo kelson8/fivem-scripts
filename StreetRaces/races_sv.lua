@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 -- Server side array of active races
 local races = {}
 
@@ -31,6 +32,24 @@ Citizen.CreateThread(function()
             end
         end
     end
+end)
+
+-- TODO Test this in the race resouce
+-- RegisterNetEvent("ch_test:setEntityRtr")
+-- AddEventHandler("ch_test:setEntityRtr", function(entityId, routingBucket)
+--     -- local NetId = NetworkGetEntityFromNetworkId(tonumber(args[1]))
+--     local netId = NetworkGetEntityFromNetworkId(entityId)
+--     -- local routingBucket = tonumber(args[2])
+
+--     -- if args[1] and args[2] ~= nil then
+--         SetEntityRoutingBucket(netId, routingBucket)
+--         sendMessage(source, ("You have set the routing bucket of %s to %s"):format(netId, routingBucket))
+--     -- end
+-- end)
+
+RegisterNetEvent("StreetRaces:moveVehicle_sv")
+AddEventHandler("StreetRaces:moveVehicle_sv", function(vehicle, routingBucket)
+    SetEntityRoutingBucket(vehicle, routingBucket)
 end)
 
 -- Server event for creating a race
@@ -147,8 +166,14 @@ AddEventHandler("StreetRaces:finishedRace_sv", function(index, time)
                 -- Send winner notification to players
                 for _, pSource in pairs(players) do
                     if pSource == source then
+                        
                         local msg = ("You won [%02d:%06.3f]"):format(timeMinutes, timeSeconds)
                         notifyPlayer(pSource, msg)
+                        -- Set the player back to the normal routing bucket.
+                        if config_cl.noPedLobby then
+                            SetPlayerRoutingBucket(source, 0)
+                        end
+                        -- TODO Set vehicle back to normal routing bucket
                     elseif config_sv.notifyOfWinner then
                         local msg = ("%s won [%02d:%06.3f]"):format(getName(source), timeMinutes, timeSeconds)
                         notifyPlayer(pSource, msg)
@@ -158,6 +183,11 @@ AddEventHandler("StreetRaces:finishedRace_sv", function(index, time)
                 -- Loser, send notification to only the player
                 local msg = ("You lost [%02d:%06.3f]"):format(timeMinutes, timeSeconds)
                 notifyPlayer(source, msg)
+                -- Set the player back to the normal routing bucket.
+                -- TODO Set vehicle back to normal routing bucket
+                if config_cl.noPedLobby then
+                    SetPlayerRoutingBucket(source, 0)
+                end
             end
 
             -- Remove player form list and break
@@ -244,6 +274,24 @@ AddEventHandler("StreetRaces:loadRace_sv", function(name)
         -- Send race data to client
         TriggerClientEvent("StreetRaces:loadRace_cl", source, race)
 
+        -- Set the players routing bucket to 2, which has population disabled.
+        -- TODO Bring players vehicle with them.
+        -- if IsPedInAnyVehicle(source, false) then
+        --     local vehicle = GetVehiclePedIsIn(source, false)
+        --     SetEntityRoutingBucket(vehicle, 2)
+        --     SetPlayerRoutingBucket(source, 2)
+        -- else
+        --     SetPlayerRoutingBucket(source, 2)
+        -- end
+        -- SetPlayerRoutingBucket(source, 2)
+
+        -- TODO Test this config option later, I would like to keep this as a config option.
+        if config_cl.noPedLobby then
+            SetPlayerRoutingBucket(source, 2)
+        end
+        -- TODO Set vehicle back too routing bucket 2
+
+        
         -- Send notification to player
         -- local msg = "Loaded " .. name
         -- notifyPlayer(source, msg)
@@ -253,25 +301,45 @@ AddEventHandler("StreetRaces:loadRace_sv", function(name)
     end
 end)
 
+
+
 -- Server event for unloading race
 RegisterNetEvent("StreetRaces:unloadRace_sv")
 AddEventHandler("StreetRaces:unloadRace_sv", function(name)
     -- Get saved player races and load race
-    local playerRaces = loadPlayerData(source)
-    local race = playerRaces[name]
+    -- local playerRaces = loadPlayerData(source)
+    -- local race = playerRaces[name]
 
     -- If race was found send it to the client
-    if race ~= nil then
+    -- if race ~= nil then
         -- Send race data to client
-        TriggerClientEvent("StreetRaces:unloadRace_cl", source, race)
+        -- TriggerClientEvent("StreetRaces:unloadRace_cl", source, race)
+
+        -- Set players routing bucket back to normal.
+        -- TODO Bring players vehicle with them.
+
+        -- local ped = GetPlayerPed(source)
+        -- -- This doesn't work server side.
+        -- if IsPedInAnyVehicle(ped, false) then
+        --     local vehicle = GetVehiclePedIsIn(ped, false)
+        --     SetEntityRoutingBucket(vehicle, 0)
+        --     SetPlayerRoutingBucket(source, 0)
+        -- else
+        --     SetPlayerRoutingBucket(source, 0)
+        -- end
+
+        if config_cl.noPedLobby then
+            SetPlayerRoutingBucket(source, 0)
+        end
+
 
         -- Send notification to player
         -- local msg = "Loaded " .. name
         -- notifyPlayer(source, msg)
-    else
-        local msg = "No race found with name " .. name
-        notifyPlayer(source, msg)
-    end
+    -- else
+    --     local msg = "No race found with name " .. name
+    --     notifyPlayer(source, msg)
+    -- end
 end)
 
 -- Server event for updating positions

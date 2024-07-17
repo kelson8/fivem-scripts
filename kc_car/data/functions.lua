@@ -24,20 +24,23 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
     end
 
     -- SetEntityAsNoLongerNeeded(car)
-    SetModelAsNoLongerNeeded(car)
+    
 
     SetVehicleTyresCanBurst(vehicleName, true)
 
     -- These color options don't seem to work.
 
     -- Car color test
-    local carColorPrimary = colors.classic["Surf Blue"]
-    local carColorSecondary = colors.classic["Lava Red"]
-    SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
+    -- local carColorPrimary = colors.classic["Carbon Black"]
+    -- local carColorSecondary = colors.classic["Lava Red"]
+    -- SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
 
-    -- SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
-    -- SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
+    SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
+    SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
     CreateVehicle(vehicleName, x, y, z, heading, true, false)
+
+    -- Test moving this down here for colors.
+    SetModelAsNoLongerNeeded(car)
 
     -- 6-24-2024 @ 3:28PM
     -- Possibly add this at the bottom
@@ -96,7 +99,14 @@ function spawnPersonalVehicleWithBlip(vehicleName)
 end
 
 -- Todo Set this to where the personal vehicle marker gets removed if the car explodes.
+-- Todo Move custom colors outside of the function and make them able to be changed.
+
+-- Spawn a vehicle with a blip, custom colors defined in the code below.
 function spawnVehicleWithBlip(vehicleName)
+
+-- This spawns a vehicle with a blip and custom colors, the first set of colors are for the primary
+-- color and the second set are for the secondary color.
+-- function spawnVehicleWithBlip(vehicleName, r1, g1, b1, r2, g2, b2)
     local car = GetHashKey(vehicleName)
 
     -- Check if the vehicle actually exists
@@ -134,9 +144,27 @@ function spawnVehicleWithBlip(vehicleName)
         SetPedIntoVehicle(ped, vehicle, -1)
 
         -- Car color test
-        local carColorPrimary = colors.classic["Surf Blue"]
-        local carColorSecondary = colors.classic["Lava Red"]
-        SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
+        -- local carColorPrimary = colors.classic["Surf Blue"]
+        -- local carColorPrimary = colors.classic["Carbon Black"]
+        -- local carColorSecondary = colors.classic["Lava Red"]
+
+        -- Set the color with the values from the table.
+        -- SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
+        -- TODO Setup this to get the color value from the user.
+        -- if args[1] or args[2] ~= nil then
+        --     SetVehicleColours(vehicle, colors.classic[args[1]], colors.classic[args[2]])
+        -- end
+
+        local rgbCarColors = false
+        -- Set the colors with rgb values if enabled
+        if rgbCarColors then
+            SetVehicleCustomPrimaryColour(vehicle, r1, g1, b1)
+            SetVehicleCustomSecondaryColour(vehicle, r2, g2, b2)
+        else
+            local carColorPrimary = colors.classic["Hot Pink"]
+            local carColorSecondary = colors.classic["Lava Red"]
+            SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
+        end
 
         -- Add the blip for personal vehicle.
         createVehBlip(225, vehicle)
@@ -151,10 +179,40 @@ function spawnVehicleWithBlip(vehicleName)
         -- Add the blip for personal vehicle.
         createVehBlip(225, vehicle)
 
+
+        local rgbCarColors = false
+        -- Set the colors with rgb values if enabled
+        if rgbCarColors then
+            SetVehicleCustomPrimaryColour(vehicle, r1, g1, b1)
+            SetVehicleCustomSecondaryColour(vehicle, r2, g2, b2)
+        else
+            local carColorPrimary = colors.classic["Carbon Black"]
+            local carColorSecondary = colors.classic["Lava Red"]
+            SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
+
+        
+    end
+
+
         SetEntityAsNoLongerNeeded(car)
         SetModelAsNoLongerNeeded(car)
+
+        -- ? I would like to change the colors in car_c
+        -- return vehicle
     end
 end
+
+-- function setVehicleColorsTest(vehicle, color1, color2)
+--     local ped = GetPlayerPed(-1)
+
+--     -- local colors = #colors.classic
+    
+
+    if (IsPedSittingInAnyVehicle) then
+        local currentVeh = GetVehiclePedIsIn(ped, false)
+        SetVehicleColours(vehicle, color1, color2)
+    end
+-- end
 
 function deleteCurrentVehicle(vehicleName)
     local ped = GetPlayerPed(-1)

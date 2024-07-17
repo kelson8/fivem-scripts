@@ -1,5 +1,7 @@
 -- data taken from:
 -- https://pastebin.com/pwHci0xK and https://github.com/TomGrobbe/vMenu/blob/master/vMenu/data/VehicleData.cs
+
+-- List of color codes: https://altv.stuyk.com/docs/articles/tables/vehicle-colors.html
 colors = {
     classic = {
         ["Black"] = 0,
