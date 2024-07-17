@@ -1,3 +1,7 @@
+-- Copyright 2024 kelson8 - FiveM-Scripts GPLV3
+
+--[[
+
 -- This looks like it could be fun, set player invincible with ragdoll enabled.
 -- SetPlayerInvincibleKeepRagdollEnabled(player)
 
@@ -7,13 +11,13 @@
 
 -- IsPlayerDrivingDangerously()
 
---[[
+
     SetPlayerMayNotEnterAnyVehicle()
     SetPlayerMayOnlyEnterThisVehicle()
-]]
 
 
---[[
+
+
 Try and see how these work
 https://docs.fivem.net/natives/?_0x332169F5
 GetAllVehicles()
@@ -29,16 +33,16 @@ IsBlipOnMinimap(blip)
 
 https://docs.fivem.net/natives/?_0xA4E8E696C532FBC7
 CreateMobilePhone(0-4)
-]]
+
 
 -- Try and play around with routing buckets, those might be fun to screw around with
---[[
+
 SetEntityRoutingBucket(entity, bucket)
 SetPlayerRoutingBucket(player, bucket)
 
 GetPlayerRoutingBucket(player)
 GetEntityRoutingBucket(entity)
-]]
+
 
 -----
 -- 3-27-2024 @ 3:15PM
@@ -219,6 +223,9 @@ GetEntityRoutingBucket(entity)
 -- 7-7-2024
 -- GetRandomVehicleInSphere()
 
+]]
+
+
 
 -- Phone test (Testing creating and removing a phone like in SP)
 -- TODO Fix this to have apps or something on it, like a basic calcuator as a test.
@@ -253,6 +260,8 @@ end, false)
 -- Todo Setup this to work on the spawnped function to show the health above the ped.
 -- I'm not exactly sure how to do that yet.
 -- Source link: https://github.com/Vortex-z/Holograms-Floating-Text/blob/master/holograms/holograms.lua
+
+-- TODO move these into another file.
 Citizen.CreateThread(function()
 
     -- holograms()
@@ -296,6 +305,9 @@ function holograms(ped_x, ped_y, ped_z)
     end
 end
 
+---
+
+-- TODO Move this into another file.
 function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
     local px,py,pz=table.unpack(GetGameplayCamCoords())
     local dist = GetDistanceBetweenCoords(px, py, pz, x, y, z, true)

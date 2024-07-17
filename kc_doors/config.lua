@@ -38,9 +38,54 @@ Config.Doors = {
         ModelHash = "ch_prop_ch_vault_slide_door_lrg",
         Coordinates = vector3(2519.936, -251.0514, -71.74525),
         Locked = 0,
-    }
+    },
     
     --
+
+    -- Casino doors
+    -- Elevator door #1 in management office
+    -- These don't go anywhere so I locked them.
+
+    ['casino_elevator1'] = {
+        DoorHash = "casino_elevator1",
+        ModelHash = "v_ilev_garageliftdoor",
+        Coordinates = vector3(2497.905, -226.2318, -61.32502),
+        Locked = 1,
+    },
+
+    -- Elevator door #2 in management office
+    ['casino_elevator2'] = {
+        DoorHash = "casino_elevator2",
+        ModelHash = "v_ilev_garageliftdoor",
+        Coordinates = vector3(2499.409, -226.2315, -61.3271),
+        Locked = 1,
+    },
+
+
+    ['management_office1'] = {
+        DoorHash = "management_office1",
+        ModelHash = "vw_prop_vw_casino_door_01a",
+        Coordinates = vector3(2501.619, -230.3577, -60.17379),
+        Locked = 0,
+    },
+
+    ['management_office2'] = {
+        DoorHash = "management_office2",
+        ModelHash = "vw_prop_vw_casino_door_01a",
+        Coordinates = vector3(2501.619, -228.358, -60.17379),
+        Locked = 0,
+    },
+
+    -- Misc
+    -- Gate #1 at /spawn
+
+    ['gate1_spawn'] = {
+        DoorHash = "gate1_spawn",
+        ModelHash = "prop_sec_barrier_ld_01a",
+        Coordinates = vector3(230.9218, -816.153, 30.16897),
+        Locked = 0,
+    },
+
 
 }
 
