@@ -97,6 +97,23 @@ vehicle_spawns = {
     --
     --------
 
+    --------
+    -- Military base hangars
+    --------
+    
+    -- Right hanger
+    {
+        pos = vector3(-1823.57, 2972.06, 32.81),
+        heading = 54.14,
+        -- Plane
+        vehiclename = "strikeforce",
+        -- Red
+        colors = {r = 255, g = 0, b = 0},
+    },
+    --------
+    --
+    --------
+
     
 
     -- {
