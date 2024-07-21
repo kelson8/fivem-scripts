@@ -1,231 +1,33 @@
 -- Copyright 2024 kelson8 - FiveM-Scripts GPLV3
 
---[[
+-- TODO Test exports using this format
+local test = {}
 
--- This looks like it could be fun, set player invincible with ragdoll enabled.
--- SetPlayerInvincibleKeepRagdollEnabled(player)
+function test.HelloPlayer()
+    local playerName = GetPlayerName(GetPlayerPed(-1))
+    notify(("Hello %s"):format(playerName))
+end
 
--- I wonder how this one works.
--- https://pastebin.com/GBnsQ5hr
--- PlayPoliceReport()
+function test.IsPlayerConcealed()
+    return NetworkIsPlayerConcealed(GetPlayerPed(-1))
+end
 
--- IsPlayerDrivingDangerously()
+-- player, toggle, p2 is allowDamagingWhileConcealed
+function test.ConcealPlayer()
+    if not test.IsPlayerConcealed() then
+        NetworkConcealPlayer(GetPlayerPed(-1), true, false)
+    end
+end
 
+-- Conceal/hide the players when they enter an interior, allow other players to invite them into that area.
+function test.SetPlayerInteriorConceal()
+    local player = GetPlayerPed(-1)
+    if playerId then
 
-    SetPlayerMayNotEnterAnyVehicle()
-    SetPlayerMayOnlyEnterThisVehicle()
+    end
+end
 
-
-
-
-Try and see how these work
-https://docs.fivem.net/natives/?_0x332169F5
-GetAllVehicles()
-
-https://docs.fivem.net/natives/?_0xD7531645
-GetAllVehicleModels()
-
-https://docs.fivem.net/natives/?_0x1647F1CB
-GetEntityCoords()
-
-https://docs.fivem.net/natives/?_0xE41CA53051197A27
-IsBlipOnMinimap(blip)
-
-https://docs.fivem.net/natives/?_0xA4E8E696C532FBC7
-CreateMobilePhone(0-4)
-
-
--- Try and play around with routing buckets, those might be fun to screw around with
-
-SetEntityRoutingBucket(entity, bucket)
-SetPlayerRoutingBucket(player, bucket)
-
-GetPlayerRoutingBucket(player)
-GetEntityRoutingBucket(entity)
-
-
------
--- 3-27-2024 @ 3:15PM
--- Todo Setup some other test functions later
--- Fix skipping radio to work.
--- Add toggle mobile radio to my gui.
--- Add option for enabling and disabling radio in vehicles.
--- Add option to blow up all vehicles nearby.
-
--- Other testing functions
--- DrawTvChannel() -- https://docs.fivem.net/natives/?_0xFDDC2B4ED3C69DF0
-
--- OnEnterMp (Enable multiplayer maps in singleplayer) -- https://docs.fivem.net/natives/?_0x0888C3502DBBEEF5
--- OnEnterSp (Disable multiplayer maps in singleplayer) -- https://docs.fivem.net/natives/?_0xD7C10C4A637992C9
-----
-
-----
 --
--- 3-28-2024 @ 2:38AM
-
--- All IPLs and interior locations: https://wiki.rage.mp/index.php?title=Interiors_and_Locations
-
--- Get entity and interior offsets
--- Looks like this one takes an offset, is that to the player?
--- Entity, X, Y, Z -- possibly offset from the current player.
--- GetOffsetFromEntityInWorldCoords() -- https://docs.fivem.net/natives/?_0x1899F328B0E12848
-
--- Regular coords
--- Entity, X, Y, Z
--- GetOffsetFromEntityGivenWorldCoords() -- https://docs.fivem.net/natives/?_0x2274BC1C4885E333
-
--- Interior coords? Not sure what this one is for.
--- Interior, X, Y, Z
--- GetOffsetFromInteriorInWorldCoords() -- https://docs.fivem.net/natives/?_0x9E3B3E6D66F6E22F
-
--- Possibly try to add garages and make the doors open
--- https://gtahash.ru/?s=garage
--- Use this garage id: hei_prop_ss1_mpint_garage2
-
--- Trains
---CreateMissionTrain() -- https://docs.fivem.net/natives/?_0x63C6CCA8E68AE8C8
--- SetRandomTrains(true) -- https://docs.fivem.net/natives/?_0x80D9F74197EA47D9
-
--- Train resource: https://github.com/LexTheGreat/TrainSportation
-----
-
----- 
---
--- 3-28-2024 @ 4:15AM
--- Possibly add respawn points:
--- AddHospitalRestart(x,y,z) -- https://docs.fivem.net/natives/?_0x1F464EF988465A81
--- AddPoliceRestart(x,y,z) -- https://docs.fivem.net/natives/?_0x452736765B31FC4B
-
--- Disable hospital and police respawns (Place the player back where they died if all are disabled)
--- DisableHospitalRestart() -- https://docs.fivem.net/natives/?_0xC8535819C450EBA8
--- DisablePoliceRestart() -- https://docs.fivem.net/natives/?_0x23285DED6EBD7EA3
-
--- Patrol routes? Possibly like a security guard patrolling an area.
--- This looks like it would be set multiple times and the "PatrolRouteLink" links them together.
--- AddPatrolRouteNode() -- https://docs.fivem.net/natives/?_0x8EDF950167586B7C
-
--- AddPatrolRouteLink() -- https://docs.fivem.net/natives/?_0x23083260DEC3A551
-
-----
-
-----
---
--- 3-28-2024 @ 3:04PM
--- Vehicles
--- Handling
--- SetVehicleHandlingInt() -- https://docs.fivem.net/natives/?_0xC37F4CF9
--- SetVehicleHandlingField() -- https://docs.fivem.net/natives/?_0x2BA40795
--- SetVehicleHandlingHashForAi() --
--- SetVehicleHandlingInt() -- https://docs.fivem.net/natives/?_0xC37F4CF9
--- SetVehicleHandlingVector() -- https://docs.fivem.net/natives/?_0x12497890
--- SetVehicleHandlingFloat() -- https://docs.fivem.net/natives/?_0x488C86D2
-
--- Search light for helicopters:
--- DoesVehicleHaveSearchlight() -- https://docs.fivem.net/natives/?_0x99015ED7DBEA5113
--- SetVehicleSearchlight(heli, true, true) -- https://docs.fivem.net/natives/?_0x14E85C5EE7A4D542
--- IsVehicleSearchlightOn() -- https://docs.fivem.net/natives/?_0xC0F97FCE55094987
-
--- Music functions
--- GetMusicPlaytime()
-
-----
-
-----
---
--- 3-29-2024 @ 8:52AM
--- Other misc test
-
--- Plane functions
--- TaskPlaneChase()
--- TaskPlaneLand()
-
--- Possibly a way to make a ped auto pilot a plane?
--- TaskPlaneMission() -- https://docs.fivem.net/natives/?_0x23703CD154E83B88
-
--- Vehicle
--- TaskEveryoneLeaveVehicle() -- https://docs.fivem.net/natives/?_0xC1971F30
--- TaskLeaveAnyVehicle() -- https://docs.fivem.net/natives/?_0xDBDD79FA
--- TaskLeaveVehicle() -- https://docs.fivem.net/natives/?_0x7B1141C6
-
--- Ped
--- TaskGoStraightToCoord() -- https://docs.fivem.net/natives/?_0x80A9E7A7
--- TaskGoToCoordAnyMeans() -- https://docs.fivem.net/natives/?_0xF91DF93B
--- TaskGoToEntity() -- https://docs.fivem.net/natives/?_0x374827C2
-
--- TaskHandsUp() -- https://docs.fivem.net/natives/?_0x8DCC19C5
-
--- TaskPatrol() -- https://docs.fivem.net/natives/?_0xBDA5DF49D080FE4E
--- Possibly something to do with the patrol routes I have above somewhere.
--- OpenPatrolRoute() -- https://docs.fivem.net/natives/?_0xBDA5DF49D080FE4E
-----
-
--- Patrol route test
--- Todo Figure out how this works sometime.
--- function SecurityRoute1()
-    -- This is in the military base.
-    -- AddPatrolRouteNode(1, "", -2207.33, 3282.05, 33.5, -2201.06, 3263.41, 32.81)
-    -- AddPatrolRouteLink()
--- end
-
--- 7-3-2024
--- GetLastRammedVehicle(): 
--- GetLastDrivenVehicle(): https://nativedb.dotindustries.dev/gta5/natives/0xB2D06FAEDE65B577 
--- GetLastPedInVehicleSeat(): https://nativedb.dotindustries.dev/gta5/natives/0x83F969AA1EE2A664
--- This could be useful: https://docs.fivem.net/docs/scripting-manual/networking/ids/
-
--- 7-4-2024
--- IsPedShootingInArea(): https://nativedb.dotindustries.dev/gta5/natives/0x7E9DFE24AC1E58EF
--- IsAnyPedShootingInArea(): https://nativedb.dotindustries.dev/gta5/natives/0xA0D3D71EA1086C55
--- IsPedShooting(): https://nativedb.dotindustries.dev/gta5/natives/0x34616828CD07F1A1
-
-
--- 7-6-2024
--- TODO Setup some kind of job invite system like in GTA Online 
---  whenever I learn more and how to create missions and stuff.
-
--- SetVehicleGravityAmount():  https://nativedb.dotindustries.dev/gta5/natives/0x89F149B6131E57DA
--- SetVehicleKersAllowed(): https://nativedb.dotindustries.dev/gta5/natives/0x99C82F8A139F3E4E
-
--- These could be fun
--- Plane and helicopter
--- TaskPlaneChase(): https://nativedb.dotindustries.dev/gta5/natives/0x2D2386F273FF7A25
--- TaskPlaneLand(): https://nativedb.dotindustries.dev/gta5/natives/0xBF19721FA34D32C0
--- TaskPlaneTaxi()
--- TaskHeliChase(): https://nativedb.dotindustries.dev/gta5/natives/0xAC83B1DB38D0ADA0
-
--- Tasks
--- TaskHandsUp():
-
--- Radio
--- SetRadioStationMusicOnly() -- https://nativedb.dotindustries.dev/gta5/natives/0x774BD811F656A122
--- LockRadioStation() -- https://nativedb.dotindustries.dev/gta5/natives/0x477D9DB48F889591
--- SetRadioStationIsVisible()
--- IsRadioStationFavourited()
--- GetPlayerRadioStationGenre() -- https://nativedb.dotindustries.dev/gta5/natives/0xA571991A7FE6CCEB
--- GetPlayerRadioStationIndex() -- https://nativedb.dotindustries.dev/gta5/natives/0xE8AF77C4C06ADC93
--- GetPlayerRadioStationName() -- https://nativedb.dotindustries.dev/gta5/natives/0xF6D733C32076AD03
-
--- Cops
--- SetCreateRandomCopsOnScenarios(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x444CB7D7DBE6973D
--- SetCreateRandomCopsNotOnScenarios(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x8A4986851C4EF6E7
--- SetCreateRandomCops(true) -- https://nativedb.dotindustries.dev/gta5/natives/0x102E68B2024D536D
-
-
--- Clearing area, these could possibly be useful for cleanup of old peds that I play around with or vehicles.
--- ClearAreaOfCops() -- https://nativedb.dotindustries.dev/gta5/natives/0x04F8FC8FCF58F88D
--- ClearAreaOfObjects() -- https://nativedb.dotindustries.dev/gta5/natives/0xDD9B9B385AAC7F5B
--- ClearAreaOfProjectiles() -- https://nativedb.dotindustries.dev/gta5/natives/0x0A1CB9094635D1A6
--- ClearAreaOfVehicles() -- https://nativedb.dotindustries.dev/gta5/natives/0x01C7B9B38428AEB6
--- ClearAngledAreaOfVehicles() --  https://nativedb.dotindustries.dev/gta5/natives/0x11DB3500F042A8AA
--- ClearArea() -- https://nativedb.dotindustries.dev/gta5/natives/0xA56F01F3765B93A0
-
-
--- 7-7-2024
--- GetRandomVehicleInSphere()
-
-]]
-
-
 
 -- Phone test (Testing creating and removing a phone like in SP)
 -- TODO Fix this to have apps or something on it, like a basic calcuator as a test.
@@ -240,85 +42,18 @@ RegisterCommand("dphone", function()
     DestroyMobilePhone()
 end, false)
 
--- Will this work?
--- This didn't seem to work :\
-RegisterCommand("addblip", function()
-    local player = getPlayerPed(-1)
-    local playerCoords = GetEntityCoords(player)
-    local playerx = playerCoords.x
-    local playery = playerCoords.y
-    local playerz = playerCoords.z
-
-    local destination1 = AddBlipForCoord(117.38, -811.85, 30.43)
-    -- AddBlipForCoord(playerx, playery + 10, playerz)
-    
-end, false)
-
-----
-
----- Hologram test (This seems to work, puts text on the map but I haven't figured out how to get this to display health on a ped.)
--- Todo Setup this to work on the spawnped function to show the health above the ped.
--- I'm not exactly sure how to do that yet.
--- Source link: https://github.com/Vortex-z/Holograms-Floating-Text/blob/master/holograms/holograms.lua
-
--- TODO move these into another file.
-Citizen.CreateThread(function()
-
-    -- holograms()
-    local playerCoords = GetEntityCoords(GetPlayerPed(-1))
-    local x,y,z = table.unpack(playerCoords)
-    -- holograms(x,y,z)
-
-
-    -- holoTest()
-end)
-
--- This seems to only work in the thread above.
-function holoTest()
-    local playerCoords = GetEntityCoords(GetPlayerPed(-1))
-    local x,y,z = table.unpack(playerCoords)
-
-    while true do
-        Citizen.Wait(0)
-        -- if GetDistanceBetweenCoords(570.2, -986.29, 10.53 + 2, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
-        if GetDistanceBetweenCoords(570.2, -986.29, 10.53 + 2, x, y, z, false) < 10.0 then
-            Draw3DText(570.2, -986.29, 10.53 - 1.8, "If you found this, you win! Nothing!!!!", 4, 0.1, 0.1)
-        end
-    end
-end
-
--- Todo Try to add this to the thread above with these parameters.
--- This almost works on my current character but doesn't update the location to it.
-function holograms(ped_x, ped_y, ped_z)
-    -- , text_x, text_y, text_z
-    local playerCoords = GetEntityCoords(GetPlayerPed(-1))
-    local x,y,z = table.unpack(playerCoords)
-
-    while true do
-        Citizen.Wait(0)
-        -- if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
-        -- Will this still work? I fixed the errors in vscode.
-        if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, x, y, z, false) < 10.0 then
-        -- if GetDistanceBetweenCoords(ped_x, ped_y, ped_z, x, y, z) < 10.0 then
-            Draw3DText(ped_x, ped_y, ped_z , "Mother fucker", 4, 0.1, 0.1)
-        end
-    end
-end
-
----
-
 -- TODO Move this into another file.
-function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
-    local px,py,pz=table.unpack(GetGameplayCamCoords())
+function Draw3DText(x, y, z, textInput, fontId, scaleX, scaleY)
+    local px, py, pz = table.unpack(GetGameplayCamCoords())
     local dist = GetDistanceBetweenCoords(px, py, pz, x, y, z, true)
-    local scale = (1/dist)*20
-    local fov = (1/GetGameplayCamFov())*100
-    local scale = scale*fov
-    SetTextScale(scaleX*scale, scaleY*scale)
+    local scale = (1 / dist) * 20
+    local fov = (1 / GetGameplayCamFov()) * 100
+    local scale = scale * fov
+    SetTextScale(scaleX * scale, scaleY * scale)
     SetTextFont(fontId)
     SetTextProportional(true)
     -- SetTextProportional(1)
-    SetTextColour(250, 250, 250, 255)		-- You can change the text color here
+    SetTextColour(250, 250, 250, 255) -- You can change the text color here
     SetTextDropshadow(1, 1, 1, 1, 255)
     SetTextEdge(2, 0, 0, 0, 150)
     SetTextDropShadow()
@@ -326,12 +61,174 @@ function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
     SetTextEntry("STRING")
     SetTextCentre(true)
     AddTextComponentString(textInput)
-    SetDrawOrigin(x,y,z+2, 0)
+    SetDrawOrigin(x, y, z + 2, 0)
     DrawText(0.0, 0.0)
     ClearDrawOrigin()
-   end
+end
 
 ----
+
+-- Test
+
+-- Vehicle test
+
+-- Get the seat number the player is in.
+-- TODO Figure out how to do this, what i'm doing isn't right.
+if TestConfig.TestCommands then
+    RegisterCommand("getvehseat", function()
+        local player = GetPlayerPed(-1)
+        -- if IsPedInAnyVehicle(player, false) then
+        --     local vehicle = GetVehiclePedIsIn(player, false)
+        --     local vehicleSeat = GetPedInVehicleSeat(player)
+        --     notify(("Your current seat: %s"):format(vehicleSeat))
+        -- end
+        notify(NotImplementedMsg)
+    end, false)
+
+
+    -- RegisterCommand("")
+end
+
+
+
+-- Fade the screen in and out for a teleport, so it's not instant.
+local function FadeScreenForTeleport()
+    local player = GetPlayerPed(-1)
+    -- Test moving this into the thread.
+    DoScreenFadeOut(500)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    Wait(500)
+    DoScreenFadeIn(500)
+    FreezeEntityPosition(player, false)
+end
+
+-- Some inspiration for this teleport command came from the script here:
+-- https://github.com/Re1ease/r1-teleport/blob/final/client/main.lua
+
+-- TODO Set these to teleport the player in a vehicle, I forgot about that.
+
+-- This command works
+RegisterCommand("tppos", function(source, args, rawCommand)
+    local player = GetPlayerPed(-1)
+    local x, y, z = args[1], args[2], args[3]
+
+    if x ~= nil and y ~= nil and z ~= nil then
+        -- Set the player and vehicle coords if in a vehicle
+        if IsPedInAnyVehicle(player, false) then
+            local vehicle = GetVehiclePedIsIn(player, false)
+            -- Fade the screen before teleport
+            FadeScreenForTeleport()
+            -- Set the vehicle and player coords, this seems to set it for both.
+            SetEntityCoords(vehicle, tonumber(x), tonumber(y), tonumber(z), true, false, false, false)
+            -- Notify the player
+            notify(("Teleported to X: %s Y: %s Z: %s"):format(x, y, z))
+        else
+            -- Fade the screen before teleport
+            FadeScreenForTeleport()
+            -- Set just the player coords if not in a vehicle
+            SetEntityCoords(player, tonumber(x), tonumber(y), tonumber(z), true, false, false, false)
+            notify(("Teleported to X: %s Y: %s Z: %s"):format(x, y, z))
+        end
+
+
+        -- SetEntityCoords(player, tonumber(x), tonumber(y), tonumber(z), true, false, false, false)
+    end
+end, false)
+
+
+RegisterCommand("moneytest", function()
+    -- local networkBalance = NetworkGetVcBalance(GetPlayerPed(-1))
+    -- local hasMoney = NetworkCanSpendFromBank(2000)
+    -- local hasMoney = NetworkGetCanSpendFromWallet(2000, GetPlayerPed(-1))
+    -- if hasMoney then
+    --     notify("You have $2000!")
+    -- end
+
+    -- TODO Figure out how to add money into the Money_Script resource.
+    -- Also hook into the money script with MySql and attempt to give players money for certain tasks.
+
+    -- notify(networkBalance)
+end, false)
+
+-- Copied blip values from ped_test.lua
+
+-- TODO Fix this to get the z coord.
+-- This works but doesn't always seem to get the z coord
+RegisterCommand("tpmarker", function()
+    local player = GetPlayerPed(-1)
+    local blip = GetFirstBlipInfoId(8)
+    local blipX = 0.0
+    local blipY = 0.0
+
+    local zGround = nil
+
+    -- Test
+    local blipZ = 0.0
+
+    if (blip ~= 0) then
+        local coord = GetBlipCoords(blip)
+        blipX = coord.x
+        blipY = coord.y
+        blipZ = coord.z
+
+        -- This should be able to get the Z Coord once I have it setup.
+        -- This just says invalid native, I'm not running it on the server so idk why.
+        -- if not zGround then
+        -- blipZ = GetGroundZFor3dCoord(coord.x, coord.y, coord.z, 9999, false, false)
+        -- end
+
+        if IsPedInAnyVehicle(player, false) then
+            local vehicle = GetVehiclePedIsIn(player, false)
+            FadeScreenForTeleport()
+            SetEntityCoords(vehicle, blipX, blipY, blipZ, true, false, false, false)
+        else
+            FadeScreenForTeleport()
+            SetEntityCoords(player, blipX, blipY, blipZ, true, false, false, false)
+        end
+    end
+end, false)
+
+-- These are tests, remove them later.
+RegisterCommand("fadeinscreen", function()
+    local player = GetPlayerPed(-1)
+    DoScreenFadeIn(500)
+end, false)
+
+
+-- Setup killing the player for not being in a certain area
+-- Citizen.CreateThread(function()
+--     while true do
+--         Wait(5)
+--         if IsPedInArea
+--     end
+-- end)
+
+
+
+-- This almost works! It sometimes doesn't fade back in.. Hmm
+-- Citizen.CreateThread(function()
+-- while true do
+-- Wait(5)
+-- if activateTeleport then
+-- Wait(1500)
+-- -- Fade the screen for one second.
+-- DoScreenFadeOut(1000)
+
+-- while not isScreenFadedOut() do
+--     Wait(0)
+-- end
+
+-- -- Set this to teleport the player after a fade out
+-- DoScreenFadeIn(1000)
+-- end
+
+-- end
+-- end)
 
 -- exports.ch_messages:Draw3DText()
 
@@ -378,7 +275,7 @@ end, false)
 RegisterCommand("radiotime", function()
     -- This should convert the time into seconds
     notify(GetCurrentRadioTrackPlaybackTime(
-        GetRadioStationName(GetPlayerRadioStationIndex()) ) / 1000 )
+        GetRadioStationName(GetPlayerRadioStationIndex())) / 1000)
 end, false)
 
 -- Adds a portable radio to the game.
@@ -390,22 +287,22 @@ RegisterCommand("radio", function(source, args, rawCommand)
 end, false)
 
 RegisterNetEvent("ch_test:ToggleMobileRadio")
-AddEventHandler("ch_test:ToggleMobileRadio", function ()
+AddEventHandler("ch_test:ToggleMobileRadio", function()
     if IsMobilePhoneRadioActive() then
         SetMobilePhoneRadioState(false)
         SetMobileRadioEnabledDuringGameplay(false)
         notify("Radio disabled")
         -- I don't think these are needed.
         -- SetAudioFlag("MobileRadioInGame", 0)
-		-- SetAudioFlag("AllowRadioDuringSwitch", 0)
-	else
-		SetMobilePhoneRadioState(true)
+        -- SetAudioFlag("AllowRadioDuringSwitch", 0)
+    else
+        SetMobilePhoneRadioState(true)
         SetMobileRadioEnabledDuringGameplay(true)
         notify("Radio enabled")
         -- I don't think these are needed.
-		-- SetAudioFlag("MobileRadioInGame", 1)
-		-- SetAudioFlag("AllowRadioDuringSwitch", 1)
-	end
+        -- SetAudioFlag("MobileRadioInGame", 1)
+        -- SetAudioFlag("AllowRadioDuringSwitch", 1)
+    end
 end)
 
 -- Skip radio forward
@@ -416,14 +313,13 @@ RegisterCommand("skipradio", function()
         -- if not IsPedInVehicle then
         --     SkipRadioForward()
         -- else
-            -- notify("Not implemented in vehicles!")
+        -- notify("Not implemented in vehicles!")
         -- end
         SkipRadioForward()
     end
 end, false)
 
 RegisterCommand("toggletraffic", function()
-    
     -- Not sure how to set this up yet.
     -- if GetVehicleDensityMultiplier() == 0.0 then
 
@@ -431,12 +327,12 @@ RegisterCommand("toggletraffic", function()
 end, true)
 
 -- Set the player to not be able to enter any vehicle
--- TODO Test this.
+-- This didn't seem to do anything.
 RegisterCommand("novehicleenter", function()
     local player = GetPlayerPed(-1)
-        SetPlayerMayNotEnterAnyVehicle(player)
-        -- This one might be fun to screw with, 
-        -- SetPlayerMayOnlyEnterThisVehicle()
+    SetPlayerMayNotEnterAnyVehicle(player)
+    -- This one might be fun to screw with,
+    -- SetPlayerMayOnlyEnterThisVehicle()
 end)
 
 -- Spawn a car on the tracks
@@ -487,9 +383,10 @@ end)
 --     -- local x_1, y_1, z_1 = table.unpack(playerCoords)
 
 --     -- Middle of Los Santos road corner #1
---     local x_1, y_1, z_1 = 173.63, -819.3, 33.17
+--     local x_1, y_1, z_1 = -314.98, -836.38, 29.10
 --     -- Middle of Los Santos road corner #2
---     local x_2, y_2, z_2 = 225.01, -1059.49, 29.16
+--     -- local x_2, y_2, z_2 = 83.66, -1013.66, 33.10
+--     local x_2, y_2, z_2 = 263.53, -874.63, 33.10
 
 --     SetRoadsInArea(x_1, y_1, z_1, x_2, y_2, z_2, false, false)
 --     SetAllVehicleGeneratorsActiveInArea(x_1, y_1, z_1, x_2, y_2, z_2, false, true)
@@ -499,44 +396,14 @@ end)
 --     -- SetRoadsInArea(x_1, y_1, z_1, x_2, y_2, z_2, true, false)
 -- end)
 
--- I have moved this to routing bucket 2.
--- This works! I created a basic command that can toggle peds and vehicles on/off using a boolean.
--- local peds = true
--- RegisterCommand("togglepeds", function()
---     if peds then
---         notify("Peds disabled!")
---         peds = false
---     else
---         notify("Peds enabled!")
---         peds = true
---     end
--- end, true)
-
--- -- Disable the vehicles and peds
--- Citizen.CreateThread(function()
---         while true do
---             if not peds then
---                 SetVehicleDensityMultiplierThisFrame(0.0)
---                 SetPedDensityMultiplierThisFrame(0.0)
---                 Wait(0)
---                 -- Revert back to normal
---             else
---                 -- Taken values from calm-ai config.lua, this will probably override it.
---                 -- I wonder if I can get the values from its config.
---                 SetVehicleDensityMultiplierThisFrame(0.85)
---                 SetPedDensityMultiplierThisFrame(0.75)
---                 Wait(0)
---         end
---     end
--- end)
+-- I added this handsup command and the get vehicle id command to my ScaleformUI Test menu.
 
 RegisterCommand("handsup", function()
     local player = GetPlayerPed(-1)
-        TaskHandsUp(player, 2000, -1, -1, false)
+    TaskHandsUp(player, 2000, -1, -1, false)
 end)
 
 -- This works
--- TODO Add this to one of my menus, possibly the scaleformUI one
 RegisterCommand("getvehicleid", function()
     local player = GetPlayerPed(-1)
     if IsPedInAnyVehicle(player, false) then
@@ -546,38 +413,6 @@ RegisterCommand("getvehicleid", function()
         -- notify(netId)
     end
 end, false)
-
--- TODO Test this later.
--- RegisterCommand("settargetr", function(_, args)
---     local targetId = tonumber(args[1])
---     -- local targetId = tonumber(args[1])
---     -- local vehicleId = tonumber(args[2])
---     local routingBucket = tonumber(args[2])
-
---     if IsPedInAnyVehicle(targetId, false) then
---         local vehicle = GetVehiclePedIsIn(targetId, false)
---     end
--- end, true)
-
--- TODO Figure out how to get vehicle id of other player.
-RegisterCommand("setentityr", function(_, args)
-    local player = GetPlayerPed(-1)
-    -- local entityId = NetworkGetEntityFromNetworkId(tonumber(args[1]))
-    local entityId = tonumber(args[1])
-    local routingBucket = tonumber(args[2])
-
-    if IsPedInAnyVehicle(player, false) then
-        local vehicle = GetVehiclePedIsIn(player, false)
-        local netId = NetworkGetNetworkIdFromEntity(vehicle)
-        if args[1] ~= nil then
-            TriggerServerEvent("ch_test:setEntityRtr", entityId, routingBucket)
-            sendMessage(("You have set the entity id of entity %s to %s"):format(entityId, routingBucket))
-        else
-            TriggerServerEvent("ch_test:setEntityRtr", netId, routingBucket)
-            sendMessage(("You have set the entity id of your vehicle to %s"):format(netId, routingBucket))
-        end
-    end
-end, true)
 
 -- Ping
 -- https://www.youtube.com/watch?v=_R6dK32bE8M&list=PLIpzpS7fwntTQOAh2bS8Tz-g8NP4WFhG2&index=12
@@ -601,8 +436,7 @@ end, true)
 --     while true do
 --         Wait(1)
 --         SetExplosiveAmmoThisFrame(player)
---         -- SetExplosiveMeleeThisFrame(player)
---         SetExplosiveMeleeThisFrame(PlayerId())
+--         SetExplosiveMeleeThisFrame(player)
 --     end
 -- end)
 
