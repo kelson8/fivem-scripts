@@ -1,3 +1,52 @@
+-- Routing bucket client to server
+
+-- I have moved this to routing bucket 2.
+-- This works! I created a basic command that can toggle peds and vehicles on/off using a boolean.
+-- local peds = true
+-- RegisterCommand("togglepeds", function()
+--     if peds then
+--         notify("Peds disabled!")
+--         peds = false
+--     else
+--         notify("Peds enabled!")
+--         peds = true
+--     end
+-- end, true)
+
+-- TODO Test this later.
+-- RegisterCommand("settargetr", function(_, args)
+--     local targetId = tonumber(args[1])
+--     -- local targetId = tonumber(args[1])
+--     -- local vehicleId = tonumber(args[2])
+--     local routingBucket = tonumber(args[2])
+
+--     if IsPedInAnyVehicle(targetId, false) then
+--         local vehicle = GetVehiclePedIsIn(targetId, false)
+--     end
+-- end, true)
+
+-- TODO Figure out how to get vehicle id of other player.
+RegisterCommand("setentityr", function(_, args)
+    local player = GetPlayerPed(-1)
+    -- local entityId = NetworkGetEntityFromNetworkId(tonumber(args[1]))
+    local entityId = tonumber(args[1])
+    local routingBucket = tonumber(args[2])
+
+    if IsPedInAnyVehicle(player, false) then
+        local vehicle = GetVehiclePedIsIn(player, false)
+        local netId = NetworkGetNetworkIdFromEntity(vehicle)
+        if args[1] ~= nil then
+            TriggerServerEvent("ch_test:setEntityRtr", entityId, routingBucket)
+            sendMessage(("You have set the entity id of entity %s to %s"):format(entityId, routingBucket))
+        else
+            TriggerServerEvent("ch_test:setEntityRtr", netId, routingBucket)
+            sendMessage(("You have set the entity id of your vehicle to %s"):format(netId, routingBucket))
+        end
+    end
+end, true)
+
+
+
 -- Will this possibly work? Trying to spawn a vehicle in the same place
 -- Eventually I would like to add saving my own vehicles into the database.
 -- This works!! I had to move it into a client script

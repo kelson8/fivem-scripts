@@ -1,6 +1,11 @@
 -- Check for option in the config.
 -- https://github.com/CritteRo/fivem-scaleform-lib/blob/main/critScaleforms/client/cl_examples.lua
 
+-- TODO Make a test that uses the conceal player native if the player enters an apartment/house.
+-- NetworkConcealPlayer() - https://nativedb.dotindustries.dev/gta5/natives/0xBBDF066252829606
+-- NetworkIsPlayerConcealed() - https://nativedb.dotindustries.dev/gta5/natives/0x919B3C98ED8292F9
+-- NetworkConcealEntity() - https://nativedb.dotindustries.dev/gta5/natives/0x1632BE0AC1E62876
+-- NetworkIsEntityConcealed() - https://nativedb.dotindustries.dev/gta5/natives/0x71302EC70689052A
 
 -- This almost works, it displays when the player dies but won't go away.
 -- if TestConfig.WastedMessage then

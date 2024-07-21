@@ -15,3 +15,21 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+-- -- Disable the vehicles and peds
+-- Citizen.CreateThread(function()
+--         while true do
+--             if not peds then
+--                 SetVehicleDensityMultiplierThisFrame(0.0)
+--                 SetPedDensityMultiplierThisFrame(0.0)
+--                 Wait(0)
+--                 -- Revert back to normal
+--             else
+--                 -- Taken values from calm-ai config.lua, this will probably override it.
+--                 -- I wonder if I can get the values from its config.
+--                 SetVehicleDensityMultiplierThisFrame(0.85)
+--                 SetPedDensityMultiplierThisFrame(0.75)
+--                 Wait(0)
+--         end
+--     end
+-- end)

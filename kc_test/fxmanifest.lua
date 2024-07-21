@@ -5,10 +5,9 @@ lua54 'yes'
 -- https://forum.cfx.re/t/how-to-call-functions-from-another-lua-file-not-a-different-resource/4752847/3
 client_scripts{
     -- Has notification, subtitle functions and a couple other things.
+    'client/misc/messages.lua',
     'client/misc_test.lua',
     'client/lobby_test.lua',
-    -- "@NativeUILua_Reloaded/src/NativeUIReloaded.lua",
-    --'client/menu_test.lua',
     'client/text.lua',
     'client/config.lua',
 
@@ -31,8 +30,10 @@ client_scripts{
     -- Events
     'client/events.lua',
 
-    -- Test
+    -- Misc Test
     'client/misc/scaleform_test.lua',
+    'client/misc/holograms_test.lua',
+    'client/misc/blip_test.lua',
 }
 
 server_scripts{
