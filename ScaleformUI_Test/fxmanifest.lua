@@ -8,8 +8,12 @@ lua54 'yes'
 
 client_scripts {
 	'@ScaleformUI_Lua/ScaleformUI.lua',
-    'menu_test.lua',
-	'locations_c.lua',
+	'functions/teleport_functions.lua',
+	'functions/player_functions.lua',
+	'functions/ped_functions.lua',
+    'client/menu_test.lua',
+	'client/locations.lua',
+	
 	-- 'example.lua',
 }
 

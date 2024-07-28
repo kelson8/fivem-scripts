@@ -126,22 +126,29 @@ function CreateMenu()
     local getVehicleIdItem = UIMenuItem.New("Get vehicle id", "Shows the current vehicle id in a notification.")
     playerMenu:AddItem(getVehicleIdItem)
 
+    -- This didn't seem to work.
+    local toggleKersBoostItem = UIMenuItem.New("Toggle Kers boost", "Toggle kers boost if the vehicle has it.")
+    playerMenu:AddItem(toggleKersBoostItem)
+
+    local blowupPlayerItem = UIMenuItem.New("Explode", "Blow yourself up")
+    playerMenu:AddItem(blowupPlayerItem)
+
+    local spawnDrivingPedItem = UIMenuItem.New("Spawn driving ped", "Spawn a ped to drive you to the marker.")
+    playerMenu:AddItem(spawnDrivingPedItem)
+
     -- Heal player on item select
     playerMenu.OnItemSelect = function(sender, item, index)
         if item == healPlayerItem then
-            SetEntityHealth(PlayerPedId(), 200)
-            -- SetEntityMaxHealth(PlayerPedId())
-            SetPedArmour(PlayerPedId(), 100)
-            ScaleformUI.Notifications:ShowNotification("You have been healed", false, false)
-            -- notify("You have been healed!")
+            -- Player.Functions.HealPlayer()
+            HealPlayer()
         elseif item == getVehicleIdItem then
-            local player = GetPlayerPed(-1)
-            if IsPedInAnyVehicle(player, false) then
-                local vehicle = GetVehiclePedIsIn(player, false)
-                local netId = NetworkGetNetworkIdFromEntity(vehicle)
-                sendMessage(("Your vehicle entity id is: %s"):format(vehicle, netId))
-                -- notify(netId)
-            end
+            GetVehicleId()
+        elseif item == toggleKersBoostItem then
+            ToggleKersBoost()
+        elseif item == blowupPlayerItem then
+            BlowupPlayer()
+        elseif item == spawnDrivingPedItem then
+            SpawnDrivingPed()
         end
     end
 
@@ -416,6 +423,7 @@ Citizen.CreateThread(function()
             local playerCoord = GetEntityCoords(PlayerPedId(), false)
             if Vdist2(playerCoord, loc.pos) < loc.scale * 1.12 and GetVehiclePedIsIn(PlayerPedId(), false) == 0 then
                 -- Code that runs when we are in the markers radius.
+                FadeScreenForTeleport()
                 SetEntityCoords(PlayerPedId(), x, y, z, true, true, true, false)
                 SetEntityHeading(PlayerPedId(), 0)
                 -- notify("You have been teleported to location ~b~" .. i)

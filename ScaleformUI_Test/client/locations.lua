@@ -67,7 +67,9 @@ locations = {
         },
         marker = 1,
         scale = 2.0,
-        rgba = {120, 255, 120, 155},
+        -- Light blue
+        rgba = {0, 100, 255, 155} ,
+        -- rgba = {120, 255, 120, 155},
         text_rgba = {0, 100, 50, 255}
     },
 
@@ -124,7 +126,8 @@ locations = {
         text_pos = vector3(95.27, -740.65, 46.76),
         text_name = "Spawn",
         -- I set this as a vector that I defined.
-        tpto = vector3(924.05, 48.21, 81.11),
+        -- tpto = vector3(924.05, 48.21, 81.11),
+        tpto = spawn,
         submarker = {
             marker = 29,
             poz = 15.25,
