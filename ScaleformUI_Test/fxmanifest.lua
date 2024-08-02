@@ -11,7 +11,11 @@ client_scripts {
 	'functions/teleport_functions.lua',
 	'functions/player_functions.lua',
 	'functions/ped_functions.lua',
-    'client/menu_test.lua',
+    -- Menus
+	'client/menu_test.lua',
+	'client/lobby_menu_test.lua',
+	'client/ls_customs_menu_test.lua',
+
 	'client/locations.lua',
 	
 	-- 'example.lua',
