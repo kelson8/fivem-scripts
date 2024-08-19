@@ -124,10 +124,12 @@ function blowupPlayer()
 end
 
 -- This should be fun
+-- I got this working right now
 RegisterCommand("dropbomb", function(source, args, rawCommand)
     local player = GetPlayerPed(-1)
     local playerPos = GetEntityCoords(player)
     local x,y,z = playerPos.x, playerPos.y, playerPos.z
+
 
     local gaspumpExplosion = 9
     local railgunExplosion = 36
@@ -135,9 +137,26 @@ RegisterCommand("dropbomb", function(source, args, rawCommand)
 
     if IsPedInAnyVehicle(player) then
         local vehicle = GetVehiclePedIsIn(player, false)
+        local vehX, vehY, vehZ = GetEntityCoords(vehicle)
+
         sendMessage("Your car is going to ~r~explode~s~ in 2 seconds.")
-        Wait(2000)
+        -- Stop the vehicle instantly.
+        BringVehicleToHalt(vehicle, 0.1, 1, 1)
+
+        -- This didn't seem to work
         ExplodeVehicle(vehicle, true, false)
+        -- Just for good measure, you can't escape anymore
+        SetVehicleBodyHealth(vehicle, 0)
+        SetVehicleWheelHealth(vehicle, 0)
+        SetVehicleEngineHealth(vehicle, 0)
+        SetVehiclePetrolTankHealth(vehicle, 0)
+
+        -- Disable the vehicle engine
+        SetVehicleEngineOn(vehicle, false, true, true)
+
+        Wait(2000)
+        -- This kills the player but the car won't blow up
+        -- SetVehicleOutOfControl(vehicle, false, true)
 
         -- Well the gas pump kills me even if I try to run away.
         AddOwnedExplosion(player, x,y,z, gaspumpExplosion, damageScale, 1, 0, 1065353216, 0)
@@ -212,3 +231,16 @@ end, false)
 --------------
 --
 --------------
+
+-- This shows the military base on the map like in online, I didn't know this was how to toggle these.
+RegisterCommand("showarmybase", function()
+    SetMinimapComponent(15, true)
+end, false)
+
+RegisterCommand("hidearmybase", function()
+    SetMinimapComponent(15, false)
+end, false)
+
+RegisterCommand("minimaptest", function()
+    SetMinimapComponent(4, true)
+end)

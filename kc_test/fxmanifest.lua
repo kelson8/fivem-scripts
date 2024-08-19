@@ -15,8 +15,11 @@ client_scripts{
     'client/spawntables.lua',
     -- Helicopter testing
     'client/heli_test.lua',
+    -- Ipl loading
+    'client/new_ipls.lua',
     -- Other test
     'client/checkpoint_test.lua',
+    
     'client/ped_test.lua',
     'client/player_test.lua',
     'client/vehicle_test.lua',
@@ -34,6 +37,12 @@ client_scripts{
     'client/misc/scaleform_test.lua',
     'client/misc/holograms_test.lua',
     'client/misc/blip_test.lua',
+    'client/new_test.lua',
+    'client/clock_test.lua',
+    'client/new/task_heli_chase.lua',
+
+    -- Sound test
+    'client/sound_test.lua'
 }
 
 server_scripts{

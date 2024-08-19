@@ -1,13 +1,28 @@
-
 -- https://www.youtube.com/watch?v=AcUQ7GzMQNI&list=PLJHKr4HVljNJKVdetugOr1QTpqRSe1Abx&index=6
 
 -- Notify client event
 RegisterNetEvent("ch_test:notifyClient")
-AddEventHandler("ch_test:notifyClient", function (msg)
-        SetNotificationTextEntry("STRING")
-        AddTextComponentString(msg)
-        DrawNotification(true, false)
+AddEventHandler("ch_test:notifyClient", function(msg)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(msg)
+    DrawNotification(true, false)
 end)
+
+-- Fade the screen in and out for a teleport, so it's not instant.
+function FadeScreenForTeleport()
+    local player = GetPlayerPed(-1)
+    -- Test moving this into the thread.
+    DoScreenFadeOut(500)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    Wait(500)
+    DoScreenFadeIn(500)
+    FreezeEntityPosition(player, false)
+end
 
 -- function sendMessage(source, msg)
 --     TriggerEvent('chat:addMessage', source, {
@@ -17,7 +32,7 @@ end)
 
 function sendMessage(msg)
     TriggerEvent('chat:addMessage', {
-        args = {msg, },
+        args = { msg, },
     })
 end
 
@@ -26,30 +41,52 @@ end
 
 RegisterCommand("warp", function(source, args, rawCommand)
     local player = GetPlayerPed(-1)
+    local carrier1 = "m24_1_carrier"
+    local bountyOffice2 = "m24_1_int_placement_m24_1_interior_dlc_int_bounty_milo_"
+    local aircarrierX, airCarrierY, airCarrierZ = -3259.89, 3909.33, 26.78
+    local bountyOfficeX, bountyOfficeY, bountyOfficeZ = 565.887, -2688.762, -50.2
+    local casinoVaultX, casinoVaultY, casinoVaultZ = 2497.08, -238.51, -70.74
+
     if args[1] == nil then
-        sendMessage("Warp list: casino_vault")
+        sendMessage("Warp list: casino_vault, aircarrier1, bountyoffice")
         -- TODO Figure out how to get this working with a list of warps.
         -- for k,v in pairs(Warps) do
         --     notify(v[1])
         -- end
     end
 
-        -- TODO Move this into a config, get the name, x, y, z, heading and teleport message from the config
-        -- Like I am doing in the ScaleformUI_Test which has the markers drawing.
-        if args[1] == "casino_vault" then
-            SetEntityCoords(player, 2497.08, -238.51, -70.74, true, false, false, false)
-            SetEntityHeading(player, 270.79)
-            notify("Teleported to casino vault")
-        elseif args[1] == "" then
+    -- TODO Move this into a config, get the name, x, y, z, heading and teleport message from the config
+    -- Like I am doing in the ScaleformUI_Test which has the markers drawing.
+    if args[1] == "casino_vault" then
+        FadeScreenForTeleport()
+        SetEntityCoords(player, casinoVaultX, casinoVaultY, casinoVaultZ, true, false, false, false)
+        SetEntityHeading(player, 270.79)
+        notify("Teleported to casino vault")
+    -- Ipl checks are needed for below two
+    elseif args[1] == "aircarrier1" then
+        if IsIplActive(carrier1) then
+            FadeScreenForTeleport()
+            SetEntityCoords(player, aircarrierX, airCarrierY, airCarrierZ, true, false, false, false)
+            sendMessage("Warped to the aircraft carrier.")
         end
+    elseif args[1] == "bountyoffice" then
+        if IsIplActive(bountyOffice2) then
+            FadeScreenForTeleport()
+            SetEntityCoords(player, bountyOfficeX, bountyOfficeY, bountyOfficeZ, true, false, false, false)
+            sendMessage("Warped to the bounty office.")
+        end
+
+    -- 
     
+        -- end
+    end
 end, false)
 
 -- RegisterNetEvent("ch_test:getVehicle")
 -- AddEventHandler("ch_test:getVehicle", function()
 --     local player = GetPlayerPed(-1)
 --     if IsPedInAnyVehicle(player, false) then
-        
+
 --     end
 
 -- end)
@@ -111,7 +148,6 @@ RegisterCommand('testspinner', function(_, _, rawCommand)
     else
         showBusySpinner(rawCommand)
     end
-
 end, false)
 
 --

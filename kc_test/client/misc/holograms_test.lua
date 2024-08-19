@@ -13,8 +13,12 @@ Citizen.CreateThread(function()
     local x,y,z = table.unpack(playerCoords)
     -- holograms(x,y,z)
 
+
     -- TODO Teleport to these coords and make sure this is still working, disable when done.
+    -- This doesn't work now
     holoTest()
+
+
 end)
 
 -- This seems to only work in the thread above.

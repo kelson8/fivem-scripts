@@ -1,5 +1,7 @@
 -- Copyright 2024 kelson8 - FiveM-Scripts GPLV3
 
+-- TODO Rename all events from ch_ to kc_
+
 -- TODO Test exports using this format
 local test = {}
 
@@ -19,15 +21,50 @@ function test.ConcealPlayer()
     end
 end
 
+function test.UnconcealPlayer()
+    local player = GetPlayerPed(-1)
+    if test.IsPlayerConcealed then
+        NetworkConcealPlayer(player, false, false)
+    end
+end
+
 -- Conceal/hide the players when they enter an interior, allow other players to invite them into that area.
 function test.SetPlayerInteriorConceal()
     local player = GetPlayerPed(-1)
     if playerId then
+        test.ConcealPlayer()
+    end
+end
 
+function test.UnsetPlayerInteriorConceal()
+    local player = GetPlayerPed(-1)
+    if player then
+        test.UnconcealPlayer()
     end
 end
 
 --
+
+-- These conceal commands didn't seem to want to work.
+RegisterCommand("conceal", function()
+    local player = GetPlayerPed(-1)
+    -- test.SetPlayerInteriorConceal()
+    if not NetworkIsPlayerConcealed(player) then
+        NetworkConcealPlayer(player, true, false)
+        sendMessage("You have been concealed.")
+    end
+end, false)
+
+RegisterCommand("unconceal", function ()
+    -- test.UnsetPlayerInteriorConceal()
+    if NetworkIsPlayerConcealed(player) then
+        NetworkConcealPlayer(player, false, false)
+        sendMessage("You have been unconcealed.")
+    end
+
+end, false)
+
+
 
 -- Phone test (Testing creating and removing a phone like in SP)
 -- TODO Fix this to have apps or something on it, like a basic calcuator as a test.
@@ -109,8 +146,6 @@ end
 
 -- Some inspiration for this teleport command came from the script here:
 -- https://github.com/Re1ease/r1-teleport/blob/final/client/main.lua
-
--- TODO Set these to teleport the player in a vehicle, I forgot about that.
 
 -- This command works
 RegisterCommand("tppos", function(source, args, rawCommand)
@@ -199,7 +234,6 @@ RegisterCommand("fadeinscreen", function()
     DoScreenFadeIn(500)
 end, false)
 
-
 -- Setup killing the player for not being in a certain area
 -- Citizen.CreateThread(function()
 --     while true do
@@ -234,19 +268,30 @@ end, false)
 
 -- MP Gamer tag functions
 -- Not sure how this below one works.
-RegisterCommand("test111", function()
+
+function test.SetGamerTag()
     local playerId = GetPlayerPed(-1)
     if IsMpGamerTagActive(playerId) then
         RemoveMpGamerTag(playerId)
         repeat Wait(0) until IsMpGamerTagFree(playerId)
     end
 
-    CreateMpGamerTagWithCrewColor(GetPlayerPed(-1), "", false, true, "", 0, 50, 20, 0)
+    local gamerTagId = CreateMpGamerTagWithCrewColor(GetPlayerPed(-1), "", false, true, "", 0, 50, 20, 0)
 
     -- set the name, crew and typing indicator components as visible
-    SetMpGamerTagVisibility(playerId, 0, true)
-    SetMpGamerTagVisibility(playerId, 1, true)
-    SetMpGamerTagVisibility(playerId, 16, true)
+    -- https://docs.fivem.net/docs/game-references/gamer-tags/
+    SetMpGamerTagVisibility(gamerTagId, 0, true)
+    SetMpGamerTagVisibility(gamerTagId, 1, true)
+    SetMpGamerTagVisibility(gamerTagId, 16, true)
+    -- SetMpGamerTagVisibility(playerId, 0, true)
+    -- SetMpGamerTagVisibility(playerId, 1, true)
+    -- SetMpGamerTagVisibility(playerId, 16, true)
+end
+
+RegisterCommand("crewtagtest", function()
+
+    -- Run the above function, I don't know if it'll work like this.
+    test.SetGamerTag()
 end, false)
 
 -- Ped functions
@@ -465,3 +510,29 @@ end
 
 --     notify("You added your coords to the current marker!")
 -- end)
+
+
+-- TODO Test these.
+RegisterCommand("onlineversion", function()
+    sendMessage("Your GTA Online version: " .. GetOnlineVersion())
+end, false)
+
+RegisterCommand("clearmarker", function()
+    local player = GetPlayerPed(-1)
+end, false)
+
+RegisterCommand("snow", function(source, args, rawCommand)
+    if args[1] ~=nil then
+        SetSnow(args[1])
+    end
+end, false)
+
+RegisterCommand("strongwinds", function()
+    SetWind(1.0)
+    SetWindSpeed(11.99)
+    SetWindDirection(2.92)
+end, false)
+
+RegisterCommand("lightning", function()
+    ForceLightningFlash()
+end, false)
