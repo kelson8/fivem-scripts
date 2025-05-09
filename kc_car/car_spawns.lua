@@ -1,6 +1,9 @@
 -- Vehicle spawn locations and names.
 -- Todo Fix colors to work for this, I tried a couple of things and couldn't figure it out.
 
+-- TODO Add secondary colors to these values and in the spawn code.
+-- colorsSecondary = {r = 22, g = 0, b = 22}
+
 vehicle_spawns = {
 
     --------
@@ -21,8 +24,8 @@ vehicle_spawns = {
         heading = 168.88,
         -- Turismo Classic
         vehiclename = "turismo2",
-        -- Red
-        colors = {r = 255, g = 0, b = 0},
+        -- Yellow?
+        colors = {r = 200, g = 200, b = 0},
     },
 
     {
@@ -31,8 +34,8 @@ vehicle_spawns = {
         heading = 168.88,
         -- Super car
         vehiclename = "tigon",
-        -- Red
-        colors = {r = 255, g = 0, b = 0},
+        -- Pink
+        colors = {r = 210, g = 0, b = 150},
     },
 
     {
@@ -41,8 +44,22 @@ vehicle_spawns = {
         heading = 184.88,
         -- Massacro Racecar
         vehiclename = "massacro2",
-        -- Red
-        colors = {r = 255, g = 0, b = 0},
+        -- Blue
+        colors = {r = 22, g = 0, b = 150},
+        -- TODO Add secondary colors to these values
+        -- colorsSecondary = {r = 22, g = 0, b = 22}
+    },
+
+    {
+        -- Ceo office garage, vehicle #5
+        pos = vector3(-1390.71, -472.54, 49.1),
+        heading = 180.91,
+        -- New car #1 (Bottom dollar bounties)
+        vehiclename = "pipistrello",
+        -- Blue
+        colors = {r = 22, g = 0, b = 150},
+        -- TODO Add secondary colors to these values
+        -- colorsSecondary = {r = 22, g = 0, b = 22}
     },
 
     --------
@@ -110,11 +127,31 @@ vehicle_spawns = {
         -- Red
         colors = {r = 255, g = 0, b = 0},
     },
+
     --------
-    --
+    -- Misc
     --------
 
-    
+    -- Train tracks, To the right of the casino beside the Lake
+
+    -- These are fun for screwing around with the train.
+    -- {
+    --     pos = vector3(2420.64, -342.27, 94.19),
+    --     heading = 57.25,
+    --     vehiclename = "dominator",
+    --     -- Red
+    --     colors = {r = 255, g = 0, b = 0},
+    -- },
+
+    -- -- Train tracks, Slightly to the right of the bunker
+    -- {
+    --     pos = vector3(2973.67, 3800.85, 55.1),
+    --     heading = 77.68,
+    --     -- Tank, lets cause some mayham on the tracks
+    --     vehiclename = "khanjali",
+    --     -- Red
+    --     colors = {r = 255, g = 0, b = 0},
+    -- },
 
     -- {
     --     pos = vector3(-657.97, 84.14, 52.06),

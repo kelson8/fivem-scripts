@@ -1,4 +1,7 @@
 -- TODO Setup toggle for being in the driver seat or spawning beside the player.
+
+-- TODO Copy into kc_menu
+
 -- Setup this to remove vehicle once new one is spawned, or set it to where only 2 can be spawned at a time.
 -- To prevent lag/crashes.
 
@@ -17,12 +20,83 @@
 --SetBlipSprite(vehBlip, 225)
 
 
+----------
+--- Functions
+----------
+
+-- Test
+-- https://stackoverflow.com/questions/43107953/checking-for-items-in-tables-lua
+
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
     DrawNotification(true, false)
 end
 
+-- Check if the vehicle color is in the table
+function hasKey(table, color)
+    return table[color] ~= nil
+end
+
+--
+
+function sendMessage(msg)
+    TriggerEvent('chat:addMessage', {
+        args = {msg, },
+    })
+end
+
+
+-- Add cars to the map
+-- This is currently working, not sure how to do custom colors though
+-- Spawn vehicle with specific colors.
+-- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
+
+-- TODO Make this to where it clears the area of cars if the resource is restarted.
+Citizen.CreateThread(function()
+    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do"
+    -- loop if I don't want it constantly running.
+    Wait(1)
+    for i = 1, #vehicle_spawns, 1 do
+        spawns = vehicle_spawns[i]
+        local x, y, z = table.unpack(spawns.pos)
+        -- This doesnt seem to work
+        -- ClearAreaOfVehicles(x, y, z, 10, false, false, false, false, false, false, false)
+        -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
+        spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
+    end
+end)
+
+
+-- https://forum.cfx.re/t/checking-if-someone-is-an-area/127087/4
+-- https://forum.cfx.re/t/help-disable-control/43052
+-- Prompt player to exit garage and disable car movement if in the Ceo Office garage
+-- I figured out how to disable car movement, I had to do the action for vehicle accelerate and vehicle braking on the fivem controls page.
+-- Well this disables it for outside of the garage also, I would need to fix that
+-- Citizen.CreateThread(function()
+--     local ped = GetPlayerPed(-1)
+--     local playerCoords = GetEntityCoords(ped)
+--     local x,y,z = table.unpack(playerCoords)
+--     while true do
+--         Wait(0)
+--             if GetDistanceBetweenCoords(-1370.4, -474.18, 49.1, GetEntityCoords(ped), true) < 5 and IsPedInAnyVehicle(ped) then
+--             -- if GetDistanceBetweenCoords(-1370.4, -474.18, 49.1, x, y, z, true) < 5 and IsPedInAnyVehicle(ped) then
+--                 DisableControlAction(2, 71, true) -- W (Vehicle accelerate)
+--                 DisableControlAction(2, 72, true) -- S (Vehicle brake)
+--             else
+--                 DisableControlAction(1, 71, false) -- W (Vehicle accelerate)
+--                 DisableControlAction(1, 72, false) -- S (Vehicle brake)
+--         end
+--     end
+-- end)
+
+-----------
+
+----------
+--- Commands
+----------
+
+-- Delete current vehicle
 RegisterCommand("deleteveh", function()
     local ped = GetPlayerPed(-1)
     if DoesEntityExist(vehicleName) then
@@ -35,16 +109,6 @@ RegisterCommand("deleteveh", function()
         end
     end    
 end, false)
-
--- Test
--- https://stackoverflow.com/questions/43107953/checking-for-items-in-tables-lua
-
--- Check if the vehicle color is in the table
-function hasKey(table, color)
-    return table[color] ~= nil
-end
-
---
 
 -- Random cars
 -- Fix this to where the cars delete the old ones as they spawn in.
@@ -81,6 +145,7 @@ end, false)
 
 -- end)
 
+-- Spawn a car
 RegisterCommand('car', function(source, args)
     -- account for the argument not being passed
 
@@ -132,8 +197,6 @@ RegisterCommand('car', function(source, args)
             SetVehicleFixed(vehicle)
             SetVehicleEngineHealth(vehicle, 1000.0)
             sendMessage("Repaired your vehicle.")
-        
-        
         -- Open the doors
         elseif category == "doors" then
             local vehicle = GetVehiclePedIsIn(player)
@@ -146,11 +209,11 @@ RegisterCommand('car', function(source, args)
                 SetVehicleDoorsShut(vehicle, false)
             end
         end
-
-   
     -- end
 end, false)
 
+-- Delete current vehicle, 
+-- Not sure of the difference between this and the 'deletevehicle' commands are.
 RegisterCommand('dv', function()
     local ped = GetPlayerPed(-1)
     if IsPedSittingInAnyVehicle(ped) then
@@ -162,6 +225,27 @@ RegisterCommand('dv', function()
         notify("~r~Error~w~: You need a car to use this command!")
     end
 end, false)
+
+RegisterCommand("vehiclehash", function()
+    local player = GetPlayerPed(-1)
+    if IsPedInAnyVehicle(player, false) then
+        local vehicle = GetVehiclePedIsIn(player, false)
+
+        local vehModel = GetEntityModel(vehicle)
+        local vehName = GetDisplayNameFromVehicleModel(vehModel)
+        local vehHash = GetHashKey(vehModel)
+
+        sendMessage(("Vehicle Model: %s, vehicle name: %s, vehicle hash: %s")
+        :format(vehModel, vehName, vehHash))
+    end
+end)
+
+
+----------
+--- Custom events
+----------
+
+-- Command suggestions
 
 -- Adding suggestions to the command
 -- Note, the command has to start with `/`.
@@ -177,49 +261,46 @@ TriggerEvent('chat:addSuggestion', '/dv', 'Delete vehicle')
 TriggerEvent('chat:addSuggestion', '/rndcar', 'Gives a random vehicle.')
 
 TriggerEvent('chat:addSuggestion', '/spawnpv', 'Spawns a personal vehicle that shouldn\'t despawn.')
+--
 
--- Add cars to the map
--- This is currently working, not sure how to do custom colors though
--- Spawn vehicle with specific colors.
--- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
-
-Citizen.CreateThread(function()
-    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do"
-    -- loop if I don't want it constantly running.
-    Wait(1)
-    for i = 1, #vehicle_spawns, 1 do
-        spawns = vehicle_spawns[i]
-        local x, y, z = table.unpack(spawns.pos)
-        spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
-        -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
-    end
-end)
-
--- https://forum.cfx.re/t/checking-if-someone-is-an-area/127087/4
--- https://forum.cfx.re/t/help-disable-control/43052
--- Prompt player to exit garage and disable car movement if in the Ceo Office garage
--- I figured out how to disable car movement, I had to do the action for vehicle accelerate and vehicle braking on the fivem controls page.
--- Well this disables it for outside of the garage also, I would need to fix that
--- Citizen.CreateThread(function()
---     while true do
---         Wait(0)
---         local ped = GetPlayerPed(-1)
---             if GetDistanceBetweenCoords(-1370.4, -474.18, 49.1, GetEntityCoords(ped)) < 15 and IsPedInAnyVehicle(ped) then
---                 DisableControlAction(2, 71, true) -- W (Vehicle accelerate)
---                 DisableControlAction(2, 72, true) -- S (Vehicle brake)
---             else
---                 DisableControlAction(1, 71, false) -- W (Vehicle accelerate)
---                 DisableControlAction(1, 72, false) -- S (Vehicle brake)
---         end
---     end
--- end)
-
--- Custom events
+-- Car spawning
 RegisterNetEvent("ch_car:spawn")
-AddEventHandler("ch_car:spawn", function(vehicleName, x, y, z, heading)
+AddEventHandler("ch_car:spawn", function(vehicleModel, x, y, z, heading)
     -- spawnVehicleWithBlip(vehicleName)
-    spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
+    spawnVehicleWithoutBlip(vehicleModel, x, y, z, heading)
 end)
+--
+
+-- TODO Fix this to work, I think I've gotten close with this.
+-- Personal vehicle spawning
+RegisterNetEvent("ch_car:spawnpv")
+AddEventHandler("ch_car:spawnpv", function(vehicleModel, x, y, z, heading)
+    -- spawnVehicleWithBlip(vehicleName)
+    -- hashToName = GetDisplayNameFromVehicleModel(vehicleModel)
+    -- vehicleHash = GetHashKey(vehicleModel)
+    vehicleHash = vehicleModel
+    vehicleName = hashToName
+
+    -- Test
+    -- Check if the vehicle actually exists
+    -- This keeps printing this error.
+    if not IsModelInCdimage(vehicleHash) or not IsModelAVehicle(vehicleHash) then
+        notify("~r~Error~w~: The model " .. vehicleHash .. " doesn't exist!")
+    end
+
+    -- Load the model
+    RequestModel(vehicleHash)
+
+    -- If model hasn't loaded, wait on it.
+    while not HasModelLoaded(vehicleHash) do
+        Wait(500)
+    end
+
+    CreateVehicle(vehicleHash, x, y, z, heading, true, false)
+    -- local vehicle = spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
+    -- SetEntityCoords(vehicle, x, y, z, false, false, false, false)
+end)
+--
 
 -- Notify client event
 RegisterNetEvent("ch_car:notifyClient")

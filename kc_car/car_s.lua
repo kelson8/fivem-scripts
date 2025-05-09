@@ -1,3 +1,5 @@
+local debugLogs = true
+
 -- Auto increment MySQL: https://www.heidisql.com/forum.php?t=34221
 
 -- I used a piece of this code as a reference: 
@@ -21,15 +23,17 @@ RegisterCommand("spawnpv", function(source, args, rawCommand)
     local sqlQuery = "SELECT * FROM vehicles WHERE playerID=@id AND vehicleID=@vehID"
 
     -- This shows up the vehicles but, it always errors out if the value is null, I will need to figure out how to fix that.
-    if args ~=nil then
+    if args[1] ~=nil then
         MySQL.Query(1, sqlQuery, {
             ["@id"] = playerID,
-            ["@vehID"] = args
+            ["@vehID"] = args[1]
         }, function(result)
 
             -- With this loop the values are printing properly
             -- Todo Figure out how to spawn the vehicles, I'm not sure how to trigger the client event for it.
             for i=1, #result, 1 do
+
+                -- local model = GetDisplayNameFromVehicleModel(result[i].model)
 
                 -- local vehicle = CreateVehicle(result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading, true, false)
 
@@ -37,9 +41,13 @@ RegisterCommand("spawnpv", function(source, args, rawCommand)
                 --     Wait(0)
                 -- end
                 -- TriggerClientEvent("ch_car:spawn", result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading)
+                TriggerClientEvent("ch_car:spawnpv", source, result[i].model, result[i].xPos, result[i].yPos, result[i].zPos, result[i].heading)
 
-                print("X: " .. result[i].xPos .. " Y: " .. result[i].yPos .. " Z: " ..result[i].zPos)
-                print("Heading: " .. result[i].heading .. " color1: " .. result[i].color1 .. " color2: " .. result[i].color2 .. " Car model: " .. result[i].model )
+                -- Move this into here, so it can be toggled if needed.
+                if debugLogs then
+                print(("X: %s Y: %s Z: %s"):format(result[i].xPos, result[i].yPos, result[i].zPos))
+                print(("Heading: %s color1: %s color2: %s Car Model: %s"):format(result[i].heading, result[i].color1, result[i].color2, result[i].model))
+            end
                 -- tprint(vehicles, 1)
             end
         end

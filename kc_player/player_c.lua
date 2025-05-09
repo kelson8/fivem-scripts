@@ -57,14 +57,35 @@ RegisterCommand('pos', function(source, args)
     end
 end, false)
 
+-- Fade the screen in and out for a teleport, so it's not instant.
+local function FadeScreenForTeleport()
+    local player = GetPlayerPed(-1)
+    -- Test moving this into the thread.
+    DoScreenFadeOut(500)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    Wait(500)
+    DoScreenFadeIn(500)
+    FreezeEntityPosition(player, false)
+end
+
+-- TODO Test this like this
 RegisterCommand("spawn", function()
     local player = GetPlayerPed(PlayerId())
     -- middle_ls1 = vector3(222.2027, -864.0162, 30.2922)
     if IsPedInAnyVehicle(player, false) then
         local vehicle = GetVehiclePedIsIn(player, false)
-        SetEntityCoords(vehicle, 222.2027, -864.0162, 29.2922, true, true, true, false)
+        FadeScreenForTeleport()
+        -- SetEntityCoords(vehicle, 222.2027, -864.0162, 29.2922, true, true, true, false)
+          SetEntityCoords(vehicle, PlayerConfig.SpawnX, PlayerConfig.SpawnY, PlayerConfig.SpawnZ, true, true, true, false)
     else
-        SetEntityCoords(player, 222.2027, -864.0162, 29.2922, true, true, true, false)
+        FadeScreenForTeleport()
+        -- SetEntityCoords(player, 222.2027, -864.0162, 29.2922, true, true, true, false)
+        SetEntityCoords(player, PlayerConfig.SpawnX, PlayerConfig.SpawnY, PlayerConfig.SpawnZ, true, true, true, false)
 
     end
     notify("You have been teleported to the spawn!")

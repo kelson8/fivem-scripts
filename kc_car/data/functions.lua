@@ -8,8 +8,46 @@ function removeVehBlip(blip, vehicle)
     RemoveBlip(blip)
 end
 
--- function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading, r, g, b)
-function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
+-- This seems to mostly work besides not maxing the turbo, I wonder how that is fixed.
+function setVehicleMaxUpgrades(vehicle)
+    SetVehicleModKit(vehicle, 0)
+    -- Spoiler
+    SetVehicleMod(vehicle, 0, 4, false)
+    -- Engine
+    SetVehicleMod(vehicle, 11, 3, false)
+    -- Transmission
+    SetVehicleMod(vehicle, 13, 4, false)
+    -- Brakes
+    SetVehicleMod(vehicle, 12, 4, false)
+    -- Turbo
+    SetVehicleMod(vehicle, 18, 0, false)
+
+    -- Armor
+    SetVehicleMod(vehicle, 16, 4, false)
+    -- Bullet proof tires
+    -- Not sure which one this is
+
+end
+
+-- Idea for this and the loop from here:
+-- https://github.com/jevajs/Jeva/blob/master/FiveM%20-%20Vehicle%20Modifications%20and%20Extras/vehicle/client.lua
+-- This is untested but should work
+-- Todo Test this later
+function doesVehicleHaveUpgrades()
+    local player = GetPlayerPed(-1)
+    local vehicle = GetVehiclePedIsIn(player, false)
+    for modType = 0, 20, 1 do
+        if IsToggleModOn(vehicle, modType) then
+            return true
+        end
+    end
+
+    return false
+end
+
+-- Spawn vehicle without blip at a set coords and with a custom color
+function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading, r1, g1, b1)
+-- function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
     local car = GetHashKey(vehicleName)
 
     -- Check if the vehicle actually exists
@@ -24,9 +62,8 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
     end
 
     -- SetEntityAsNoLongerNeeded(car)
-    
 
-    SetVehicleTyresCanBurst(vehicleName, true)
+
 
     -- These color options don't seem to work.
 
@@ -35,16 +72,22 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
     -- local carColorSecondary = colors.classic["Lava Red"]
     -- SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
 
-    SetVehicleCustomPrimaryColour(vehicleName, 255, 0, 0)
-    SetVehicleCustomSecondaryColour(vehicleName, 255, 0 , 0)
-    CreateVehicle(vehicleName, x, y, z, heading, true, false)
+    local vehicleNew  = CreateVehicle(vehicleName, x, y, z, heading, true, false)
+    SetVehicleCustomPrimaryColour(vehicleNew, r1, g1, b1)
+    SetVehicleCustomSecondaryColour(vehicleNew, r1, g1, b1)
 
-    -- Test moving this down here for colors.
+    -- Make it to where the tires cannot be popped.
+    SetVehicleTyresCanBurst(vehicleNew, false)
+
+    -- https://forum.cfx.re/t/setvehiclemod-is-not-working/1129056
+    -- SetVehicleMod: https://docs.fivem.net/natives/?_0x6AF0636DDEDCB6DD
+    -- This seems to be needed to set the vehicle mods.
+    SetVehicleModKit(vehicleNew, 0)
+
+    -- Test function, give vehicle all upgrades
+    setVehicleMaxUpgrades(vehicleNew)
+
     SetModelAsNoLongerNeeded(car)
-
-    -- 6-24-2024 @ 3:28PM
-    -- Possibly add this at the bottom
-    -- SetModelAsNoLongerNeeded(car)
 end
 
 function spawnPersonalVehicleWithBlip(vehicleName)
@@ -189,10 +232,11 @@ function spawnVehicleWithBlip(vehicleName)
             local carColorPrimary = colors.classic["Carbon Black"]
             local carColorSecondary = colors.classic["Lava Red"]
             SetVehicleColours(vehicle, carColorPrimary, carColorSecondary)
-
-        
     end
 
+        -- TODO Test this later
+        -- table.insert(vehicleTbl, car)
+        -- Make this remove from the table once it is exploded, I will need a function somewhere so it removes the blip
 
         SetEntityAsNoLongerNeeded(car)
         SetModelAsNoLongerNeeded(car)
