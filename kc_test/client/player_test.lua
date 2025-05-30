@@ -7,6 +7,7 @@
 -- Which is useful for testing.
 -- To go back to the main one: /lobby <id> 0
 
+
 RegisterCommand("stoptask", function()
     ClearPedTasks(GetPlayerPed(-1))
     notify("Your tasks have been cleared!")
@@ -125,6 +126,7 @@ end
 
 -- This should be fun
 -- I got this working right now
+-- Copied into kc_menu
 RegisterCommand("dropbomb", function(source, args, rawCommand)
     local player = GetPlayerPed(-1)
     local playerPos = GetEntityCoords(player)

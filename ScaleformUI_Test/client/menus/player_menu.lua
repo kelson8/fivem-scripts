@@ -22,6 +22,9 @@ function PlayerMenu()
         local spawnDrivingPedItem = UIMenuItem.New("Spawn driving ped", "Spawn a ped to drive you to the marker.")
         playerMenu:AddItem(spawnDrivingPedItem)
 
+        local handCuffsItem = UIMenuItem.New("Handcuff yourself", "Make it to wher you cannot use your weapons.")
+        playerMenu:AddItem(handCuffsItem)
+
         -- Heal player on item select
         playerMenu.OnItemSelect = function(sender, item, index)
             if item == healPlayerItem then
@@ -35,6 +38,9 @@ function PlayerMenu()
                 BlowupPlayer()
             elseif item == spawnDrivingPedItem then
                 SpawnDrivingPed()
+            elseif item == handCuffsItem then
+                ToggleHandcuffs()
+
             end
         end
 end

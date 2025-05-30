@@ -22,7 +22,7 @@ RegisterCommand("togglesc", function(source, args, rawCommand)
         drawScaleform = false
         -- hidehud = false
     end
-end, true)
+end, false)
 
 
 -- local scaleformTable = {
@@ -130,6 +130,58 @@ local function secureServeScaleformFn(scaleformHandle)
 
 end
 
+-- This didn't seem to work.
+local function phoneNumPadTestScaleformFn(scaleformHandle)
+    CallScaleformMovieMethod(scaleformHandle, "SET_SOFT_KEYS")
+    -- CallScaleformMovieMethodWithNumberAndString(scaleformHandle, "SET_SOFT_KEYS", 1, 5, 0, 0, 2)
+    EndScaleformMovieMethod()
+end
+
+
+-- This didn't work, I'm not sure how exactly to use these scaleforms.
+local function WantedStarsScaleformFn(scaleformHandle)
+    BeginScaleformMovieMethod(scaleformHandle, "HUD_WANTED_STARS")
+    EndScaleformMovieMethod()
+
+    BeginScaleformMovieMethod(scaleformHandle, "SET_PLAYER_WANTED_LEVEL")
+
+    PushScaleformMovieMethodParameterInt(3) -- Set wanted stars to 3
+    EndScaleformMovieMethod()
+end
+
+-- TODO Test these
+local function WeaponIconScaleformFn(scaleformHandle)
+    BeginScaleformMovieMethod(scaleformHandle, "HUD_WEAPON_ICON")
+    CallScaleformMovieMethod(scaleformHandle, "SET_AMMO_COUNT")
+    PushScaleformMovieMethodParameterInt(8421) -- Set to random number
+    EndScaleformMovieMethod()
+end
+
+local function WeaponWheelScaleformFn(scaleformHandle)
+
+end
+
+local function HudWeaponWheelStatsScaleformFn(scaleformHandle)
+
+end
+
+local function orbitalCannonScaleform1ScaleformFn(scaleformHandle)
+    BeginScaleformMovieMethod(scaleformHandle, "SET_ZOOM_LEVEL")
+    ScaleformMovieMethodAddParamFloat(0.0)
+    EndScaleformMovieMethod()
+
+    local orbitalCannonCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+    SetCamCoord(orbitalCannonCam, 2, 2, 2)
+    SetCamActive(orbitalCannonCam, true)
+
+    BeginScaleformMovieMethod(scaleformHandle, "SHOW_COOLDOWN_METER")
+    EndScaleformMovieMethod()
+    
+end
+
+
+-----------
+
 -- https://vespura.com/fivem/scaleform/#ORBITAL_CANNON_CAM
 
 Citizen.CreateThread(function()
@@ -141,6 +193,7 @@ Citizen.CreateThread(function()
     -- All of these can be found on this site: https://vespura.com/fivem/scaleform/
     -- local hideHud = false
     local orbitalCannonScaleform1 = "ORBITAL_CANNON_CAM"
+    local orbitalCannonScaleform1Enabled = true
 
     -- This seems to show the orbital cannon map.
     local orbitalCannonScaleform2 = "ORBITAL_CANNON_MAP"
@@ -178,7 +231,7 @@ Citizen.CreateThread(function()
 
     -- Shows the GTA 5 Logo in the bottom left
     local loadingScreenNewGameScaleform = "LOADINGSCREEN_NEWGAME"
-    local loadingBarEnabled = true
+    local loadingBarEnabled = false
     -- Doesn't seem to do anything
     local loadingScreenStartupScaleform = "LOADINGSCREEN_STARTUP"
     local loadingScreenStartupEnabled = false -- loadingScreenStartupScaleform
@@ -197,8 +250,15 @@ Citizen.CreateThread(function()
     local securoservScaleform = "SECUROSERV"
     local securoservScaleformEnabled = false
 
-    local wastedMessageScaleform = "mp_big_message_freemode"
+    local wastedMessageScaleform = "MP_BIG_MESSAGE_FREEMODE"
     local wastedMessageEnabled = false
+
+    -- This didn't work.
+    local phoneNumPadTestScaleform = "SET_SOFT_KEYS"
+    local phoneNumPadTestScaleformEnabled = false
+
+    local wantedStarsScaleform = "HUD_WANTED_STARS"
+    local wantedStarsScaleformEnabled = false
 
     ----
 
@@ -236,12 +296,56 @@ Citizen.CreateThread(function()
     -- local scaleformHandle = RequestScaleformMovie(onlinePoliciesScaleform) -- The scaleform you want to use
 
 
-    local scaleformHandle = RequestScaleformMovie(loadingScreenNewGameScaleform) -- The scaleform you want to use
+    -- local scaleformHandle = RequestScaleformMovie(loadingScreenNewGameScaleform) -- The scaleform you want to use
+
+    -- Set the scaleform handle
+
+    -- This below wasn't working, I think it was disabling the weapon wheel
+    -- and other scaleforms
+
+    -- if loadingBarEnabled then
+    --     scaleformHandle = RequestScaleformMovie(loadingScreenNewGameScaleform)
+
+    -- elseif loadingScreenStartupEnabled then
+    --     scaleformHandle = RequestScaleformMovie(loadingScreenStartupEnabled)
+
+    -- elseif onlinePoliciesEnabled then
+    --     scaleformHandle = RequestScaleformMovie(onlinePoliciesScaleform)
+
+    -- elseif popupWarningEnabled then
+    --     scaleformHandle = RequestScaleformMovie(popupWarningScaleform)
+
+    -- elseif rockstarVerifiedEnabled then
+    --     scaleformHandle = RequestScaleformMovie(rockstarVerifiedScaleform)
+
+    -- elseif securoservScaleformEnabled then
+    --     scaleformHandle = RequestScaleformMovie(securoservScaleform)
+
+    -- elseif wastedMessageEnabled then
+    --     scaleformHandle = RequestScaleformMovie(wastedMessageScaleform)
+
+    -- elseif phoneNumPadTestScaleformEnabled then
+    --     scaleformHandle = RequestScaleformMovie(phoneNumPadTestScaleform)
+
+    -- elseif wantedStarsScaleform then
+    --     scaleformHandle = RequestScaleformMovie(wantedStarsScaleform)
+
+    -- elseif socialClub2Enabled then
+    --     scaleformHandle = RequestScaleformMovie(socialClub2Scaleform)
+    -- end
+
+    -- local scaleformHandle = RequestScaleformMovie(wantedStarsScaleform) -- The scaleform you want to use
+    
+    -- local scaleformHandle = RequestScaleformMovie(loadingScreenNewGameScaleform) -- The scaleform you want to use
+    local scaleformHandle = RequestScaleformMovie(orbitalCannonScaleform1) -- The scaleform you want to use
+
     -- Make it to where it waits on the Scaleform to load up.
     while not HasScaleformMovieLoaded(scaleformHandle) do                    -- Ensure the scaleform is actually loaded before using
         Citizen.Wait(0)
     end
 
+
+    -- Set the scaleform functions
 
     ------------------
     -- Toggles
@@ -282,6 +386,19 @@ Citizen.CreateThread(function()
         secureServeScaleformFn(scaleformHandle)
     end
 
+    -- Test
+    if phoneNumPadTestScaleformEnabled then
+        phoneNumPadTestScaleformFn(scaleformHandle)
+    end
+
+    if wantedStarsScaleformEnabled then
+        WantedStarsScaleformFn(scaleformHandle)
+    end
+
+    if orbitalCannonScaleform1Enabled then
+        orbitalCannonScaleform1ScaleformFn(scaleformHandle)
+    end
+
     ------------------
     --
     ------------------
@@ -297,6 +414,10 @@ Citizen.CreateThread(function()
 
         if drawScaleform then
             DrawScaleformMovieFullscreen(scaleformHandle, 255, 255, 255, 255) -- Draw the scaleform fullscreen
+
+            if HasScaleformMovieLoaded(scaleformHandle) then
+                
+            end
             -- DrawScaleformMovie(scaleformHandle, 100.2, 100.2, 20, 20, 255, 50, 50, 50, 20)
             -- DrawScaleformMovie(scaleformHandle, 896.44, 25.45, 20, 20, 255, 50, 50, 50, 20)
         end

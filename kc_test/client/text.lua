@@ -19,11 +19,14 @@ CreateThread(function()
         SetTextColour(color.r, color.g, color.b, color.a)
         SetTextEntry("STRING")
 
-
         -- AddTextComponentString("KelsonCraft fivem test")
-        AddTextComponentString("KCNet FiveM Test")
+        AddTextComponentSubstringPlayerName("KCNet FiveM Test")
+        -- AddTextComponentString("KCNet FiveM Test")
         -- Makes the text show up
-        DrawText(0.0001, 0.0001)
+        EndTextCommandDisplayText(0.0001, 0.0001, 0)
+        -- EndTextCommandDisplayText(0.0001, 0.2, 0)
+        -- DrawText(0.0001, 0.0001)
+        -- DrawText3D(0, 0, 0, "TT")
 
         -- The rectangle
         -- DrawRect(100, 100, 3.2, 0.05, 66, 134, 244, 245)

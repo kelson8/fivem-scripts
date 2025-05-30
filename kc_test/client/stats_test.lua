@@ -1,3 +1,5 @@
+-- Copied into kc_menu
+
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
