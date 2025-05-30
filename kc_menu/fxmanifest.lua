@@ -8,6 +8,9 @@ client_scripts{
     'client/functions/warp_functions.lua',
     'client/functions/stat_functions.lua',
     'client/functions/vehicle_functions.lua',
+
+    'client/functions/change-outfit.lua',
+    
     'client/config.lua',
     -- 'client/functions.lua',
     -- Content for my debug menu, draws a display under the KCNet test message

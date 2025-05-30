@@ -1,5 +1,44 @@
 -- TODO Setup config for the warps
 
+-- local cayoPericoIpls = {
+
+-- }
+
+-- Begin Cayo Perico toggles
+
+local cayoPericoEnabled = false
+
+-- function enableCayoPericoIsland()
+function toggleCayoPericoIsland()
+    cayoPericoEnabled = not cayoPericoEnabled
+    if not cayoPericoEnabled then
+        -- return true
+        SetIslandEnabled("HeistIsland", true)
+    else
+        SetIslandEnabled("HeistIsland", false)
+    end
+
+    return false
+end
+
+-- Turn on the cayo perico island if it is not enabled.
+function enableCayoPericoIsland()
+    if not cayoPericoEnabled then
+        SetIslandEnabled("HeistIsland", true)
+        cayoPericoEnabled = true
+    end
+end
+
+-- Turn off the cayo perico island if it is enabled.
+function disableCayoPericoIsland()
+    if cayoPericoEnabled then
+        SetIslandEnabled("HeistIsland", false)
+        cayoPericoEnabled = false
+    end
+end
+
+-- End Cayo Perico toggles
+
 function teleportToNewAreas(areaName)
     local player = GetPlayerPed(-1)
     local carrier1 = "m24_1_carrier"
@@ -11,14 +50,14 @@ function teleportToNewAreas(areaName)
     if VersionCheck() then
         if areaName == "aircarrier1" then
             if IsIplActive(carrier1) then
-                FadeScreenForTeleport()
-                SetEntityCoords(player, aircarrierX, airCarrierY, airCarrierZ, true, false, false, false)
+                TeleportFade(aircarrierX, airCarrierY, airCarrierZ, 10.0)
+                disableCayoPericoIsland()
                 notify("Warped to the aircraft carrier.")
             end
         elseif areaName == "bountyoffice" then
             if IsIplActive(bountyOffice2) then
-                FadeScreenForTeleport()
-                SetEntityCoords(player, bountyOfficeX, bountyOfficeY, bountyOfficeZ, true, false, false, false)
+                TeleportFade(bountyOfficeX, bountyOfficeY, bountyOfficeZ, 10.0)
+                disableCayoPericoIsland()
                 notify("Warped to the bounty office.")
             end
         else
@@ -29,6 +68,9 @@ function teleportToNewAreas(areaName)
     end
 end
 
+
+
+-- TODO Make this auto unload Cayo Perico.
 function teleportToWarps(warpName)
     local player = GetPlayerPed(-1)
     local spawnX, spawnY, spawnZ = 222.2027, -864.0162, 29.2922
@@ -36,16 +78,23 @@ function teleportToWarps(warpName)
 
     -- I made my own set coords function, moved the booleans into it
     if warpName == "spawn" then
-        FadeScreenForTeleport()
-        setPlayerCoords(player, spawnX, spawnY, spawnZ)
+        TeleportFade(spawnX, spawnY, spawnZ, 10.0)
+        disableCayoPericoIsland()
         notify("Warped to spawn.")
-        -- SetEntityCoords(player, spawnX, spawnY, spawnZ, true, false, false, false)
+        -- toggleCayoPericoIsland()
+
     elseif warpName == "cayoPerico" and CayoPericoVersionCheck() then
-        FadeScreenForTeleport()
-        setPlayerCoords(player, cayoX, cayoY, cayoZ)
+
+        enableCayoPericoIsland()
+
+        -- toggleCayoPericoIsland()
+        TeleportFade(cayoX, cayoY, cayoZ, 10.0)
         notify("Warped to Cayo perico.")
     end
 end
+
+
+
 
 function warpToSky()
     local player = GetPlayerPed(-1)
@@ -56,7 +105,6 @@ function warpToSky()
     GiveWeaponToPed(GetPlayerPed(-1), GetHashKey("gadget_parachute"), 1, false, false)
 
     --
-
 
     -- I could re-add this if needed
     -- FadeScreenForTeleport()

@@ -50,12 +50,12 @@ RegisterCommand("random_skin", function()
     playerPed = PlayerPedId()
     if IsPlayerPlaying(playerId) then
         -- GetRandomMultiPlayerModel(mp_male)
-        SetRandomSkin()
+        SetRandomOutfit()
         -- print("Skin changed")
     end
 end, false)
 
-function SetRandomSkin()
+function SetRandomOutfit()
 		if IsPedMale(PlayerPedId()) then
 			SetPedComponentVariation(PlayerPedId(), PedVarComp.PV_COMP_HEAD, math.random(0, 5), 0, 2)
 			SetPedComponentVariation(PlayerPedId(), PedVarComp.PV_COMP_HAIR, math.random(1, 17), 3, 2)

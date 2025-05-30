@@ -192,8 +192,26 @@ end)
 local healPlayerButton = playerMenu:AddButton({
     label = "Heal yourself",
     description =
-    'Player Menu'
+    'Heal yourself'
 })
+
+local randomOutfitButton = playerMenu:AddButton({
+    label = "Random Outfit",
+    description =
+    'Change your multiplayer skin to a random outfit.'
+})
+
+local ragDollToggleButton = playerMenu:AddCheckbox({
+    label = "Toggle ragdoll",
+    description =
+    'Toggle ragdoll on/off'
+})
+
+-- local ragDollToggleCheckbox = playerMenu:AddCheckbox({
+--     label = "Toggle ragdoll",
+--     description =
+--     'Toggle ragdoll on/off'
+-- })
 
 -----------
 ---
@@ -209,7 +227,20 @@ playerMenuButton:On("select", function()
             local player = GetPlayerPed(-1)
             SetEntityHealth(player, 250)
         end)
+
+        randomOutfitButton:On("select", function()
+            SetRandomOutfit()
+        end)
+
+        ragDollToggleButton:On("select", function()
+            -- SetRandomOutfit()
+        end)
+
+        
+        -- ragDollToggleCheckbox:On("Press")
+
     end)
+
 end)
 -----------
 ---

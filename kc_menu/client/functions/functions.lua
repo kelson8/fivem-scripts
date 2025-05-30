@@ -14,6 +14,31 @@ function FadeScreenForTeleport()
     FreezeEntityPosition(player, false)
 end
 
+--- Teleport with a fade
+---@param x any
+---@param y any
+---@param z any
+---@param heading any
+function TeleportFade(x, y, z, heading)
+    local player = GetPlayerPed(-1)
+    local fadeInTime = 500
+    local fadeOutTime = 500
+
+    DoScreenFadeOut(fadeOutTime)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    SetEntityCoords(player, x, y, z, false, false, false, false)
+    SetEntityHeading(player, heading)
+
+    Wait(fadeInTime)
+    DoScreenFadeIn(fadeInTime)
+
+end
+
 -- Check if game build is 3258 or higher, needed for the bounty office
 function VersionCheck()
     local version = GetGameBuildNumber()
@@ -45,9 +70,10 @@ function notify(msg)
 end
 
 -- Set the player coords, without needing to specify all of the boolean values
-function setPlayerCoords(player, x, y, z)
-    SetEntityCoords(player, x, y, z, true, false, false, false)
-end
+-- This should now use the TeleportFade function above, I may separate this out later.
+-- function setPlayerCoords(player, x, y, z)
+--     SetEntityCoords(player, x, y, z, true, false, false, false)
+-- end
 
 -- Notifications
 
