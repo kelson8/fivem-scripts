@@ -1,6 +1,6 @@
 -- Taken idea from Calm-AI
 
--- TODO Test this.
+-- Why doesn't this work?
 -- Disable cops if the config option is false.
 Citizen.CreateThread(function()
     if not TestConfig.PoliceEnabled then

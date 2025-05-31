@@ -25,6 +25,8 @@ local mp_female = "mp_f_freemode_01"
 -- Works as a basic outfit randomizer for the mp_male and mp_female skins
 
 -- Taken from Enums.h in KCTrainerV
+-- List of ped component IDs from here: 
+-- https://nativedb.dotindustries.dev/gta5/natives/0x262B14F48D29DE80?search=SET_PED_COMPONENT_VARIATION
 local PedVarComp = {
     -- PV_COMP_INVALID = -1,
     PV_COMP_HEAD    = 0,
@@ -43,18 +45,20 @@ local PedVarComp = {
 }
 
 -- Taken from spawn.lua in vf_base
+-- https://github.com/FiveM-Scripts/venomous-freemode/blob/master/vf_base/client/spawn.lua
 
 RegisterCommand("random_skin", function()
     playerId = PlayerId()
     playerName = GetPlayerName(playerId)
     playerPed = PlayerPedId()
     if IsPlayerPlaying(playerId) then
-        -- GetRandomMultiPlayerModel(mp_male)
         SetRandomOutfit()
         -- print("Skin changed")
     end
 end, false)
 
+
+-- Set the player to a random outfit
 function SetRandomOutfit()
 		if IsPedMale(PlayerPedId()) then
 			SetPedComponentVariation(PlayerPedId(), PedVarComp.PV_COMP_HEAD, math.random(0, 5), 0, 2)

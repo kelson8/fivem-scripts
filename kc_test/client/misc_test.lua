@@ -39,6 +39,7 @@ end
 -- This might work for what I'm trying to do, make sure the interior is loaded
 -- https://forum.cfx.re/t/help-teleport-player-to-streamed-location/811867/4
 
+-- TODO Setup config file for this, either in lua or json
 RegisterCommand("warp", function(source, args, rawCommand)
     local player = GetPlayerPed(-1)
     local carrier1 = "m24_1_carrier"
@@ -148,6 +149,35 @@ RegisterCommand('testspinner', function(_, _, rawCommand)
     else
         showBusySpinner(rawCommand)
     end
+end, false)
+
+
+-- These seem to work now, not sure what changed.
+local endCredits = false
+
+RegisterCommand("playmusic", function()
+    -- local player = getPlayerPed(-1)
+
+    -- endCredits = not endCredits
+
+    -- TriggerMusicEvent("EXL1_MISSLE_HITS")
+    TriggerMusicEvent("CHASE_PARACHUTE_START")
+    -- TriggerMusicEvent("FS_FORMATION_START")
+    -- TriggerMusicEvent("MP_LTS")
+    -- PlayEndCreditsMusic(endCredits)
+end, false)
+
+RegisterCommand("playarenamusic", function()
+
+    TriggerMusicEvent("AW_LOBBY_MUSIC_START")
+end, false)
+
+RegisterCommand("stopmusic", function()
+    TriggerMusicEvent("MP_MC_CMH_IAA_FINALE_START")
+end, false)
+
+RegisterCommand("playsound", function()
+    PlaySound(1, "CHARACTER_CHANGE_UP_MASTER", 0, false, false, false)
 end, false)
 
 --

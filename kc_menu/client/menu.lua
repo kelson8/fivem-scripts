@@ -201,17 +201,38 @@ local randomOutfitButton = playerMenu:AddButton({
     'Change your multiplayer skin to a random outfit.'
 })
 
-local ragDollToggleButton = playerMenu:AddCheckbox({
+-- TODO Figure out how to toggle ragdoll
+-- local ragDollToggleButton = playerMenu:AddCheckbox({
+local ragDollToggleButton = playerMenu:AddButton({
     label = "Toggle ragdoll",
     description =
     'Toggle ragdoll on/off'
 })
+
+-- This didn't do anything
+-- local envEffButton = playerMenu:AddButton({
+--     label = "Test Env Eff",
+--     description =
+--     'Debug test'
+-- })
 
 -- local ragDollToggleCheckbox = playerMenu:AddCheckbox({
 --     label = "Toggle ragdoll",
 --     description =
 --     'Toggle ragdoll on/off'
 -- })
+
+local mpSuicideButton = playerMenu:AddButton({
+    label = "MP Suicide",
+    description =
+    'Kill yourself with the online animation'
+})
+
+local invincibilityCheckbox = playerMenu:AddCheckbox({
+    label = "Toggle infinte health",
+    description =
+    'Invincible player'
+})
 
 -----------
 ---
@@ -236,8 +257,30 @@ playerMenuButton:On("select", function()
             -- SetRandomOutfit()
         end)
 
-        
+        -- This didn't do anything
+        -- envEffButton:On("select", function ()
+        --     ToggleEnvEffScale()
+        -- end)
+
+
         -- ragDollToggleCheckbox:On("Press")
+
+        mpSuicideButton:On("select", function ()
+            MpSuicide()
+        end)
+
+        -- https://menuv.netlify.app/#CheckboxItem
+        invincibilityCheckbox:On('change', function(item, newValue, oldValue)
+
+            -- Set invincibility here.
+            if newValue then
+                EnableInvincibility()
+            else
+                DisableInvincibility()
+            end
+        end)
+
+
 
     end)
 
@@ -475,19 +518,50 @@ end)
 -----------
 
 local menuOpen = false
-if not menuOpen then
-    menu:OpenWith('KEYBOARD', 'F1') -- Press F1 to open Menu
+
+if menu:OpenWith('KEYBOARD', 'F1') then
+    -- menuOpen = not menuOpen
     menuOpen = true
-    -- TODO Fix this to work.
-    -- Why doesn't this work?
-    -- notify(("Menu open: %s"):format(menuOpen))
-    -- else
-    --     -- MenuV:CloseMenu(menu, function()
-    --     menuOpen = false
-    --     notify(("Menu open: %s"):format(menuOpen))
-    -- end)
-    -- menu:Close(menu)
 end
+
+-- if not menuOpen then
+--     menu:OpenWith('KEYBOARD', 'F1') -- Press F1 to open Menu
+--     menuOpen = true
+--     -- TODO Fix this to work.
+--     -- Why doesn't this work?
+--     -- notify(("Menu open: %s"):format(menuOpen))
+--     -- else
+--     --     -- MenuV:CloseMenu(menu, function()
+--     --     menuOpen = false
+--     --     notify(("Menu open: %s"):format(menuOpen))
+--     -- end)
+--     -- menu:Close(menu)
+-- end
+
+-- Taken this from one of my KC ScriptHookV Examples
+-- TODO Fix this
+-- Citizen.CreateThread(function()
+--     Wait(0)
+--     while menuOpen do
+--         Wait(0)
+--         DisableAllControlActions(2)
+--         DisableAllControlActions(0)
+
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_UP, true)
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_DOWN, true)
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_LEFT, true)
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_RIGHT, true)
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_ACCEPT, true)
+--         EnableControlAction(2, ControllerInput.INPUT_FRONTEND_CANCEL, true)
+
+--         HideHudComponentThisFrame(10) -- Ammo
+--         HideHudComponentThisFrame(6) -- Weapon Wheel
+--         HideHudComponentThisFrame(7) -- Weapon Icon
+--         HideHudComponentThisFrame(8) -- Health/Armor/Stamina
+--         HideHudComponentThisFrame(9) -- Cash
+--         HideHelpTextThisFrame()
+--     end
+-- end)
 
 -----------
 ---

@@ -48,13 +48,13 @@ function spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
 
     -- local vehicleNew = CreateVehicle(vehicleName, x, y, z, heading, true, false)
     heli1 = CreateVehicle(vehicleName, x, y + 5, z, heading, true, false)
-    heli2 = CreateVehicle(vehicleName, x, y + 20, z, heading, true, false)
+    -- heli2 = CreateVehicle(vehicleName, x, y + 20, z, heading, true, false)
     -- SetVehicleCustomPrimaryColour(vehicleNew, r1, g1, b1)
     -- SetVehicleCustomSecondaryColour(vehicleNew, r1, g1, b1)
 
     -- TODO Move this out of the function
     SetModelAsNoLongerNeeded(heli1)
-    SetModelAsNoLongerNeeded(heli2)
+    -- SetModelAsNoLongerNeeded(heli2)
 
     -- Todo Re-enable this if needed
     -- return vehicleNew
@@ -66,9 +66,9 @@ local function cleanupVehicles()
         DeleteEntity(heli1)
     end
 
-    if DoesEntityExist(heli2) then
-        DeleteEntity(heli2)
-    end
+    -- if DoesEntityExist(heli2) then
+    --     DeleteEntity(heli2)
+    -- end
 end
 
 -- This removes the peds
@@ -242,7 +242,8 @@ function spawnPedHeliPilots(pedName1, pedName2)
 
     -- Put the peds in the helicopters
     TaskWarpPedIntoVehicle(ped, heli1, -1)
-    TaskWarpPedIntoVehicle(ped2, heli2, -1)
+    -- TaskWarpPedIntoVehicle(ped2, heli2, -1)
+    TaskWarpPedIntoVehicle(ped2, heli1, 2)
 
     -- Let them get in the air a bit.
     -- Todo this is probably not needed.
@@ -252,9 +253,8 @@ function spawnPedHeliPilots(pedName1, pedName2)
     -- TaskVehicleDriveToCoord(ped, heli1, -283.72, 806.09, 250.5, 30.0, false, heliModel, drivingStyleIgnoreLights, 20, 20)
     TaskVehicleDriveToCoord(ped, heli1, targetX, targetY, targetZ, speed, false, heliModel, drivingStyleIgnoreLights,
         stopRange, straightLineDistance)
-    TaskVehicleDriveToCoord(ped2, heli2, targetX, targetY, targetZ, speed, false, heliModel, drivingStyleIgnoreLights,
-        stopRange, straightLineDistance)
-    -- TaskVehicleDriveToCoord(ped2, heli2, -283.72, 806.09, 250.5, 30.0, false, heliModel, drivingStyleIgnoreLights, 20, 20)
+    -- TaskVehicleDriveToCoord(ped2, heli2, targetX, targetY, targetZ, speed, false, heliModel, drivingStyleIgnoreLights,
+    --     stopRange, straightLineDistance)
 
     -- Have the peds chase each other, not setup yet.
     -- TaskHeliChase(ped, ped2, 0.0, 0.0, 250.0)
@@ -283,8 +283,8 @@ function spawnPedHeliPilots(pedName1, pedName2)
     -- Set the models as no longer needed
     SetModelAsNoLongerNeeded(pedModel)
     SetModelAsNoLongerNeeded(pedModel2)
-    SetEntityAsNoLongerNeeded(ped)
-    SetEntityAsNoLongerNeeded(ped2)
+    -- SetEntityAsNoLongerNeeded(ped)
+    -- SetEntityAsNoLongerNeeded(ped2)
 
     -- return ped
 end

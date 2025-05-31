@@ -41,6 +41,10 @@ client_scripts{
     'client/clock_test.lua',
     'client/new/task_heli_chase.lua',
 
+    -- Skyswoop character switch screen test
+    'client/new/skyswoop_test.lua',
+
+
     -- Sound test
     'client/sound_test.lua'
 }

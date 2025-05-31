@@ -4,12 +4,17 @@ lua54 'yes'
 
 client_scripts{
     '@menuv/menuv.lua',
+
+    -- My enums from some of my C++ headers
+    'client/enums.lua',
+
     'client/functions/functions.lua',
     'client/functions/warp_functions.lua',
     'client/functions/stat_functions.lua',
     'client/functions/vehicle_functions.lua',
 
-    'client/functions/change-outfit.lua',
+    'client/functions/change_outfit.lua',
+    'client/functions/player_functions.lua',
     
     'client/config.lua',
     -- 'client/functions.lua',
@@ -22,6 +27,8 @@ client_scripts{
     'client/warps.lua',
     --'functions.lua',
     --'menu.lua'
+
+
 }
 
 server_scripts{

@@ -11,6 +11,12 @@ function notify(msg)
     DrawNotification(true, false)
 end
 
+function sendMessage(msg)
+    TriggerEvent('chat:addMessage', {
+        args = {msg, },
+    })
+end
+
 
 function giveWeapon(hash)
     GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
@@ -25,14 +31,62 @@ function giveWeaponComponent(weaponHash, component)
 end
 
 -- This is working for spawning in with a pistol
+local weaponsTbl = {}
+local opWeapons = false
 AddEventHandler('playerSpawned', function()
     local player = GetPlayerPed(PlayerId())
     -- local weapon = GetHashKey("WEAPON_PISTOL")
     local weapon = GetHashKey("WEAPON_COMBATPISTOL")
+    if opWeapons then
+        local minigunWeapon = GetHashKey("WEAPON_MINIGUN")
+        local railgunWeapon = GetHashKey("WEAPON_RAILGUN")
+        local rpgWeapon = GetHashKey("WEAPON_RPG")
+        local homingLauncherWeapon = GetHashKey("WEAPON_RAILGUN")
+        local grenadeLauncher = GetHashKey("WEAPON_GRENADELAUNCHER")
+        local weaponList = 5
+
+        table.insert(weaponsTbl, minigunWeapon)
+        table.insert(weaponsTbl, railgunWeapon)
+        table.insert(weaponsTbl, rpgWeapon)
+        table.insert(weaponsTbl, homingLauncherWeapon)
+        table.insert(weaponsTbl, grenadeLauncher)
+
+        -- This works like this.
+        for k,v in pairs(weaponsTbl) do
+            GiveWeaponToPed(player, v, 1000, false, false)
+        end
+
+    end
     -- local weapon = GetHashKey("WEAPON_RPG")
 
     GiveWeaponToPed(player, weapon, 1000, false, false)
 end)
+
+RegisterCommand("weptest", function(source, args)
+    local player = GetPlayerPed(PlayerId())
+    -- local weapon = GetHashKey("WEAPON_PISTOL")
+    local weapon = GetHashKey("WEAPON_COMBATPISTOL")
+    if opWeapons then
+        local minigunWeapon = GetHashKey("WEAPON_MINIGUN")
+        local railgunWeapon = GetHashKey("WEAPON_RAILGUN")
+        local rpgWeapon = GetHashKey("WEAPON_RPG")
+        local homingLauncherWeapon = GetHashKey("WEAPON_RAILGUN")
+        local grenadeLauncher = GetHashKey("WEAPON_GRENADELAUNCHER")
+        local weaponList = 5
+
+        table.insert(weaponsTbl, minigunWeapon)
+        table.insert(weaponsTbl, railgunWeapon)
+        table.insert(weaponsTbl, rpgWeapon)
+        table.insert(weaponsTbl, homingLauncherWeapon)
+        table.insert(weaponsTbl, grenadeLauncher)
+
+        -- This didn't seem to work
+        for k,v in pairs(weaponsTbl) do
+            sendMessage(v)
+            -- GiveWeaponToPed(player, i, 1000, false, false)
+        end
+    end
+end, false)
 
 RegisterCommand("weapon", function(source, args)
 

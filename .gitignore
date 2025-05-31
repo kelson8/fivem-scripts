@@ -3,11 +3,21 @@ lua_test/
 # Vscode launch.json
 .vscode/launch.json
 
+# I may try getting this to work later, I couldn't figure this menu out.
+kc_rageui_menu
+
 # Add files that I am working with.
 sync_changes.bat
 .vscode/settings.json
 StreetRaces/data
 *.bak
+
+# Compressed
+*.tar
+*.7z
+*.gz
+*.rar
+*.zip
 
 # This is temporary
 ch_typescript/
