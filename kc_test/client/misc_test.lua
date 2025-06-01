@@ -133,21 +133,12 @@ end, false)
 
 -- Busy spinners
 
-function showBusySpinner(message)
-    BeginTextCommandBusyspinnerOn("STRING")
-    AddTextComponentSubstringPlayerName(message)
-    EndTextCommandBusyspinnerOn(5)
-end
-
-function hideBusySpinner()
-    BusyspinnerOff()
-end
 
 RegisterCommand('testspinner', function(_, _, rawCommand)
     if rawCommand == 'testspinner' then
-        hideBusySpinner()
+        Text.HideBusySpinner()
     else
-        showBusySpinner(rawCommand)
+        Text.ShowBusySpinner(rawCommand)
     end
 end, false)
 

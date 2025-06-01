@@ -16,10 +16,10 @@ client_scripts{
     -- Helicopter testing
     'client/heli_test.lua',
     -- Ipl loading
-    'client/new_ipls.lua',
+    -- 'client/new_ipls.lua',
     -- Other test
     'client/checkpoint_test.lua',
-    
+
     'client/ped_test.lua',
     'client/player_test.lua',
     'client/vehicle_test.lua',
@@ -43,6 +43,9 @@ client_scripts{
 
     -- Skyswoop character switch screen test
     'client/new/skyswoop_test.lua',
+
+    -- Functions for easier usage, TeleportFade and other functions
+    'client/new/functions.lua',
 
 
     -- Sound test

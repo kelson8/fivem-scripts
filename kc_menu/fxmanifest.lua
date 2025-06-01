@@ -2,6 +2,9 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
+-- This requires menuv.
+dependencies {'menuv'}
+
 client_scripts{
     '@menuv/menuv.lua',
 
@@ -15,7 +18,7 @@ client_scripts{
 
     'client/functions/change_outfit.lua',
     'client/functions/player_functions.lua',
-    
+
     'client/config.lua',
     -- 'client/functions.lua',
     -- Content for my debug menu, draws a display under the KCNet test message

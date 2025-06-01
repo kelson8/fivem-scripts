@@ -1,5 +1,9 @@
 -- Info for this came from here: https://forum.cfx.re/t/new-dlc-bottom-dollar-bounties-mp2024-01-info/5244751
 
+-- I have disabled this file, combining these two resources work well for my needs:
+-- Bob74_ipl: https://github.com/Bob74/bob74_ipl
+-- online_interiors (Shows the blips): https://github.com/cloudy-develop/online-interiors
+
 -- Check if game build is 3258 or higher, needed for the bounty office
 function VersionCheck()
 	local version = GetGameBuildNumber()
@@ -74,7 +78,7 @@ RegisterCommand("warpipl1", function()
 		SetEntityCoords(player, x, y, z, true, false, false, false)
 		sendMessage("Warped to the bounty office.")
 	end
-end)
+end, true)
 
 -- Aircraft carrier
 RegisterCommand("warpipl2", function()
@@ -86,7 +90,7 @@ RegisterCommand("warpipl2", function()
         SetEntityCoords(player, x, y, z, true, false, false, false)
 		sendMessage("Warped to the aircraft carrier.")
     end
-end)
+end, true)
 
 -- This works, moved into misc_test
 -- RegisterCommand("warptest", function(source, args, rawCommand)

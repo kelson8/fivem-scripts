@@ -550,3 +550,14 @@ function miscTest()
 end
 
 --
+
+RegisterCommand("bomb", function ()
+	local player = GetPlayerPed(-1)
+    local playerPos = GetEntityCoords(player)
+
+    local gaspumpExplosion = 9
+    local railgunExplosion = 36
+    local damageScale = 100.0
+
+	World.AddExplosion(playerPos.x, playerPos.y, playerPos.z, gaspumpExplosion, damageScale)
+end, true)

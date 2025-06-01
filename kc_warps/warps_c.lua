@@ -32,9 +32,9 @@ function Warps.Marker(markerType, locX, locY, locZ, scaleX, scaleY, scaleZ, colo
         -- Rotate
         false,
         -- textureDict
-        nil,
+        "",
         -- textureName
-        nil,
+        "",
         -- drawOnEnts
         false
     )
@@ -84,12 +84,14 @@ Citizen.CreateThread(function()
         local playerCoord = GetEntityCoords(PlayerPedId(), false)
         local locVector = vector3(loc.pos.x, loc.pos.y, loc.pos.z)
 
-        if Vdist2(playerCoord, locVector) < loc.scale * 1.12 and GetVehiclePedIsIn(PlayerPedId(), false) == 0 then
+        -- if Vdist2(playerCoord, locVector) < loc.scale * 1.12 and GetVehiclePedIsIn(PlayerPedId(), false) == 0 then
+        
+        -- Check if the marker is within radius, if so teleport the player.
+        if Vdist2(playerCoord.x, playerCoord.y, playerCoord.z, locVector.x, locVector.y, locVector.z)
+        < loc.scale * 1.12 and GetVehiclePedIsIn(PlayerPedId(), false) == 0 then
             -- Code that runs when we are in the markers radius.
             SetEntityCoords(PlayerPedId(), loc.tpto.x, loc.tpto.y, loc.tpto.z, true, true, true, false)
             SetEntityHeading(PlayerPedId(), 0)
-            -- notify("You have been teleported to location ~b~" .. i)
-            -- notify("You have been teleported to location ~b~" .. #locations)
             notify("You have been teleported to location ~b~" .. loc.text_name)
         end
         -- end
