@@ -47,27 +47,6 @@ function sendMessage(msg)
 end
 
 
--- Add cars to the map
--- This is currently working, not sure how to do custom colors though
--- Spawn vehicle with specific colors.
--- https://forum.cfx.re/t/how-to-spawn-a-vehicle-with-specific-colors/7401
-
--- TODO Make this to where it clears the area of cars if the resource is restarted.
-Citizen.CreateThread(function()
-    -- LOL It kept spawning cars, Oops I made an infinte loop, don't ever put something into a "while true do"
-    -- loop if I don't want it constantly running.
-    Wait(1)
-    for i = 1, #vehicle_spawns, 1 do
-        spawns = vehicle_spawns[i]
-        local x, y, z = table.unpack(spawns.pos)
-        -- This doesnt seem to work
-        -- ClearAreaOfVehicles(x, y, z, 10, false, false, false, false, false, false, false)
-        -- spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading)
-        spawnVehicleWithoutBlip(spawns.vehiclename, x, y, z, spawns.heading, spawns.colors.r, spawns.colors.g, spawns.colors.b)
-    end
-end)
-
-
 -- https://forum.cfx.re/t/checking-if-someone-is-an-area/127087/4
 -- https://forum.cfx.re/t/help-disable-control/43052
 -- Prompt player to exit garage and disable car movement if in the Ceo Office garage
@@ -104,7 +83,7 @@ RegisterCommand("deleteveh", function()
             local vehicle = GetVehiclePedIsIn(ped, false)
             --local vehBlip = GetBlipFromEntity(vehicle)
 
-            SetEntityAsMissionEntity(vehicle)
+            SetEntityAsMissionEntity(vehicle, false, false)
             DeleteVehicle(vehicle)
         end
     end    
@@ -175,7 +154,7 @@ RegisterCommand('car', function(source, args)
         -- if IsPedInAnyVehicle(player) then
 
         elseif category == "customize" then
-            local vehicle = GetVehiclePedIsIn(player)
+            local vehicle = GetVehiclePedIsIn(player, false)
             SetVehicleModKit(vehicle, 0)
             for modType = 0, 10, 1 do
                 local bestMod = GetNumVehicleMods(vehicle, modType) - 1
@@ -183,23 +162,23 @@ RegisterCommand('car', function(source, args)
             end
 
         elseif category == "extras" then -- /vehicle extras
-            local vehicle = GetVehiclePedIsIn(player)
+            local vehicle = GetVehiclePedIsIn(player, false)
             for id = 0, 20 do
                 if DoesExtraExist(vehicle, id) then
                     -- Turn it on with 1, turn off with 0
-                    SetVehicleExtra(vehicle, id, 1)
+                    SetVehicleExtra(vehicle, id, true)
                 end
                 sendMessage("You have added all extras to the vehicle.")
             end
 
         elseif category == "repair" then
-            local vehicle = GetVehiclePedIsIn(player)
+            local vehicle = GetVehiclePedIsIn(player, false)
             SetVehicleFixed(vehicle)
             SetVehicleEngineHealth(vehicle, 1000.0)
             sendMessage("Repaired your vehicle.")
         -- Open the doors
         elseif category == "doors" then
-            local vehicle = GetVehiclePedIsIn(player)
+            local vehicle = GetVehiclePedIsIn(player, false)
             local closed = GetVehicleDoorAngleRatio(vehicle, 0) < 0.1
             if closed then
                 for i=0, 7 do
@@ -238,7 +217,7 @@ RegisterCommand("vehiclehash", function()
         sendMessage(("Vehicle Model: %s, vehicle name: %s, vehicle hash: %s")
         :format(vehModel, vehName, vehHash))
     end
-end)
+end, false)
 
 
 ----------
@@ -273,33 +252,33 @@ end)
 
 -- TODO Fix this to work, I think I've gotten close with this.
 -- Personal vehicle spawning
-RegisterNetEvent("ch_car:spawnpv")
-AddEventHandler("ch_car:spawnpv", function(vehicleModel, x, y, z, heading)
-    -- spawnVehicleWithBlip(vehicleName)
-    -- hashToName = GetDisplayNameFromVehicleModel(vehicleModel)
-    -- vehicleHash = GetHashKey(vehicleModel)
-    vehicleHash = vehicleModel
-    vehicleName = hashToName
+-- RegisterNetEvent("ch_car:spawnpv")
+-- AddEventHandler("ch_car:spawnpv", function(vehicleModel, x, y, z, heading)
+--     -- spawnVehicleWithBlip(vehicleName)
+--     -- hashToName = GetDisplayNameFromVehicleModel(vehicleModel)
+--     -- vehicleHash = GetHashKey(vehicleModel)
+--     vehicleHash = vehicleModel
+--     vehicleName = hashToName
 
-    -- Test
-    -- Check if the vehicle actually exists
-    -- This keeps printing this error.
-    if not IsModelInCdimage(vehicleHash) or not IsModelAVehicle(vehicleHash) then
-        notify("~r~Error~w~: The model " .. vehicleHash .. " doesn't exist!")
-    end
+--     -- Test
+--     -- Check if the vehicle actually exists
+--     -- This keeps printing this error.
+--     if not IsModelInCdimage(vehicleHash) or not IsModelAVehicle(vehicleHash) then
+--         notify("~r~Error~w~: The model " .. vehicleHash .. " doesn't exist!")
+--     end
 
-    -- Load the model
-    RequestModel(vehicleHash)
+--     -- Load the model
+--     RequestModel(vehicleHash)
 
-    -- If model hasn't loaded, wait on it.
-    while not HasModelLoaded(vehicleHash) do
-        Wait(500)
-    end
+--     -- If model hasn't loaded, wait on it.
+--     while not HasModelLoaded(vehicleHash) do
+--         Wait(500)
+--     end
 
-    CreateVehicle(vehicleHash, x, y, z, heading, true, false)
-    -- local vehicle = spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
-    -- SetEntityCoords(vehicle, x, y, z, false, false, false, false)
-end)
+--     CreateVehicle(vehicleHash, x, y, z, heading, true, false)
+--     -- local vehicle = spawnVehicleWithoutBlip(vehicleName, x, y, z, heading)
+--     -- SetEntityCoords(vehicle, x, y, z, false, false, false, false)
+-- end)
 --
 
 -- Notify client event
@@ -344,38 +323,38 @@ end)
 -- Do it in the menu that I have.
 -- Todo Set this to where it'll notify the user on a success or failure.
 -- Todo Set this to where it'll update the id of a car that already exists instead of making a bunch of new ones.
-RegisterNetEvent("ch_car:savepv")
-AddEventHandler("ch_car:savepv", function(vehicle)
-    local model = GetEntityModel(vehicle)
-    local x, y, z = table.unpack(GetEntityCoords(vehicle))
-    local heading = GetEntityHeading(vehicle)
+-- RegisterNetEvent("ch_car:savepv")
+-- AddEventHandler("ch_car:savepv", function(vehicle)
+--     local model = GetEntityModel(vehicle)
+--     local x, y, z = table.unpack(GetEntityCoords(vehicle))
+--     local heading = GetEntityHeading(vehicle)
 
-    local carDisplayName = GetDisplayNameFromVehicleModel(model)
-    local carLabel = GetLabelText(carDisplayName)
+--     local carDisplayName = GetDisplayNameFromVehicleModel(model)
+--     local carLabel = GetLabelText(carDisplayName)
 
-    local color1, color2 = GetVehicleColours(vehicle)
+--     local color1, color2 = GetVehicleColours(vehicle)
 
-    TriggerServerEvent("ch_car:savepv", model, x, y, z, heading, color1, color2)
-end)
+--     TriggerServerEvent("ch_car:savepv", model, x, y, z, heading, color1, color2)
+-- end)
 
-RegisterCommand("savepv", function()
-    ped = GetPlayerPed(-1)
-    local vehicle = 0
-    if IsPedSittingInAnyVehicle(ped) then
-        vehicle = GetVehiclePedIsUsing(ped)
-        TriggerEvent("ch_car:savepv", vehicle)
-        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-    end
-end, false)
+-- RegisterCommand("savepv", function()
+--     ped = GetPlayerPed(-1)
+--     local vehicle = 0
+--     if IsPedSittingInAnyVehicle(ped) then
+--         vehicle = GetVehiclePedIsUsing(ped)
+--         TriggerEvent("ch_car:savepv", vehicle)
+--         SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+--     end
+-- end, false)
 
--- Todo Setup these two commands to work
+-- -- Todo Setup these two commands to work
 
--- Spawn personal vehicle
-RegisterCommand("pv", function()
+-- -- Spawn personal vehicle
+-- RegisterCommand("pv", function()
 
-end, false)
+-- end, false)
 
--- Delete personal vehicle.
-RegisterCommand("deletepv", function()
+-- -- Delete personal vehicle.
+-- RegisterCommand("deletepv", function()
 
-end, false)
+-- end, false)

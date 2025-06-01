@@ -7,7 +7,7 @@ client_scripts{
     -- Has notification, subtitle functions and a couple other things.
     'client/misc/messages.lua',
     'client/misc_test.lua',
-    'client/lobby_test.lua',
+    -- 'client/lobby_test.lua',
     'client/text.lua',
     'client/config.lua',
 
@@ -39,6 +39,10 @@ client_scripts{
     'client/misc/blip_test.lua',
     'client/new_test.lua',
     'client/clock_test.lua',
+
+    -- Routing bucket test
+    'client/routing_bucket_commands.lua',
+
     'client/new/task_heli_chase.lua',
 
     -- Skyswoop character switch screen test
@@ -53,7 +57,14 @@ client_scripts{
 }
 
 server_scripts{
-    'server/lobby_test.lua',
+    -- 'server/lobby_test.lua',
+
+    -- New test for routing buckets:
+    -- https://forum.cfx.re/t/tutorial-how-to-use-routing-buckets-easily-the-correct-way-to-instance-people/2485164
+    'server/routing_buckets.lua',
+
     -- Server side testing
     'server/test.lua',
+
+
 }

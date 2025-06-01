@@ -4,7 +4,8 @@ lua54 'yes'
 
 client_scripts {
     'car_c.lua',
-    'car_spawns.lua',
+    -- Moved into kc_carspawns
+    -- 'car_spawns.lua',
 
     -- Extras
     'data/functions.lua',
@@ -14,6 +15,6 @@ client_scripts {
 }
 
 server_scripts {
-    '@icmysql/library/MySQL.lua',
+    -- '@icmysql/library/MySQL.lua',
     'car_s.lua',
 }
