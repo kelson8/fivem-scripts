@@ -11,6 +11,10 @@ client_scripts{
     -- My enums from some of my C++ headers
     'client/enums.lua',
 
+    -- Warp config
+    'client/config/warp_config.lua',
+
+
     'client/functions/functions.lua',
     'client/functions/warp_functions.lua',
     'client/functions/stat_functions.lua',
@@ -28,6 +32,7 @@ client_scripts{
     'client/heli_test.lua',
     'client/menu.lua',
     'client/warps.lua',
+    
     --'functions.lua',
     --'menu.lua'
 

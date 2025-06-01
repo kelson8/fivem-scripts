@@ -55,7 +55,7 @@ local testMenuButton = menu:AddButton({ label = "Test Menu", description = 'Open
         FadeScreenForTeleport()
         SetEntityCoords(player, casinoVaultX, casinoVaultY, casinoVaultZ, true, false, false, false)
         SetEntityHeading(player, 270.79)
-        notify("Teleported to casino vault")
+        Text.Notify("Teleported to casino vault")
     -- Ipl checks are needed for below two
     elseif args[1] == "aircarrier1" then
 
@@ -64,7 +64,7 @@ local testMenuButton = menu:AddButton({ label = "Test Menu", description = 'Open
 ]]
 
 local function advancedNotification()
-    showAdvancedNotification(
+    Text.ShowAdvancedNotification(
         rawCommand,
         'This is sender',
         'This is subject',
@@ -157,7 +157,7 @@ vehicleMenuButton:On("select", function()
     MenuV:OpenMenu(vehicleMenu, function()
         spawnVehicleButton:On("select", function()
             local player = GetPlayerPed(-1)
-            notify("Incomplete")
+            Text.Notify("Incomplete")
             -- SetEntityHealth(player, 250)
         end)
 
@@ -166,7 +166,7 @@ vehicleMenuButton:On("select", function()
         end)
 
         doorLockStatusButton:On("select", function()
-            notify(getVehicleDoorLockStatusValue())
+            Text.Notify(getVehicleDoorLockStatusValue())
         end)
 
         toggleDoorLockButton:On("select", function()
@@ -462,7 +462,8 @@ testMenuButton:On("select", function()
         end)
 
         busySpinnerButton:On("select", function()
-            showBusySpinner("Test")
+            -- showBusySpinner("Test")
+            Text.ShowBusySpinner("Test")
         end)
 
         blowUpPlayerButton:On("select", function()
@@ -493,7 +494,7 @@ testMenuButton:On("select", function()
         -- Not sure how to use this one, cannot figure out how to change the slider value
         blipSliderRange:On("change", function(item, newValue, oldValue)
             -- blipSliderRange:
-            -- notify(newValue)
+            -- Text.Notify(newValue)
         end)
 
         mapZoomEnableTestButton:On("select", function()
@@ -529,11 +530,11 @@ end
 --     menuOpen = true
 --     -- TODO Fix this to work.
 --     -- Why doesn't this work?
---     -- notify(("Menu open: %s"):format(menuOpen))
+--     -- Text.Notify(("Menu open: %s"):format(menuOpen))
 --     -- else
 --     --     -- MenuV:CloseMenu(menu, function()
 --     --     menuOpen = false
---     --     notify(("Menu open: %s"):format(menuOpen))
+--     --     Text.Notify(("Menu open: %s"):format(menuOpen))
 --     -- end)
 --     -- menu:Close(menu)
 -- end

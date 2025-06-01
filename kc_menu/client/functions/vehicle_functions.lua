@@ -22,25 +22,25 @@ function toggleDriftTires()
     if IsPedInAnyVehicle(player, false) then
         local vehicle = GetVehiclePedIsIn(player, false)
         if not driftTires then
-            -- SetDriftTyres(vehicle, true)
-            Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, true)
-            notify("Drift tires enabled.")
+            SetDriftTyres(vehicle, true)
+            -- Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, true)
+            Text.Notify("Drift tires enabled.")
             driftTires = true
         else
-            Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, false)
-            -- SetDriftTyres(vehicle, true)
-            notify("Drift tires disabled.")
+            -- Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, false)
+            SetDriftTyres(vehicle, false)
+            Text.Notify("Drift tires disabled.")
             driftTires = false
         end
     else
-        notify("You need to be in a vehicle to use this.")
+        Text.Notify("You need to be in a vehicle to use this.")
     end
 end
 
 function getVehicleDoorLockStatusValue()
     -- GET_VEHICLE_DOOR_LOCK_STATUS
     local player = GetPlayerPed(-1)
-    local vehicle = GetVehiclePedIsIn(player)
+    local vehicle = GetVehiclePedIsIn(player, false)
 
     return GetVehicleDoorLockStatus(vehicle)
 end
@@ -62,7 +62,7 @@ function toggleVehicleDoorLock()
 
         if not doorsLocked then
             SetVehicleDoorsLocked(vehicle, 2)
-            notify("Doors locked")
+            Text.Notify("Doors locked")
         else
             -- if pedLastVehicle then
             --     local lastVehicle = GetVehiclePedIsIn(player, true)
@@ -70,11 +70,11 @@ function toggleVehicleDoorLock()
             -- else
                 SetVehicleDoorsLocked(vehicle, 1)
             -- end
-            notify("Doors unlocked")
+            Text.Notify("Doors unlocked")
         end
     else
         -- TODO Check if previous vehicle is locked
-        notify("You need to be in a vehicle to use this")
+        Text.Notify("You need to be in a vehicle to use this")
     end
 end
 
@@ -182,7 +182,7 @@ end
 function spawnPersonalVehicleWithBlip(vehicleName)
     -- Check if the vehicle actually exists
     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-        notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
+        Text.Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
     end
 
     -- Load the model
@@ -243,7 +243,7 @@ function spawnVehicleWithBlip(vehicleName)
 
     -- Check if the vehicle actually exists
     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-        notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
+        Text.Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
     end
 
     -- Load the model

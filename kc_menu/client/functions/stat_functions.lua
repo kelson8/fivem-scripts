@@ -76,11 +76,11 @@ function copsKilledCheck()
     -- I had to add a second value to this
     local _,copsKilled = StatGetInt(copsKilledStat, -1)
 
-    -- notify(("Cops killed: %s"):format(copsKilled))
+    -- Text.Notify(("Cops killed: %s"):format(copsKilled))
 
     return copsKilled
 
-    -- notify("You have killed %s amount of cops.")
+    -- Text.Notify("You have killed %s amount of cops.")
 end
 
 -- Get vehicles blown up
@@ -218,15 +218,15 @@ function testStat()
     -- local _,totalTimeDrivingCar = StatGetFloat(totalTimeDrivingCarStat)
 
     -- if copsKilled then
-    --     sendMessage(tmpValue)
+    --     Text.SendMessage(tmpValue)
     -- end
 
-        -- sendMessage(("Cops killed: %s"):format(copsKilled))
-        notify(("Cop cars exploded %s"):format(copCarsExploded))
-        -- sendMessage(("Test %s"):format(totalDistanceTraveled))
-        -- sendMessage(("Test %s"):format(totalPlayTime))
-        -- sendMessage(("Test %s"):format(totalTimeDrivingCar))
-    -- notify("You have killed %s amount of cops.")
+        -- Text.SendMessage(("Cops killed: %s"):format(copsKilled))
+        Text.Notify(("Cop cars exploded %s"):format(copCarsExploded))
+        -- Text.SendMessage(("Test %s"):format(totalDistanceTraveled))
+        -- Text.SendMessage(("Test %s"):format(totalPlayTime))
+        -- Text.SendMessage(("Test %s"):format(totalTimeDrivingCar))
+    -- Text.Notify("You have killed %s amount of cops.")
 end
 
 

@@ -25,7 +25,7 @@ function DisableInvincibility()
 
     invincibilityEnabled = false
     SetEntityProofs(playerPed, false, false, false, false, false, false, false, false)
-    notify("Invincibility Disabled")
+    Text.Notify("Invincibility Disabled")
 end
 
 function EnableInvincibility()
@@ -34,7 +34,7 @@ function EnableInvincibility()
 
     invincibilityEnabled = true
     SetEntityProofs(playerPed, true, true, true, true, true, true, true, true)
-    notify("Invincibility Enabled")
+    Text.Notify("Invincibility Enabled")
 end
 
 -- Mostly adapted from the Chaos Mod:
@@ -47,12 +47,12 @@ function MpSuicide()
     local player = GetPlayerPed(-1)
     playerPed = PlayerPedId() -- PlayerId
 
-    -- notify("Running")
+    -- Text.Notify("Running")
 
     if not IsPedInAnyVehicle(player, false) and IsPedOnFoot(player)
     and GetPedParachuteState(playerPed) == -1 then
         RequestAnimDict(animDict)
-        notify("Running")
+        Text.Notify("Running")
 
         -- Wait on this to load
         while not HasAnimDictLoaded(animDict) do
@@ -93,9 +93,9 @@ function ToggleEnvEffScale()
 
     if envEffScaleEnabled then
         SetEnablePedEnveffScale(playerId, true)
-        notify("Enabled")
+        Text.Notify("Enabled")
     else
         SetEnablePedEnveffScale(playerId, false)
-        notify("Disabled")
+        Text.Notify("Disabled")
     end
 end

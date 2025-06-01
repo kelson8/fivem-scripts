@@ -186,7 +186,7 @@ function spawnPedHeliPilots(pedName1, pedName2)
 
     -- Break out of this if the model doesn't exist
     if not IsModelInCdimage(pedName1) or not IsModelInCdimage(pedName2) then
-        notify("Model doesn't exist!")
+        Text.Notify("Model doesn't exist!")
         return
     end
 
@@ -326,7 +326,7 @@ function explodeHeliPeds()
 
     local playerX, playerY, playerZ = table.unpack(playerCoords)
 
-    -- sendMessage(("Ped 1: %s, Ped 2: %s"):format(ped, ped2))
+    -- Text.SendMessage(("Ped 1: %s, Ped 2: %s"):format(ped, ped2))
 
     -- I could probably use this to despawn the peds in a loop if they exist and go a certain distance from the player.
 
@@ -342,7 +342,7 @@ function explodeHeliPeds()
             AddExplosion(pedX, pedY, pedZ, gaspumpExplosion, damageScale, true, false, cameraShake, false)
         else
             -- Well this just spams the message if there are multiple peds
-            -- sendMessage("Peds are dead.")
+            -- Text.SendMessage("Peds are dead.")
         end
     end
 end
