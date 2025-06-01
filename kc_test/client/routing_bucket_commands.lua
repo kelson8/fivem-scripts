@@ -20,6 +20,8 @@
 
 -- These work!
 
+-- Set and reset the players routing bucket if they have permission.
+
 RegisterCommand("setrtr", function ()
     -- TriggerServerEvent('instance:set')
     TriggerServerEvent('instance:set', 'Test')
@@ -32,3 +34,18 @@ RegisterCommand("resetrtr", function ()
 
 end, false)
 
+-- Print the current routing bucket to the player if they have permission.
+RegisterCommand("getrtr", function()
+    TriggerServerEvent("instance:getCurrent")
+end, false)
+
+-- Set the player to routing bucket 0 (Hub)
+RegisterCommand('hub', function()
+    TriggerServerEvent("instance:setHub")
+end, false)
+
+-- Set the player to routing bucket 10 (Disabled peds and traffic.)
+-- So far only works on the player, I will try to make this work on others later.
+RegisterCommand('nopopulation', function()
+    TriggerServerEvent("instance:setNoPopulation")
+end, false)
