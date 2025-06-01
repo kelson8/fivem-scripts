@@ -5,8 +5,9 @@
 -- NetworkIsPlayerConcealed() -- https://nativedb.dotindustries.dev/gta5/natives/0x919B3C98ED8292F9
 -- NetworkIsEntityConcealed() -- https://nativedb.dotindustries.dev/gta5/natives/0x71302EC70689052A
 
+-- This file is disabled, not active in the fxmanifest.
+
 ---@diagnostic disable: param-type-mismatch
--- This seems to be working, test with two clients when I get home.
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
