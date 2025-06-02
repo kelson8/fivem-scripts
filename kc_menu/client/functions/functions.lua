@@ -288,7 +288,7 @@ function blowupPlayer()
         local vehicle = GetVehiclePedIsIn(player, false)
         local vehX, vehY, vehZ = GetEntityCoords(vehicle)
 
-        Text.Notify("Your car is going to ~r~explode~s~ in 2 seconds.")
+        exports.kc_util:Notify("Your car is going to ~r~explode~s~ in 2 seconds.")
         -- Stop the vehicle instantly.
         BringVehicleToHalt(vehicle, 0.1, 1, true)
 
@@ -309,7 +309,7 @@ function blowupPlayer()
 
         AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, 1, 0, 1065353216, 0)
     else
-        Text.Notify("You are going to ~r~explode~s~ in 2 seconds.")
+        exports.kc_util:Notify("You are going to ~r~explode~s~ in 2 seconds.")
         Wait(2000)
 
         AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, 1, 0, 1065353216, 0)
@@ -331,12 +331,13 @@ function Text.SendMessage(msg)
     })
 end
 
--- function notify(msg)
-function Text.Notify(msg)
-    SetNotificationTextEntry("STRING")
-    AddTextComponentString(msg)
-    DrawNotification(true, false)
-end
+-- Moved into kc_util
+-- -- function notify(msg)
+-- function Text.Notify(msg)
+--     SetNotificationTextEntry("STRING")
+--     AddTextComponentString(msg)
+--     DrawNotification(true, false)
+-- end
 
 function Text.ShowAdvancedNotification(message, sender, subject, textureDict, iconType, saveToBrief, color)
     BeginTextCommandThefeedPost("STRING")

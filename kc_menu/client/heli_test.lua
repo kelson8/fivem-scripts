@@ -186,7 +186,7 @@ function spawnPedHeliPilots(pedName1, pedName2)
 
     -- Break out of this if the model doesn't exist
     if not IsModelInCdimage(pedName1) or not IsModelInCdimage(pedName2) then
-        Text.Notify("Model doesn't exist!")
+        exports.kc_util:Notify("Model doesn't exist!")
         return
     end
 

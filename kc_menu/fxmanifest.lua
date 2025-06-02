@@ -3,10 +3,14 @@ game 'gta5'
 lua54 'yes'
 
 -- This requires menuv.
-dependencies {'menuv'}
+dependencies {'menuv', 'kc_util'}
 
 client_scripts{
     '@menuv/menuv.lua',
+
+    -- This works for my utility functions, exported from kc_util.
+    '@kc_util/client/util.lua',
+
 
     -- My enums from some of my C++ headers
     'client/enums.lua',

@@ -29,7 +29,7 @@ Total time walking/driving/flying and total distance:
     Total miles flying a helicopter: MP0_DIST_DRIVING_HELI
     Total miles flying a plane: MP0_DIST_DRIVING_PLANE
     Total miles driving a quadbike: MP0_DIST_DRIVING_QUADBIKE
-    Total miles driving a submarine: MP0_DIST_DRIVING_SUBMARINE 
+    Total miles driving a submarine: MP0_DIST_DRIVING_SUBMARINE
 	
     Total time driving/flying/walking:
     Total time flying a helicopter: MP0_DIST_HELI
@@ -51,7 +51,7 @@ Checking if weapon is in inventory:
 
 function GetCopsKilled()
     -- Not sure how to use this yet
-    local _,copsKilled = StatGetInt(copsKilledStat, -1, -1)
+    local _, copsKilled = StatGetInt(copsKilledStat, -1, -1)
     return copsKilled
 end
 
@@ -74,28 +74,26 @@ function copsKilledCheck()
     local player = GetPlayerPed(-1)
     local copsKilledStat = GetHashKey("MP0_KILLS_COP")
     -- I had to add a second value to this
-    local _,copsKilled = StatGetInt(copsKilledStat, -1)
-
-    -- Text.Notify(("Cops killed: %s"):format(copsKilled))
+    local _, copsKilled = StatGetInt(copsKilledStat, -1)
+    -- exports.kc_util:Notify(("Cops killed: %s"):format(copsKilled))
 
     return copsKilled
 
-    -- Text.Notify("You have killed %s amount of cops.")
+    -- exports.kc_util:Notify("You have killed %s amount of cops.")
 end
 
 -- Get vehicles blown up
 function getVehiclesBlownUp()
     local vehiclesBlownUpStat = GetHashKey("MP0_CARS_EXPLODED")
-    local _,vehiclesBlownUp = StatGetInt(vehiclesBlownUpStat, -1)
+    local _, vehiclesBlownUp = StatGetInt(vehiclesBlownUpStat, -1)
 
     return vehiclesBlownUp
 end
 
-
 -- Get cop vehicles blown up
 function getCopVehiclesBlownUp()
     local copVehiclesBlownUpStat = GetHashKey("MP0_CARS_COPS_EXPLODED")
-    local _,copVehiclesBlownUp = StatGetInt(copVehiclesBlownUpStat, -1)
+    local _, copVehiclesBlownUp = StatGetInt(copVehiclesBlownUpStat, -1)
 
     return copVehiclesBlownUp
 end
@@ -104,7 +102,7 @@ end
 function getTiresPoppedByGunshot()
     local tiresPoppedStat = GetHashKey("MP0_TIRES_POPPED_BY_GUNSHOT")
     -- I had to add a second value to this
-    local _,tiresPopped = StatGetInt(tiresPoppedStat, -1)
+    local _, tiresPopped = StatGetInt(tiresPoppedStat, -1)
 
     return tiresPopped
 end
@@ -113,21 +111,21 @@ end
 -- Divide the time by 1000 on most of these, convert from miliseconds to seconds
 function getTimeAsDriver()
     local timeAsDriverStat = GetHashKey("MP0_TIME_DRIVING_CAR")
-    local _,timeAsDriver = StatGetInt(timeAsDriverStat, -1)
+    local _, timeAsDriver = StatGetInt(timeAsDriverStat, -1)
 
     return timeAsDriver / 1000
 end
 
 function getTotalPlayTime()
     local totalPlayTimeStat = GetHashKey("MP0_LEADERBOARD_PLAYING_TIME")
-    local _,playTime = StatGetInt(totalPlayTimeStat, -1)
+    local _, playTime = StatGetInt(totalPlayTimeStat, -1)
 
     return playTime
 end
 
 function getTimeAsHeliPilot()
     local timeFlyingHeliStat = GetHashKey("MP0_TIME_DRIVING_HELI")
-    local _,timeFlyingHeli = StatGetInt(timeFlyingHeliStat, -1)
+    local _, timeFlyingHeli = StatGetInt(timeFlyingHeliStat, -1)
 
     -- return msToSeconds(timeFlyingHeli)
     return timeFlyingHeli / 1000
@@ -137,7 +135,7 @@ end
 -- TODO Test these
 function getAmountOfTimesDied()
     local totalDeathsStat = GetHashKey("MP0_DEATHS")
-    local _,totalDeaths = StatGetInt(totalDeathsStat, -1)
+    local _, totalDeaths = StatGetInt(totalDeathsStat, -1)
 
     return totalDeaths
 end
@@ -145,7 +143,7 @@ end
 -- Get how many times the player has drowned on foot
 function getAmountOfTimesDiedByDrowning()
     local totalDeathsDrowningStat = GetHashKey("MP0_DIED_IN_DROWNING")
-    local _,totalDeathsDrowning = StatGetInt(totalDeathsDrowningStat, -1)
+    local _, totalDeathsDrowning = StatGetInt(totalDeathsDrowningStat, -1)
 
     return totalDeathsDrowning
 end
@@ -153,7 +151,7 @@ end
 -- Get how many times the player has drowned in a vehicle
 function getAmountOfTimesDiedByDrowningInVehicle()
     local totalDeathsDrowningInVehicleStat = GetHashKey("MP0_DIED_IN_DROWNINGINVEHICLE")
-    local _,totalDeathsDrowningInVehicle = StatGetInt(totalDeathsDrowningInVehicleStat, -1)
+    local _, totalDeathsDrowningInVehicle = StatGetInt(totalDeathsDrowningInVehicleStat, -1)
 
     return totalDeathsDrowningInVehicle
 end
@@ -161,7 +159,7 @@ end
 -- Get how many times the player has died by explosions
 function getAmountOfTimesDiedByExplosion()
     local totalDeathsExplosionStat = GetHashKey("MP0_DIED_IN_EXPLOSION")
-    local _,totalDeathsExplosion = StatGetInt(totalDeathsExplosionStat, -1)
+    local _, totalDeathsExplosion = StatGetInt(totalDeathsExplosionStat, -1)
 
     return totalDeathsExplosion
 end
@@ -169,7 +167,7 @@ end
 -- Get how many times the player has died by falling
 function getAmountOfTimesDiedByFalling()
     local totalDeathsFallingStat = GetHashKey("MP0_DIED_IN_FALL")
-    local _,totalDeathsFalling = StatGetInt(totalDeathsFallingStat, -1)
+    local _, totalDeathsFalling = StatGetInt(totalDeathsFallingStat, -1)
 
     return totalDeathsFalling
 end
@@ -177,7 +175,7 @@ end
 -- Get how many times the player has died by fire
 function getAmountOfTimesDiedByFire()
     local totalDeathsFireStat = GetHashKey("MP0_DIED_IN_FIRE")
-    local _,totalDeathsFire = StatGetInt(totalDeathsFireStat, -1)
+    local _, totalDeathsFire = StatGetInt(totalDeathsFireStat, -1)
 
     return totalDeathsFire
 end
@@ -186,7 +184,7 @@ end
 -- I'm guessing this is when the player is ran over.
 function getAmountOfTimesDiedByRoadAccident()
     local totalDeathsRoadAccidentStat = GetHashKey("MP0_DIED_IN_ROAD")
-    local _,totalDeathsRoadAccident = StatGetInt(totalDeathsRoadAccidentStat, -1)
+    local _, totalDeathsRoadAccident = StatGetInt(totalDeathsRoadAccidentStat, -1)
 
     return totalDeathsRoadAccident
 end
@@ -210,7 +208,7 @@ function testStat()
 
     -- local _,copsKilled = StatGetInt(copsKilledStat, -1)
 
-    local _,copCarsExploded = StatGetInt(copCarsExplodedStat, -1)
+    local _, copCarsExploded = StatGetInt(copCarsExplodedStat, -1)
     -- local _,totalDistanceTraveled = StatGetFloat(totalDistanceTraveledStat, -1)
     -- local _,totalPlayTime = StatGetInt(totalPlayTimeStat, -1)
     -- Not sure how this one works.
@@ -221,14 +219,13 @@ function testStat()
     --     Text.SendMessage(tmpValue)
     -- end
 
-        -- Text.SendMessage(("Cops killed: %s"):format(copsKilled))
-        Text.Notify(("Cop cars exploded %s"):format(copCarsExploded))
-        -- Text.SendMessage(("Test %s"):format(totalDistanceTraveled))
-        -- Text.SendMessage(("Test %s"):format(totalPlayTime))
-        -- Text.SendMessage(("Test %s"):format(totalTimeDrivingCar))
-    -- Text.Notify("You have killed %s amount of cops.")
+    -- Text.SendMessage(("Cops killed: %s"):format(copsKilled))
+    exports.kc_util:Notify(("Cop cars exploded %s"):format(copCarsExploded))
+    -- Text.SendMessage(("Test %s"):format(totalDistanceTraveled))
+    -- Text.SendMessage(("Test %s"):format(totalPlayTime))
+    -- Text.SendMessage(("Test %s"):format(totalTimeDrivingCar))
+    -- exports.kc_util:Notify("You have killed %s amount of cops.")
 end
-
 
 -- Make this global
 stats = {}
@@ -248,7 +245,6 @@ local function getCurrentStats()
     -- -- Remove the table and keep readding to it, will this work?
     -- Wait(500)
     -- table.remove(stats, 1)
-
 end
 
 -- TODO How would I do this for multiple stats?
@@ -260,7 +256,7 @@ if debugTest then
                 getCurrentStats()
             end
         end)
-    
+
         -- unpackedStatTable = table.unpack(stats)
         return tiresPoppedByGunshot
     end

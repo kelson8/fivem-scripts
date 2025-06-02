@@ -79,43 +79,36 @@ function teleportToNewAreas(areaName)
         if areaName == "aircarrier1" then
             if IsIplActive(Warps.AircraftCarrier1.carrierIpl) then
                 Teleports.TeleportFade(Warps.AircraftCarrier1.x, Warps.AircraftCarrier1.y, Warps.AircraftCarrier1.z, 10.0)
-                Text.Notify("Warped to the aircraft carrier.")
+                exports.kc_util:Notify("Warped to the aircraft carrier.")
             end
+
         elseif areaName == "bountyoffice" then
             if IsIplActive(Warps.BountyOffice.bountyOfficeIpl) then
-                Teleports.TeleportFade(Warps.BountyOffice.x, Warps.BountyOffice.y, Warps.BountyOffice.z, 10.0)
-                Text.Notify("Warped to the bounty office.")
+                Teleports.TeleportFade(Warps.BountyOffice.x, Warps.BountyOffice.y, Warps.BountyOffice.z, 10.0)                
+                exports.kc_util:Notify("Warped to the bounty office.")
             end
         else
-            Text.Notify("Area name not valid.")
+            exports.kc_util:Notify("Area name not valid.")
         end
     else
-        Text.Notify("You cannot use the new ipls! You need to be on version 3258")
+        exports.kc_util:Notify("You cannot use the new ipls! You need to be on version 3258")
     end
 end
 
 -- TODO Make this auto unload Cayo Perico.
 function teleportToWarps(warpName)
     local player = GetPlayerPed(-1)
-    -- local spawnX, spawnY, spawnZ = 222.2027, -864.0162, 29.2922
-    -- local cayoX, cayoY, cayoZ = 4840.571, -5174.425, 2.0
 
     -- I made my own set coords function, moved the booleans into it
     if warpName == "spawn" then
-        -- Teleports.TeleportFade(spawnX, spawnY, spawnZ, 10.0)
         Teleports.TeleportFade(Warps.Spawn1.x, Warps.Spawn1.y, Warps.Spawn1.z, 10.0)
-        -- disableCayoPericoIsland()
         World.DisableCayoPericoIsland()
-        Text.Notify("Warped to spawn.")
-        -- World.ToggleCayoPericoIsland()
+        exports.kc_util:Notify("Warped to spawn.")
     elseif warpName == "cayoPerico" and Version.CayoPericoVersionCheck() then
-        -- enableCayoPericoIsland()
         World.EnableCayoPericoIsland()
 
-        -- World.ToggleCayoPericoIsland()
-        -- Teleports.TeleportFade(cayoX, cayoY, cayoZ, 10.0)
         Teleports.TeleportFade(Warps.CayoPerico.x, Warps.CayoPerico.y, Warps.CayoPerico.z, 10.0)
-        Text.Notify("Warped to Cayo perico.")
+        exports.kc_util:Notify("Warped to Cayo perico.")
 
         -- Failsafe to kill cayo perico island if another warp is set.
     else
@@ -136,11 +129,11 @@ function warpToSky()
     -- I could re-add this if needed
     -- FadeScreenForTeleport()
     if killDelay then
-        Text.Notify("Be prepared to die in 2 seconds.")
+        exports.kc_util:Notify("Be prepared to die in 2 seconds.")
         Wait(2000)
         -- TaskParachute(player, true, true)
     else
-        Text.Notify("You are going to die")
+        exports.kc_util:Notify("You are going to die.")
     end
 
     Teleports.TeleportFade(x, y, z + 100, 10.0)

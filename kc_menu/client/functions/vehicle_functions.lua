@@ -24,16 +24,16 @@ function toggleDriftTires()
         if not driftTires then
             SetDriftTyres(vehicle, true)
             -- Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, true)
-            Text.Notify("Drift tires enabled.")
+            exports.kc_util:Notify("Drift tires enabled.")
             driftTires = true
         else
             -- Citizen.InvokeNative(0x5AC79C98C5C17F05, vehicle, false)
             SetDriftTyres(vehicle, false)
-            Text.Notify("Drift tires disabled.")
+            exports.kc_util:Notify("Drift tires disabled.")
             driftTires = false
         end
     else
-        Text.Notify("You need to be in a vehicle to use this.")
+        exports.kc_util:Notify("You need to be in a vehicle to use this.")
     end
 end
 
@@ -62,7 +62,7 @@ function toggleVehicleDoorLock()
 
         if not doorsLocked then
             SetVehicleDoorsLocked(vehicle, 2)
-            Text.Notify("Doors locked")
+            exports.kc_util:Notify("Doors locked")
         else
             -- if pedLastVehicle then
             --     local lastVehicle = GetVehiclePedIsIn(player, true)
@@ -70,11 +70,11 @@ function toggleVehicleDoorLock()
             -- else
                 SetVehicleDoorsLocked(vehicle, 1)
             -- end
-            Text.Notify("Doors unlocked")
+            exports.kc_util:Notify("Doors unlocked")
         end
     else
         -- TODO Check if previous vehicle is locked
-        Text.Notify("You need to be in a vehicle to use this")
+        exports.kc_util:Notify("You need to be in a vehicle to use this")
     end
 end
 
@@ -182,7 +182,7 @@ end
 function spawnPersonalVehicleWithBlip(vehicleName)
     -- Check if the vehicle actually exists
     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-        Text.Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
+        exports.kc_util:Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
     end
 
     -- Load the model
@@ -243,7 +243,7 @@ function spawnVehicleWithBlip(vehicleName)
 
     -- Check if the vehicle actually exists
     if not IsModelInCdimage(vehicleName) or not IsModelAVehicle(vehicleName) then
-        Text.Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
+        exports.kc_util:Notify("~r~Error~w~: The model " .. vehicleName .. " doesn't exist!")
     end
 
     -- Load the model

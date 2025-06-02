@@ -55,7 +55,7 @@ local testMenuButton = menu:AddButton({ label = "Test Menu", description = 'Open
         FadeScreenForTeleport()
         SetEntityCoords(player, casinoVaultX, casinoVaultY, casinoVaultZ, true, false, false, false)
         SetEntityHeading(player, 270.79)
-        Text.Notify("Teleported to casino vault")
+        exports.kc_util:Notify("Teleported to casino vault")
     -- Ipl checks are needed for below two
     elseif args[1] == "aircarrier1" then
 
@@ -157,7 +157,7 @@ vehicleMenuButton:On("select", function()
     MenuV:OpenMenu(vehicleMenu, function()
         spawnVehicleButton:On("select", function()
             local player = GetPlayerPed(-1)
-            Text.Notify("Incomplete")
+            exports.kc_util:Notify("Incomplete")
             -- SetEntityHealth(player, 250)
         end)
 
@@ -166,7 +166,7 @@ vehicleMenuButton:On("select", function()
         end)
 
         doorLockStatusButton:On("select", function()
-            Text.Notify(getVehicleDoorLockStatusValue())
+            exports.kc_util:Notify(getVehicleDoorLockStatusValue())
         end)
 
         toggleDoorLockButton:On("select", function()
@@ -494,7 +494,7 @@ testMenuButton:On("select", function()
         -- Not sure how to use this one, cannot figure out how to change the slider value
         blipSliderRange:On("change", function(item, newValue, oldValue)
             -- blipSliderRange:
-            -- Text.Notify(newValue)
+            -- exports.kc_util:Notify(newValue)
         end)
 
         mapZoomEnableTestButton:On("select", function()
@@ -530,11 +530,11 @@ end
 --     menuOpen = true
 --     -- TODO Fix this to work.
 --     -- Why doesn't this work?
---     -- Text.Notify(("Menu open: %s"):format(menuOpen))
+--     -- exports.kc_util:Notify(("Menu open: %s"):format(menuOpen))
 --     -- else
 --     --     -- MenuV:CloseMenu(menu, function()
 --     --     menuOpen = false
---     --     Text.Notify(("Menu open: %s"):format(menuOpen))
+--     --     exports.kc_util:Notify(("Menu open: %s"):format(menuOpen))
 --     -- end)
 --     -- menu:Close(menu)
 -- end

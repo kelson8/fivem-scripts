@@ -17,6 +17,9 @@ client_scripts{
 export 'notify'
 export 'sendMessage'
 
+-- I have some of these setup in the client/util.lua
+
+
 -- server_scripts{
 --     'server/util.lua'
 -- }
