@@ -39,7 +39,7 @@ Config.Doors = {
         Coordinates = vector3(2519.936, -251.0514, -71.74525),
         Locked = 0,
     },
-    
+
     --
 
     -- Casino doors
@@ -86,6 +86,24 @@ Config.Doors = {
         Locked = 0,
     },
 
+    ---------
+    --- Penthouse doors
+    ----------
+    --- Door #1
+    ['penthouse_door1'] = {
+        DoorHash = "penthouse_door1",
+        ModelHash = "vw_prop_vw_door_lounge_01a",
+        Coordinates = vector3(973.8256, 54.3764, 116.81),
+        Locked = 0,
+    },
+
+    -- Penthouse bathroom
+    ['penthouse_bahtroomdoor1'] = {
+        DoorHash = "penthouse_bahtroomdoor1",
+        ModelHash = "vw_prop_vw_door_bath_01a",
+        Coordinates = vector3(976.4456, 75.2526, 116.6326),
+        Locked = 0,
+    },
+
 
 }
-

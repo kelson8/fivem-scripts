@@ -17,58 +17,99 @@ local casino_entry = vector3(924.05, 48.21, 81.11)
 -- Todo Add location names to these markers later.
 
 locations = {
-    {
-        pos = {x = -676.2, y = 94.2, z = 54.5},
-        tpto = {x = -663.1, y = 77.81, z = 50.25},
-        text_name = "Test1",
-        submarker = {
-            marker = 29,
-            posz = 15.25,
-        },
-        marker = 1,
-        scale = 2.0,
-        rgba = {120, 255, 120, 155}
-    },
-    {
-        pos = {x = -657.97, y = 84.14, z = 52.06},
-        tpto = {x = -640.92, y = 82.23, z = 51.44},
-        text_name = "Test2",
-        submarker = {
-            marker = 29,
-            posz = 15.25,
-        },
-        marker = 1,
-        scale = 2.0,
-        rgba = {120, 255, 120, 155}
-    },
+    -- {
+    --     pos = {x = -676.2, y = 94.2, z = 54.5},
+    --     tpto = {x = -663.1, y = 77.81, z = 50.25},
+    --     text_name = "Test1",
+    --     submarker = {
+    --         marker = 29,
+    --         posz = 15.25,
+    --     },
+    --     marker = 1,
+    --     scale = 2.0,
+    --     rgba = {120, 255, 120, 155},
+    --     text_rgba = {0, 100, 50, 255}
+    -- },
+    -- {
+    --     pos = {x = -657.97, y = 84.14, z = 52.06},
+    --     tpto = {x = -640.92, y = 82.23, z = 51.44},
+    --     text_name = "Test2",
+    --     submarker = {
+    --         marker = 29,
+    --         posz = 15.25,
+    --     },
+    --     marker = 1,
+    --     scale = 2.0,
+    --     rgba = {120, 255, 120, 155},
+    --     text_rgba = {0, 100, 50, 255}
+    -- },
 
+    -- {
+    --     pos = {x = -666.15, y = 46.65, z = 40.40},
+    --     tpto = {x = -618.3, y = 34.47, z = 43.53},
+    --     text_name = "Test3",
+    --     submarker = {
+    --         marker = 29,
+    --         poz = 15.25,
+    --     },
+    --     marker = 1,
+    --     scale = 2.0,
+    --     rgba = {120, 255, 120, 155},
+    --     text_rgba = {0, 100, 50, 255}
+    -- },
+
+    -- -- FIB Building Los Santos
+    -- -- X = 121.6, Y = -759.33, Z = 45.75
+    -- {
+    --     -- Middle of Los Santos marker #1 teleport to FIB Building
+    --     pos = {x = 236.2, y = -874.9, z = 29.49},
+    --     tpto = {x = 121.6, y = -759.33, z = 45.75},
+    --     text_name = "FIB Building",
+    --     submarker = {
+    --         marker = 29,
+    --         poz = 15.25,
+    --     },
+    --     marker = 1,
+    --     scale = 2.0,
+    --     rgba = {120, 255, 120, 155},
+    --     text_rgba = {0, 100, 50, 255}
+    -- },
+
+        -- Penthouse exit
     {
-        pos = {x = -666.15, y = 46.65, z = 40.40},
-        tpto = {x = -618.3, y = 34.47, z = 43.53},
-        text_name = "Test3",
+        -- Penthouse exit marker
+        pos = {x = 980.11, y = 57.43, z = 114.9},
+        -- Penthouse exit, outside casino
+        tpto = {x = 913.83, y = -41.45, z = 80.9},
+        text_pos = {x = 980.07, y = 57.13, z = 116.8},
+        text_name = "Penthouse Exit",
         submarker = {
             marker = 29,
             poz = 15.25,
         },
         marker = 1,
         scale = 2.0,
-        rgba = {120, 255, 120, 155}
+        rgba = {120, 255, 120, 155},
+        text_rgba = {0, 100, 50, 255}
     },
 
-    -- FIB Building Los Santos
-    -- X = 121.6, Y = -759.33, Z = 45.75
+        -- Penthouse entry
+        -- 
     {
-        -- Middle of Los Santos marker #1 teleport to FIB Building
-        pos = {x = 236.2, y = -874.9, z = 29.49},
-        tpto = {x = 121.6, y = -759.33, z = 45.75},
-        text_name = "FIB Building",
+        -- Penthouse entry marker
+        pos = {x = 929.06, y = 38.47, z = 80.1},
+        -- Penthouse entrance teleporting, inside penthouse
+        tpto = {x = 965.26, y = 47.26, z = 117.18},
+        text_pos = {x = 929.06, y = 38.47, z = 82.1},
+        text_name = "Penthouse Entry",
         submarker = {
             marker = 29,
             poz = 15.25,
         },
         marker = 1,
         scale = 2.0,
-        rgba = {120, 255, 120, 155}
+        rgba = {120, 255, 120, 155},
+        text_rgba = {0, 100, 50, 255}
     },
 
 
