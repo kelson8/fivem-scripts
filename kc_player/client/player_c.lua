@@ -9,68 +9,7 @@ function toggleInvincibility()
 end
 ]]
 
------------- 
---- Teleport functions
-------------
 
-
-local Teleports = {}
-
--- Taken from functions.lua in kc_menu
---- https://forum.cfx.re/t/esx-want-to-teleport-player-with-his-vehicle/4880346
---- Teleport with a fade, also teleports the player vehicle if they are in one.
----@param x any
----@param y any
----@param z any
----@param heading any
-function Teleports.TeleportFade(x, y, z, heading)
-    local player = GetPlayerPed(-1)
-    local fadeInTime = 500
-    local fadeOutTime = 500
-
-    DoScreenFadeOut(fadeOutTime)
-    FreezeEntityPosition(player, true)
-
-    while not IsScreenFadedOut() do
-        Wait(0)
-    end
-
-    if IsPedInAnyVehicle(player, false) then
-        local currentVeh = GetVehiclePedIsIn(player, false)
-        SetEntityCoords(currentVeh, x, y, z, false, false, false, false)
-        SetEntityHeading(currentVeh, heading)
-    else
-        SetEntityCoords(player, x, y, z, false, false, false, false)
-        SetEntityHeading(player, heading)
-    end
-
-
-
-    Wait(fadeInTime)
-    DoScreenFadeIn(fadeInTime)
-end
-
-
-------------
--- Math functions
-------------
-
--- https://www.reddit.com/r/Stormworks/comments/srlkyq/lua_decimal_point/
--- This works for stripping the extra digits from the coords
-function Truncate(number, decdigits)
-    number = number * (10 ^ decdigits)
-    number = math.floor(number)
-    number = number / (10 ^ decdigits)
-
-    return number
-end
-
-
-function notify(msg)
-    SetNotificationTextEntry("STRING")
-    AddTextComponentString(msg)
-    DrawNotification(true, false)
-end
 
 -- This needs to be implemented on the server side, it doesn't work on the client.
 -- Trying to make the interior number log to a file, still not really sure how to use server events.
@@ -85,16 +24,32 @@ end
 --     log:close()
 -- end
 
+-- TODO Test this, see if it makes music play in the casino interior.
+-- Well this didn't seem to work
+Citizen.CreateThread(function ()
+    while true do
+        Wait(0)
+        local ped = GetPlayerPed(-1)
+        -- I guess 120 is the casino
+        local casinoInteriorId = 120
+        if(GetInteriorFromEntity(ped) == casinoInteriorId) then
+        -- if(GetInteriorFromEntity(ped) > 0) then
+            TriggerMusicEvent("CHASE_PARACHUTE_START")
+        end
+    end
+end)
+
 -- This works for getting interiors that that the player is in.
 -- Added > 0, everytime a player is outside their interior should be 0 and the else statement is working.
 RegisterCommand('getinterior', function(source, args)
     local ped = GetPlayerPed(PlayerId())
     if(GetInteriorFromEntity(ped) > 0) then
-        notify("You are in an interior: " .. GetInteriorGroupId(GetInteriorFromEntity(ped)))
+        
+        Text.Notify("You are in an interior: " .. GetInteriorGroupId(GetInteriorFromEntity(ped)))
         -- TriggerServerEvent("interiorLog")
         -- textWrite("Player ".. GetPlayerName(ped) .. "was in interior id: " .. GetInteriorFromEntity(ped))
     else
-        notify("You are not in an interior.")
+        Text.Notify("You are not in an interior.")
     end
 end, false)
 
@@ -108,10 +63,10 @@ RegisterCommand('pos', function(source, args)
     test = true
     -- Run test code, somewhat mimics C# preprocessors.
     if not test then
-        notify("Your coords are: " .. GetEntityCoords(ped))
+        Text.Notify("Your coords are: " .. GetEntityCoords(ped))
     else
         
-        notify("Your coords are: " .. "X: " .. playerX .. " Y: " .. playerY .. " Z: " .. playerZ)
+        Text.Notify("Your coords are: " .. "X: " .. playerX .. " Y: " .. playerY .. " Z: " .. playerZ)
     end
 end, false)
 
@@ -127,7 +82,7 @@ RegisterCommand("spawn", function()
         Teleports.TeleportFade(PlayerConfig.SpawnX, PlayerConfig.SpawnY, PlayerConfig.SpawnZ, 10.0)
 
     end
-    notify("You have been teleported to the spawn!")
+    Text.Notify("You have been teleported to the spawn!")
 end)
 
 -- Create markers
@@ -135,12 +90,12 @@ end)
 -- https://docs.fivem.net/natives/?_0x28477EC23D892089
 
 RegisterCommand("playerid", function()
-    notify("Your player id: " .. GetPlayerServerId(PlayerId()))
+    Text.Notify("Your player id: " .. GetPlayerServerId(PlayerId()))
 end)
 
 
 RegisterCommand("getstatus", function()
-    notify("Max wanted level: " .. GetMaxWantedLevel())
+    Text.Notify("Max wanted level: " .. GetMaxWantedLevel())
 end)
 
 RegisterCommand('kms', function()
@@ -160,4 +115,13 @@ RegisterCommand("logcoords", function ()
     local playerHeading = Truncate(GetEntityHeading(ped), 3)
 
     TriggerServerEvent("kc_player:log", string.format("X: %f, Y: %f, Z: %f, Heading: %f\n", playerX, playerY, playerZ, playerHeading))
+end, false)
+
+RegisterCommand("keyboard_check", function()
+    local ped = GetPlayerPed(-1)
+    if IsUsingKeyboard(0) then
+        Text.Notify("You are using keyboard and mouse")
+    else
+        Text.Notify("You are using controller.")
+    end
 end, false)

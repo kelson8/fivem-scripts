@@ -28,7 +28,8 @@ function DeathCam()
     local x, y, z = 793.75, -41.09, 103.32
     local heading = 140.2
     -- Stop this from being instant
-    FadeScreenForTeleport()
+    -- FadeScreenForTeleport()
+    Fade.FadeScreen()
     -- cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x, pos.y + 0.5, pos.z + 0.5, 0.0, 0.0, heading, 60.00, false, 0)
     cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", x, y, z + 20.0, 0.0, 0.0, heading, 60.00, false, 0)
     SetCamActive(cam, true)
@@ -59,7 +60,8 @@ end
 function StopDeathCam()
     local player = GetPlayerPed(-1)
     -- Stop this from being instant
-    FadeScreenForTeleport()
+    -- FadeScreenForTeleport()
+    Fade.FadeScreen()
     SetCamActive(cam, false)
     -- Needed to prevent this from glitching out.
     RenderScriptCams(false, false, 1, true, true, false)

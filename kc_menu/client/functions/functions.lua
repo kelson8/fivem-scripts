@@ -45,6 +45,8 @@ Player = {}
 Text = {}
 World = {}
 
+Fade = {}
+
 Teleports = {}
 
 Version = {}
@@ -100,7 +102,8 @@ end
 ------------
 
 -- Taken from functions.lua in kc_menu
---- TODO Make this teleport the vehicle also, if the player is in one.
+--- This now teleports the players vehicle if they are in one.
+--- https://forum.cfx.re/t/esx-want-to-teleport-player-with-his-vehicle/4880346
 --- Teleport with a fade
 ---@param x any
 ---@param y any
@@ -118,8 +121,17 @@ function Teleports.TeleportFade(x, y, z, heading)
         Wait(0)
     end
 
-    SetEntityCoords(player, x, y, z, false, false, false, false)
-    SetEntityHeading(player, heading)
+    -- This now teleports the players vehicle if they are in one.
+    if IsPedInAnyVehicle(player, false) then
+        local currentVeh = GetVehiclePedIsIn(player, false)
+        SetEntityCoords(currentVeh, x, y, z, false, false, false, false)
+        SetEntityHeading(currentVeh, heading)
+    else
+        SetEntityCoords(player, x, y, z, false, false, false, false)
+        SetEntityHeading(player, heading)
+    end
+
+
 
     Wait(fadeInTime)
     DoScreenFadeIn(fadeInTime)
@@ -219,26 +231,31 @@ end
 --
 
 ------------
+-- Fade functions
+------------
+
+-- Fade the screen in and out for a teleport, so it's not instant.
+-- This was an old function in the previous functions.lua.
+function Fade.FadeScreen()
+    local player = GetPlayerPed(-1)
+    -- Test moving this into the thread.
+    DoScreenFadeOut(500)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    Wait(500)
+    DoScreenFadeIn(500)
+    FreezeEntityPosition(player, false)
+end
+
+------------
 -- Player functions
 ------------
 
 
--- Fade the screen in and out for a teleport, so it's not instant.
--- This was an old function in the previous functions.lua.
--- function FadeScreenForTeleport()
---     local player = GetPlayerPed(-1)
---     -- Test moving this into the thread.
---     DoScreenFadeOut(500)
---     FreezeEntityPosition(player, true)
-
---     while not IsScreenFadedOut() do
---         Wait(0)
---     end
-
---     Wait(500)
---     DoScreenFadeIn(500)
---     FreezeEntityPosition(player, false)
--- end
 
 -- TODO Test these.
 
