@@ -254,17 +254,43 @@ AddEventHandler("instance:setNoPopulation", function()
 end)
 
 -- I got this part to work, I had to get the network ID like I was doing in lobby_test.
+-- Get current player routing bucket.
+-- TODO Make this get the vehicles network id if a player is in one.
 RegisterServerEvent("instance:getCurrent")
 AddEventHandler("instance:getCurrent", function()
     if IsPlayerAceAllowed(source, "kc_test.get.rtr") then
         -- This requires the network of of the player.
         local netId = NetworkGetEntityFromNetworkId(source)
 
-        -- local currentRoutingBucket = GetEntityRoutingBucket(source)
+        -- TODO Set this up, if the player is in a vehicle this should return the network ID of it.
+        -- TriggerClientEvent("instance:getCurrentVehicle", source)
         local currentRoutingBucket = GetEntityRoutingBucket(netId)
+
         Server.SendMessage(source, string.format("Current routing bucket: %d", currentRoutingBucket))
     else
-        Server.SendMessage(src, "[Error]: You do not have permission for this!")
+        Server.SendMessage(source, "[Error]: You do not have permission for this!")
         -- Server.SendErrorMessage()
     end
 end)
+
+
+-- TODO Make a new permission for this, don't want to restart for now.
+-- Why doesn't this work right?
+-- Get the current vehicle network id, TODO Setup.
+-- RegisterServerEvent("instance:getCurrentVehicle")
+-- AddEventHandler("instance:getCurrentVehicle", function(vehicle)
+--     if IsPlayerAceAllowed(source, "kc_test.get.rtr") then
+--         -- This requires the network of of the vehicle.
+--         local vehicleId = NetworkGetEntityFromNetworkId(vehicle)
+
+--         -- TODO Set this up, if the player is in a vehicle this should return the network ID of it.
+--         -- TriggerClientEvent("instance:getCurrentVehicle", source)
+
+--         local currentVehicleRoutingBucket = GetEntityRoutingBucket(vehicleId)
+--         -- Server.SendMessage(source, string.format("Current vehicle routing bucket: %d, netID: %d", currentVehicleRoutingBucket, vehicleId))
+--         print(string.format("Vehicle '%d' Routing bucket: '%d', netID '%d'", vehicle, currentVehicleRoutingBucket, vehicleId))
+--     else
+--         Server.SendMessage(source, "[Error]: You do not have permission for this!")
+--         -- Server.SendErrorMessage()
+--     end
+-- end)

@@ -100,7 +100,7 @@ local requestedIpl = { "h4_islandairstrip", "h4_islandairstrip_props", "h4_islan
 
 
 -- TODO Setup toggle for this in the menu
-local cayoPericoEnabled = false
+-- local World.cayoPericoEnabled = false
 
 -- TODO Setup removing ipls for cayo perico in menu
 
@@ -124,6 +124,7 @@ if cayoPericEnabled then
 		requestedIpl = nil
 	end)
 
+	-- TODO Implement this into my system.
 	CreateThread(function()
 		while true do
 			SetRadarAsExteriorThisFrame()

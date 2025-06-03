@@ -5,7 +5,25 @@
 
 Text = {}
 
--- Send a notification to the player.
+-- To use this in another resource:
+-- First, make this required in the dependices of fxmanifest.lua:
+-- This resource requires kc_util
+-- dependencies {
+    -- 'kc_util'
+-- }
+
+-- At the top of client_scripts in fxmanifest.lua:
+-- client_scripts{
+    -- This works for my utility functions, exported from kc_util.
+    -- '@kc_util/client/util.lua',
+-- }
+
+
+-- Then to use this in another resource:
+-- exports.kc_util:Notify("Model doesn't exist!")
+
+
+-- Send a notification to the player, old function should be removed later.
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
@@ -27,5 +45,8 @@ function Text.Notify(msg)
     AddTextComponentString(msg)
     DrawNotification(true, false)
 end
+
+-- Exports are setup down here, if more is added to this file
+-- Make a name for them and a mapping down here.
 
 exports("Notify", Text.Notify)

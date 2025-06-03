@@ -68,10 +68,6 @@ RegisterCommand('lobby', function(source, args)
         ))
         -- sendMessage(source, "You have set %s to routing bucket %s." .. routingBucket)
     end
-
-    -- if args[2] == 0 then
-        
-    -- end
 end, true)
 
 
@@ -101,7 +97,7 @@ end, true)
 RegisterCommand('gettargetid', function(source, args)
     -- local targetId = args[1] or source
     -- This didn't seem to work.
-   
+
     -- local player = GetPlayerPed()
     local targetEntityId = NetworkGetEntityFromNetworkId(args[1])
 

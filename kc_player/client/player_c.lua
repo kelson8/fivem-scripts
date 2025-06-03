@@ -26,18 +26,18 @@ end
 
 -- TODO Test this, see if it makes music play in the casino interior.
 -- Well this didn't seem to work
-Citizen.CreateThread(function ()
-    while true do
-        Wait(0)
-        local ped = GetPlayerPed(-1)
-        -- I guess 120 is the casino
-        local casinoInteriorId = 120
-        if(GetInteriorFromEntity(ped) == casinoInteriorId) then
-        -- if(GetInteriorFromEntity(ped) > 0) then
-            TriggerMusicEvent("CHASE_PARACHUTE_START")
-        end
-    end
-end)
+-- Citizen.CreateThread(function ()
+--     while true do
+--         Wait(0)
+--         local ped = GetPlayerPed(-1)
+--         -- I guess 120 is the casino
+--         local casinoInteriorId = 120
+--         if(GetInteriorFromEntity(ped) == casinoInteriorId) then
+--         -- if(GetInteriorFromEntity(ped) > 0) then
+--             TriggerMusicEvent("CHASE_PARACHUTE_START")
+--         end
+--     end
+-- end)
 
 -- This works for getting interiors that that the player is in.
 -- Added > 0, everytime a player is outside their interior should be 0 and the else statement is working.
