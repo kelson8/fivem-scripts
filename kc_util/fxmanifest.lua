@@ -11,7 +11,6 @@ client_scripts{
     'client/util.lua',
 }
 
--- TODO Test these
 -- https://forum.cfx.re/t/calling-a-function-from-a-different-resource/1415243
 -- Export the functions for use outside this resource.
 export 'notify'

@@ -3,6 +3,8 @@
 
 -- https://forum.cfx.re/t/calling-a-function-from-a-different-resource/1415243
 
+Fade = {}
+
 Text = {}
 
 -- To use this in another resource:
@@ -22,6 +24,42 @@ Text = {}
 -- Then to use this in another resource:
 -- exports.kc_util:Notify("Model doesn't exist!")
 
+
+------------
+-- Fade functions
+------------
+
+-- Fade the screen in and out for a teleport, so it's not instant.
+-- This was an old function in the previous functions.lua.
+function Fade.FadeScreen()
+    local player = GetPlayerPed(-1)
+    -- Test moving this into the thread.
+    DoScreenFadeOut(500)
+    FreezeEntityPosition(player, true)
+
+    while not IsScreenFadedOut() do
+        Wait(0)
+    end
+
+    Wait(500)
+    DoScreenFadeIn(500)
+    FreezeEntityPosition(player, false)
+end
+
+function Fade.FadeOut(fadeTime)
+    DoScreenFadeOut(fadeTime)
+    Wait(fadeTime)
+end
+
+function Fade.FadeIn(fadeTime)
+    DoScreenFadeIn(fadeTime)
+    Wait(fadeTime)
+end
+
+
+------------
+-- Message/Notifcation functions
+------------
 
 -- Send a notification to the player, old function should be removed later.
 function notify(msg)
@@ -50,3 +88,7 @@ end
 -- Make a name for them and a mapping down here.
 
 exports("Notify", Text.Notify)
+
+-- Fade
+exports("FadeOut", Fade.FadeOut)
+exports("FadeIn", Fade.FadeIn)

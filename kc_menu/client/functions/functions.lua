@@ -147,7 +147,9 @@ function Music.Play(musicEvent)
 end
 
 function Music.PlayArenaWarTheme()
-    TriggerMusicEvent("AW_LOBBY_MUSIC_START")
+    local arenaWarMusic = "AW_LOBBY_MUSIC_START"
+    -- PrepareMusicEvent(arenaWarMusic)
+    TriggerMusicEvent(arenaWarMusic)
 end
 
 -- This seems to stop the music.
@@ -250,6 +252,8 @@ function Fade.FadeScreen()
     DoScreenFadeIn(500)
     FreezeEntityPosition(player, false)
 end
+
+-- New functions added to util.lua for fades, I plan on moving everything out of here into separate files.
 
 ------------
 -- Player functions
@@ -369,6 +373,18 @@ function Text.HideBusySpinner()
 end
 
 
+-- Taken from Venomous Freemode
+-- Show a busy spinner for the set amount of time, alternative to above function.
+function Text.ShowLoadingPrompt(label, time)
+    Citizen.CreateThread(function()
+        BeginTextCommandBusyString(tostring(label))
+        EndTextCommandBusyString(3)
+        Citizen.Wait(time)
+        RemoveLoadingPrompt()
+    end)
+end
+
+
 ------------
 -- Math functions
 ------------
@@ -412,6 +428,39 @@ end
 function World.AddExplosion(x, y, z, explosionType, damageScale)
     local player = GetPlayerPed(-1)
     AddOwnedExplosion(player, x, y, z, explosionType, damageScale, true, false, 1.0)
+end
+
+-- Taken from Venomous Freemode
+-- Load the game in like a skySwoopEffect in online, confirmed working in my test resources.
+function World.SkywoopLoad()
+
+    local skySwoopEffect = true
+    local toggleLoadingPrompt = true
+
+    if not IsPlayerSwitchInProgress() then
+			SetEntityVisible(PlayerPedId(), false, false)
+			if skySwoopEffect then
+				SwitchToMultiFirstpart(PlayerPedId(), 32, 1)
+				Wait(3000)
+			end
+
+			if toggleLoadingPrompt then
+				Text.ShowLoadingPrompt("PCARD_JOIN_GAME", 1000)
+				-- Wait(1000)
+			end
+		end
+
+		-- Wait(5000)
+		Wait(1000)
+
+		if skySwoopEffect then
+			Wait(1000)
+
+			SwitchToMultiSecondpart(PlayerPedId())
+            SetEntityVisible(PlayerPedId(), true, false)
+			Wait(5000)
+			-- Wait(1000)
+		end
 end
 
 ------------ 

@@ -4,6 +4,10 @@ lua54 'yes'
 
 -- https://forum.cfx.re/t/how-to-call-functions-from-another-lua-file-not-a-different-resource/4752847/3
 client_scripts{
+
+    -- Functions for easier usage, TeleportFade and other functions
+    'client/new/functions.lua',
+
     -- Has notification, subtitle functions and a couple other things.
     'client/misc/messages.lua',
     'client/misc_test.lua',
@@ -45,8 +49,7 @@ client_scripts{
     -- Skyswoop character switch screen test
     'client/new/skyswoop_test.lua',
 
-    -- Functions for easier usage, TeleportFade and other functions
-    'client/new/functions.lua',
+
 
 
     -- Sound test
