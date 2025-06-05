@@ -51,7 +51,7 @@ client_scripts{
     'client/menus/music_menu.lua',
     -- 'client/menus/test_menu.lua',
     -- 'client/menus/vehicle_menu.lua',
-    -- 'client/menus/warp_menu.lua',
+    'client/menus/warp_menu.lua',
 
     --'functions.lua',
     --'menu.lua'

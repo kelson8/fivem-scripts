@@ -8,6 +8,11 @@
 --- client/menus/music_menu.lua
 ---
 ---
+---
+
+Menus = {}
+
+Menus.Warps = {}
 
 local menu = MenuV:CreateMenu("KCNet-Menu", "Welcome to KCNet", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "mainMenuNamespace", "native")
@@ -18,14 +23,15 @@ function GetMenu()
     return menu
 end
 
-
 local vehicleMenu = MenuV:CreateMenu("Vehicle", "Vehicle menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "vehicleMenuNamespace", "native")
 
 -- local playerMenu = MenuV:CreateMenu("Player", "Player menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
 --     "playerMenuNamespace", "native")
 
-local warpMenu = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+-- Removed local to get this in another file.
+warpMenu = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+-- Menus.Warp = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "warpMenuNamespace", "native")
 
 -- local testMenu = menu:InheritMenu({title = 'MenuV 2.0', subtitle = 'Inherit menu of `menu`', theme = 'default'})
@@ -48,7 +54,9 @@ local testMenu = MenuV:CreateMenu("Test", "Test menu", "topleft", 255, 0, 0, "si
 
 local vehicleMenuButton = menu:AddButton({ label = "Vehicle Menu", description = "Open Vehicle menu" })
 -- local playerMenuButton = menu:AddButton({ label = "Player Menu", value = menu2, description = 'Open Player Menu' })
-local warpMenuButton = menu:AddButton({ label = "Warp Menu", description = 'Open Warp Menu' })
+
+warpMenuButton = menu:AddButton({ label = "Warp Menu", description = 'Open Warp Menu' })
+
 local testMenuButton = menu:AddButton({ label = "Test Menu", description = 'Open Test Menu' })
 
 
@@ -189,8 +197,6 @@ vehicleMenuButton:On("select", function()
         toggleDoorLockButton:On("select", function()
             toggleVehicleDoorLock()
         end)
-
-
     end)
     --[[
     spawnVehicleButton:On("select", function()
@@ -307,71 +313,9 @@ end)
 -----------
 
 
-
------------
---- Warp buttons
------------
-
--- I had to move these out of the button so it didn't get duplicated, oops.
-local bountyOfficeWarpButton = warpMenu:AddButton({
-    label = "Bounty office",
-    value = menu2,
-    description =
-    "Warp to bounty office"
-})
-local aircraftCarrierWarpButton = warpMenu:AddButton({
-    label = "Aircraft carrier",
-    value = menu2,
-    description =
-    "Warp to new aircraft carrier"
-})
-local spawnWarpButton = warpMenu:AddButton({
-    label = "Spawn",
-    description =
-    "Warp to spawn"
-})
-
-
-
-local cayoPercioWarpButton = warpMenu:AddButton({ label = "Cayo Percio", description = "Warp to Cayo Perico island" })
-
-warpToSkyButton = warpMenu:AddButton({
-    label = "Warp to Sky",
-    description =
-    "Warp to the sky, add +50 to z. Warning this will kill you."
-})
-
 -----------
 ---
 -----------
-
------------
---- Warp menu button
------------
-
-warpMenuButton:On("select", function()
-    MenuV:OpenMenu(warpMenu, function()
-        bountyOfficeWarpButton:On("select", function()
-            teleportToNewAreas("bountyoffice")
-        end)
-
-        aircraftCarrierWarpButton:On("select", function()
-            teleportToNewAreas("aircarrier1")
-        end)
-
-        cayoPercioWarpButton:On("select", function()
-            teleportToWarps("cayoPerico")
-        end)
-
-        spawnWarpButton:On("select", function()
-            teleportToWarps("spawn")
-        end)
-
-        warpToSkyButton:On("select", function()
-            warpToSky()
-        end)
-    end)
-end)
 
 -----------
 --- Test buttons
@@ -468,7 +412,6 @@ testMenuButton:On("select", function()
     local player = GetPlayerPed(-1)
 
     MenuV:OpenMenu(testMenu, function()
-
         -- TODO Check if player has permission for this and blowUpHeliPedsButton
         -- Heli peds
         -- spawnHeliPedsButton:On("select", function()

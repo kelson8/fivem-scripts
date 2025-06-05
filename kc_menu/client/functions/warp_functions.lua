@@ -81,10 +81,9 @@ function teleportToNewAreas(areaName)
                 Teleports.TeleportFade(Warps.AircraftCarrier1.x, Warps.AircraftCarrier1.y, Warps.AircraftCarrier1.z, 10.0)
                 exports.kc_util:Notify("Warped to the aircraft carrier.")
             end
-
         elseif areaName == "bountyoffice" then
             if IsIplActive(Warps.BountyOffice.bountyOfficeIpl) then
-                Teleports.TeleportFade(Warps.BountyOffice.x, Warps.BountyOffice.y, Warps.BountyOffice.z, 10.0)                
+                Teleports.TeleportFade(Warps.BountyOffice.x, Warps.BountyOffice.y, Warps.BountyOffice.z, 10.0)
                 exports.kc_util:Notify("Warped to the bounty office.")
             end
         else
@@ -99,20 +98,34 @@ end
 function teleportToWarps(warpName)
     local player = GetPlayerPed(-1)
 
-    -- I made my own set coords function, moved the booleans into it
-    if warpName == "spawn" then
-        Teleports.TeleportFade(Warps.Spawn1.x, Warps.Spawn1.y, Warps.Spawn1.z, 10.0)
-        World.DisableCayoPericoIsland()
-        exports.kc_util:Notify("Warped to spawn.")
-    elseif warpName == "cayoPerico" and Version.CayoPericoVersionCheck() then
-        World.EnableCayoPericoIsland()
+    -- Check if the warp location exists in the table
+    local warpLocation = Warps[warpName]
 
-        Teleports.TeleportFade(Warps.CayoPerico.x, Warps.CayoPerico.y, Warps.CayoPerico.z, 10.0)
-        exports.kc_util:Notify("Warped to Cayo perico.")
+    -- TODO Test this new format
+    if warpLocation then
+        Teleports.TeleportFade(warpLocation.x, warpLocation.y, warpLocation.z, 10.0)
 
-        -- Failsafe to kill cayo perico island if another warp is set.
+        if warpName == "Spawn1" then
+            -- Teleports.TeleportFade(Warps.Spawn1.x, Warps.Spawn1.y, Warps.Spawn1.z, 10.0)
+            World.DisableCayoPericoIsland()
+            exports.kc_util:Notify("Warped to spawn.")
+        -- elseif warpName == "arcade" then
+
+        elseif warpName == "CayoPerico" and Version.CayoPericoVersionCheck() then
+            World.EnableCayoPericoIsland()
+
+            -- Teleports.TeleportFade(Warps.CayoPerico.x, Warps.CayoPerico.y, Warps.CayoPerico.z, 10.0)
+            exports.kc_util:Notify("Warped to Cayo perico.")
+
+            -- Failsafe to kill cayo perico island if another warp is set.
+        else
+            -- Generic notification for other warps
+            exports.kc_util:Notify("Warped to " .. warpName .. ".")
+            -- Always disable Cayo Perico when warping away from it.
+            World.DisableCayoPericoIsland()
+        end
     else
-        World.DisableCayoPericoIsland()
+        exports.kc_util:Notify("Error: Warp location '" .. warpName .. "' not found.")
     end
 end
 
