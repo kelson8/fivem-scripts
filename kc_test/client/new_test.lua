@@ -246,8 +246,10 @@ RegisterCommand("togglebusyspinner", function()
 	end
 end, false)
 
+------
 -- Radio test, disable commercials on Channel X as a test
 -- Radio station list: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/radioStations.json
+------
 RegisterCommand("radioads", function(source, args, rawCommand)
 	if args[1] ~= nil then
 		if args[1] == "on" then
@@ -260,8 +262,9 @@ RegisterCommand("radioads", function(source, args, rawCommand)
 	end
 end, false)
 
-
+------
 -- This works to turn on/off the radio stations.
+------
 RegisterCommand("toggleradio", function(source, args, rawCommand)
 	if args[1] ~= nil then
 		if args[1] == "on" then
@@ -275,6 +278,9 @@ RegisterCommand("toggleradio", function(source, args, rawCommand)
 end, false)
 
 
+------
+-- Celebration scaleform
+------
 RegisterCommand("togglecelebsc", function()
 	if not drawScaleform then
 		drawScaleform = true
@@ -289,8 +295,11 @@ RegisterCommand("togglecelebsc", function()
 	end
 end, false)
 
+
+------
 -- Show a scaleform alert like used in online.
 -- Message can be customized under the 'AddTextEntry' fields below
+------
 local alertTest = false
 local drawBackground = true
 RegisterCommand("alerttest", function()
@@ -561,3 +570,32 @@ RegisterCommand("bomb", function ()
 
 	World.AddExplosion(playerPos.x, playerPos.y, playerPos.z, gaspumpExplosion, damageScale)
 end, true)
+
+------
+-- Scaleform testing
+------
+
+-- TODO Figure out how to turn this back off.
+-- local deathScaleformEnabled = false
+-- RegisterCommand("death_effect", function ()
+-- 	-- Scaleform.RequestDeathScreen()
+-- 	deathScaleformEnabled = not deathScaleformEnabled
+-- 	if deathScaleformEnabled then
+-- 		Text.Notify("Toggled death effect on.")
+-- 	else
+-- 		Text.Notify("Toggled death effect off.")
+-- 	end
+
+-- end, false)
+
+
+-- Citizen.CreateThread(function ()
+-- 	Wait(0)
+-- 	while true do
+-- 		Wait(0)
+-- 		if deathScaleformEnabled then
+-- 			Scaleform.RequestDeathScreen()
+-- 		end
+
+-- 	end
+-- end)
