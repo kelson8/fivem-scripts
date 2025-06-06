@@ -2,6 +2,12 @@
 --- @authors Manups4e, PhilippRendell, Lacol9
 ---
 
+-- This requires ScaleformUI.
+dependencies {
+    'ScaleformUI_Lua',
+    -- 'kc_util'
+}
+
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
