@@ -6,6 +6,9 @@ lua_test/
 # I may try getting this to work later, I couldn't figure this menu out.
 kc_rageui_menu
 
+# Misc testing with Venomous freemode
+kc_base
+
 # Add files that I am working with.
 sync_changes.bat
 .vscode/settings.json

@@ -246,6 +246,32 @@ local function FireCannon()
     PlaySoundFromCoord(-1, "DLC_XM_Explosions_Orbital_Cannon", playerPos.x, playerPos.y, playerPos.z, "", true, 3, false)
 end
 
+-- Run the first phase of the Orbital cannon
+-- This is very early in progress and only plays an animation and makes an explosion.
+local function CannonPhase1()
+    -- case 0 (stage 1)
+    -- Setup the animation.
+    AnimpostfxPlay("MP_OrbitalCannon", 0, true)
+
+    -- Request the audio bank
+    -- RequestScriptAudioBank("DLC_CHRISTMAS2017/XM_ION_CANNON", false)
+
+    -- case 10 (stage 2)
+
+
+
+    -- case 20 (stage 3)
+
+    --
+
+    -- Fire Cannon function
+    FireCannon()
+
+    -- Works to turn this off.
+    Wait(1000)
+    AnimpostfxStop("MP_OrbitalCannon")
+end
+
 RegisterCommand("orbcan_sctoggle", function(source, args, rawCommand)
     drawScaleform = not drawScaleform
     if drawScaleform then
@@ -313,23 +339,7 @@ RegisterCommand("orbcan_phase1", function(source, args, rawCommand)
     local player = GetPlayerPed(-1)
     local playerPos = GetEntityCoords(player)
 
-    -- case 0 (stage 1)
-    -- Setup the animation.
-    AnimpostfxPlay("MP_OrbitalCannon", 0, true)
-
-    -- Request the audio bank
-    -- RequestScriptAudioBank("DLC_CHRISTMAS2017/XM_ION_CANNON", false)
-
-    -- case 10 (stage 2)
-
-
-
-    -- case 20 (stage 3)
-
-    --
-
-    -- Fire Cannon function
-    FireCannon()
+    CannonPhase1()
 end, false)
 
 
