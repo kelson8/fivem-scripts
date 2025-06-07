@@ -9,6 +9,9 @@ kc_rageui_menu
 # Misc testing with Venomous freemode
 kc_base
 
+# Discord api config
+kc_discord/config/config.lua
+
 # Add files that I am working with.
 sync_changes.bat
 .vscode/settings.json
