@@ -39,7 +39,7 @@ local vehicleMenu = MenuV:CreateMenu("Vehicle", "Vehicle menu", "topleft", 255, 
 -- Warp menu
 -- Removed local to get this in another file.
 warpMenu = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
--- Menus.Warp = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+    -- Menus.Warp = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "warpMenuNamespace", "native")
 
 
@@ -53,12 +53,12 @@ local testMenu = MenuV:CreateMenu("Test", "Test menu", "topleft", 255, 0, 0, "si
 
 -- Clothes menu
 ClothesMenu = MenuV:CreateMenu("Clothes", "Clothes Menu", "topleft", 255, 0, 0, "size-110", "default",
-        "menuv", "clothesMenuNamespace", "native")
+    "menuv", "clothesMenuNamespace", "native")
 
 
 -- Music menu
 MusicMenu = MenuV:CreateMenu("Music", "Music Menu", "topleft", 255, 0, 0, "size-110", "default",
-        "menuv", "musicMenuNamespace", "native")
+    "menuv", "musicMenuNamespace", "native")
 
 
 -----------
@@ -106,67 +106,7 @@ PlayerMenuButton = menu:AddButton({ label = "Player Menu", description = 'Open P
 
 
 
--- Test
 
---[[
-    if args[1] == "casino_vault" then
-        FadeScreenForTeleport()
-        SetEntityCoords(player, casinoVaultX, casinoVaultY, casinoVaultZ, true, false, false, false)
-        SetEntityHeading(player, 270.79)
-        exports.kc_util:Notify("Teleported to casino vault")
-    -- Ipl checks are needed for below two
-    elseif args[1] == "aircarrier1" then
-
-    elseif args[1] == "bountyoffice" then
-
-]]
-
-local function advancedNotification()
-    Text.ShowAdvancedNotification(
-        rawCommand,
-        'This is sender',
-        'This is subject',
-        'CHAR_AMMUNATION',
-        8,
-        true,
-        130
-    )
-end
-
-
--- Toggles
--- Drunk camera toggle
-local isDrunk = false
-local deathCamToggle = false
-
--- https://nativedb.dotindustries.dev/gta5/natives/0x95D2D383D5396B8A?search=drunk
--- This works like this
-local function toggleDrunkAnim()
-    local player = GetPlayerPed(-1)
-    local drunkAnim = "move_m@drunk@verydrunk"
-    if not HasAnimSetLoaded(drunkAnim) then
-        -- Request anim set
-        RequestAnimSet(drunkAnim)
-        -- Set ped to drunk anim clipset
-        SetPedMovementClipset(player, drunkAnim, 2222)
-        isDrunk = true
-    elseif isDrunk then
-        -- Remove the AnimSet so the above will run again.
-        RemoveAnimSet(drunkAnim)
-        ResetPedMovementClipset(player, 0.0)
-        isDrunk = false
-    end
-end
-
-local function toggleDeathCam()
-    if not deathCamToggle then
-        DeathCam()
-        deathCamToggle = true
-    else
-        StopDeathCam()
-        deathCamToggle = false
-    end
-end
 
 -- TODO Fix this to work
 missionTrain = nil
@@ -240,111 +180,6 @@ end)
 -----------
 ---
 -----------
-
------------
---- Player buttons
------------
-
--- local healPlayerButton = playerMenu:AddButton({
---     label = "Heal yourself",
---     description =
---     'Heal yourself'
--- })
-
--- local randomOutfitButton = playerMenu:AddButton({
---     label = "Random Outfit",
---     description =
---     'Change your multiplayer skin to a random outfit.'
--- })
-
--- -- TODO Figure out how to toggle ragdoll
--- -- local ragDollToggleButton = playerMenu:AddCheckbox({
--- local ragDollToggleButton = playerMenu:AddButton({
---     label = "Toggle ragdoll",
---     description =
---     'Toggle ragdoll on/off'
--- })
-
--- -- This didn't do anything
--- -- local envEffButton = playerMenu:AddButton({
--- --     label = "Test Env Eff",
--- --     description =
--- --     'Debug test'
--- -- })
-
--- -- local ragDollToggleCheckbox = playerMenu:AddCheckbox({
--- --     label = "Toggle ragdoll",
--- --     description =
--- --     'Toggle ragdoll on/off'
--- -- })
-
--- local mpSuicideButton = playerMenu:AddButton({
---     label = "MP Suicide",
---     description =
---     'Kill yourself with the online animation'
--- })
-
--- local invincibilityCheckbox = playerMenu:AddCheckbox({
---     label = "Toggle infinte health",
---     description =
---     'Invincible player'
--- })
-
--- -----------
--- ---
--- -----------
-
--- -----------
--- --- Player menu button
--- -----------
--- -- Well this is how to make sub menus, at least it works like this.
--- playerMenuButton:On("select", function()
---     MenuV:OpenMenu(playerMenu, function()
---         healPlayerButton:On("select", function()
---             local player = GetPlayerPed(-1)
---             SetEntityHealth(player, 250)
---         end)
-
---         randomOutfitButton:On("select", function()
---             SetRandomOutfit()
---         end)
-
---         ragDollToggleButton:On("select", function()
---             -- SetRandomOutfit()
---         end)
-
---         -- This didn't do anything
---         -- envEffButton:On("select", function ()
---         --     ToggleEnvEffScale()
---         -- end)
-
-
---         -- ragDollToggleCheckbox:On("Press")
-
---         mpSuicideButton:On("select", function ()
---             MpSuicide()
---         end)
-
---         -- https://menuv.netlify.app/#CheckboxItem
---         invincibilityCheckbox:On('change', function(item, newValue, oldValue)
-
---             -- Set invincibility here.
---             if newValue then
---                 EnableInvincibility()
---             else
---                 DisableInvincibility()
---             end
---         end)
-
-
-
---     end)
-
--- end)
------------
----
------------
-
 
 -----------
 ---
@@ -447,6 +282,23 @@ setHubLobbyButton = testMenu:AddButton({
 -- })
 
 
+-- This works!!
+-- RegisterCommand("getveh_lobby", function()
+--     local player = PlayerPedId()
+--     local currentVeh = GetVehiclePedIsIn(player, false)
+
+--     if currentVeh ~= nil or currentVeh ~= 0 then
+--         -- This works like this on the client now! Shows routing bucket 10 for no population lobby instead of 0
+--         local vehNetId = NetworkGetNetworkIdFromEntity(currentVeh)
+
+--         TriggerServerEvent('kc_menu:getCurrentVehicleLobby', vehNetId)
+
+--         -- exports.kc_util:Notify(("Vehicle: %s"):format(currentVeh))
+--         -- else
+--         -- Text.Notify("You are not in a vehicle!")
+--     end
+-- end, false)
+
 -----------
 ---
 -----------
@@ -461,9 +313,15 @@ blipSliderRange = testMenu:AddRange({ label = "Blip", min = 0, max = 883, value 
 --- Test menu button
 -----------
 testMenuButton:On("select", function()
-    
-
     MenuV:OpenMenu(testMenu, function()
+        local player = PlayerPedId()
+        local currentVeh = GetVehiclePedIsIn(player, false)
+
+        local vehNetId = 0
+
+        if currentVeh ~= 0 or currentVeh ~= nil then
+            vehNetId = NetworkGetNetworkIdFromEntity(currentVeh)
+        end
         -- TODO Check if player has permission for this and blowUpHeliPedsButton
         -- Heli peds
         -- spawnHeliPedsButton:On("select", function()
@@ -554,13 +412,19 @@ testMenuButton:On("select", function()
         -- These work! Created in kc_lobby.
         -- TODO Restrict these if in a race lobby or in a race.
         -- I may setup races using the StreetRaces resource and MySql.
+        -- I figured out how to make these work for the players current vehicle also.
         setNopopulationLobbyButton:On("select", function()
             TriggerServerEvent('kc_menu:setNoPopulation')
+            -- TriggerServerEvent('kc_menu:setNoPopulation', currentVeh)
+            -- TriggerServerEvent('kc_menu:setNoPopulation', vehNetId)
+            TriggerServerEvent('kc_menu:setVehicleNoPopulation', vehNetId)
         end)
 
         -- setHubLobbyButton
         setHubLobbyButton:On("select", function()
             TriggerServerEvent('kc_menu:setHub')
+
+            TriggerServerEvent('kc_menu:setVehicleLobby', vehNetId)
         end)
 
         -- Well this doesn't seem to work

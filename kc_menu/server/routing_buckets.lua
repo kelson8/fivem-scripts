@@ -32,7 +32,9 @@
 local Text = {}
 local Server = {}
 
--- These are the current routing bucket IDs, I need to test the no population one.
+-- These are the current routing bucket IDs
+-- The no population lobby can be switched to in my menu, which brings the player and their vehicle
+-- into a routing bucket with no vehicles and no peds.
 local lobbyBucket = 0
 local noPopulationBucket = 10
 
@@ -249,7 +251,10 @@ AddEventHandler("kc_menu:setHub", function()
     end
 end)
 
+---------
+-- Set player into no population lobby
 -- TODO Add other player support to this.
+---------
 RegisterServerEvent("kc_menu:setNoPopulation")
 AddEventHandler("kc_menu:setNoPopulation", function()
     if IsPlayerAceAllowed(source, "kc_menu.lobby.set_no_population") then
@@ -257,11 +262,58 @@ AddEventHandler("kc_menu:setNoPopulation", function()
 
         SetPlayerRoutingBucket(source, noPopulationBucket)
         Server.SendMessage(source, "You have been sent to the no population lobby.")
+
     else
         Server.SendMessage(source, "[Error]: You do not have permission for this!")
         -- Server.SendErrorMessage()
     end
 end)
+
+---------
+-- Set vehicle no population test
+-- I got this working by combining it with the other event, so it isn't in the same event.
+---------
+RegisterServerEvent("kc_menu:setVehicleNoPopulation")
+AddEventHandler("kc_menu:setVehicleNoPopulation", function(vehNetId)
+    if IsPlayerAceAllowed(source, "kc_menu.lobby.set_no_population") then
+        SetRoutingBucketPopulationEnabled(noPopulationBucket, false)
+
+        local currentVehicle = NetworkGetEntityFromNetworkId(vehNetId)
+
+        if DoesEntityExist(currentVehicle) then
+            SetEntityRoutingBucket(currentVehicle, noPopulationBucket)
+            -- Server.SendMessage(source, "Vehicle has been sent to the no population lobby.")
+        end
+
+    -- else
+        -- Server.SendMessage(source, "[Error]: You do not have permission for this!")
+        -- Server.SendErrorMessage()
+    end
+end)
+
+
+---------
+-- Set vehicle back to hub
+---------
+RegisterServerEvent("kc_menu:setVehicleLobby")
+AddEventHandler("kc_menu:setVehicleLobby", function(vehNetId)
+    if IsPlayerAceAllowed(source, "kc_menu.lobby.set_no_population") then
+        SetRoutingBucketPopulationEnabled(noPopulationBucket, false)
+
+        local currentVehicle = NetworkGetEntityFromNetworkId(vehNetId)
+
+        if DoesEntityExist(currentVehicle) then
+            SetEntityRoutingBucket(currentVehicle, lobbyBucket)
+            -- Server.SendMessage(source, "Vehicle has been sent to main lobby.")
+        end
+
+    -- else
+        -- Server.SendMessage(source, "[Error]: You do not have permission for this!")
+        -- Server.SendErrorMessage()
+    end
+end)
+
+----------
 
 -- I got this part to work, I had to get the network ID like I was doing in lobby_test.
 -- Get current player routing bucket.
@@ -283,12 +335,10 @@ AddEventHandler("kc_menu:getCurrentLobby", function()
     end
 end)
 
--- TODO Set this up, if the player is in a vehicle this should return the network ID of it.
--- Well this didn't work, or at least the way I am doing it didn't work.
--- Well now this just says the vehicle is in routing bucket 0
+-- This works now! I'm not sure how to adapt it to my menu for vehicles I am in though.
 -- https://docs.fivem.net/docs/scripting-manual/networking/ids/
 RegisterServerEvent("kc_menu:getCurrentVehicleLobby")
-AddEventHandler("kc_menu:getCurrentVehicleLobby", function(currentVehicle)
+AddEventHandler("kc_menu:getCurrentVehicleLobby", function()
     -- AddEventHandler("kc_menu:getCurrentVehicleLobby", function()
     if IsPlayerAceAllowed(source, "kc_menu.lobby.get_lobby") then
         local playerName = GetPlayerName(source)
@@ -304,14 +354,15 @@ AddEventHandler("kc_menu:getCurrentVehicleLobby", function(currentVehicle)
 
         -- I slightly changed this
         local vehNetId = NetworkGetEntityFromNetworkId(currentVehicle)
-        -- local vehNetId = NetworkGetNetworkIdFromEntity(currentVehicle)
+        -- if NetworkDoesEntityExistWithNetworkId(vehNetId) then
 
-        -- local currentRoutingBucket = GetEntityRoutingBucket(netId)
-        local currentVehRoutingBucket = GetEntityRoutingBucket(vehNetId)
+            -- I figured this out!
+            local currentVehRoutingBucket = GetEntityRoutingBucket(vehNetId)
 
-        Server.SendMessage(source, string.format("Current vehicle routing bucket: %d", currentVehRoutingBucket))
-        -- else
-        -- Server.SendMessage(source, "Vehicle doesn't exist")
+            Server.SendMessage(source, string.format("Current vehicle routing bucket: %d", currentVehRoutingBucket))
+            -- else
+            -- Server.SendMessage(source, "Vehicle doesn't exist")
+            -- end
         -- end
     else
         Server.SendMessage(source, "[Error]: You do not have permission for this!")

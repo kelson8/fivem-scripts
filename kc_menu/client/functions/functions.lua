@@ -328,6 +328,45 @@ function Player.Heading()
     return playerHeading
 end
 
+
+-- Toggles
+-- Drunk camera toggle
+local isDrunk = false
+local deathCamToggle = false
+
+
+------ Originally in menu.lua, moved into here.
+-- https://nativedb.dotindustries.dev/gta5/natives/0x95D2D383D5396B8A?search=drunk
+-- This works like this
+function Player.DrunkAnim()
+    local player = GetPlayerPed(-1)
+    local drunkAnim = "move_m@drunk@verydrunk"
+    if not HasAnimSetLoaded(drunkAnim) then
+        -- Request anim set
+        RequestAnimSet(drunkAnim)
+        -- Set ped to drunk anim clipset
+        SetPedMovementClipset(player, drunkAnim, 2222)
+        isDrunk = true
+    elseif isDrunk then
+        -- Remove the AnimSet so the above will run again.
+        RemoveAnimSet(drunkAnim)
+        ResetPedMovementClipset(player, 0.0)
+        isDrunk = false
+    end
+end
+
+function Player.ToggleDeathCam()
+    if not deathCamToggle then
+        DeathCam()
+        deathCamToggle = true
+    else
+        StopDeathCam()
+        deathCamToggle = false
+    end
+end
+--------
+
+
 function blowupPlayer()
     local player = GetPlayerPed(-1)
     local playerPos = GetEntityCoords(player)
@@ -511,6 +550,11 @@ function World.SkywoopLoad()
 			-- Wait(1000)
 		end
 end
+
+---------
+---
+---------
+
 
 ------------ 
 --- Version functions
