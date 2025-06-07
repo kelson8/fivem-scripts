@@ -305,8 +305,6 @@ Citizen.CreateThread(function()
     -- RefreshInterior(ExecApartment1.interiorId)
 
     -- RefreshInterior(ExecApartment2.interiorId)
-
-
 end)
 
 
@@ -323,4 +321,88 @@ Citizen.CreateThread(function()
 
     -- Toggling North Yankton
     NorthYankton.Enable(false)
+end)
+
+-----
+-- Nightclub
+-- This works for the nightclub
+-- https://github.com/Bob74/bob74_ipl/wiki/After-Hours:-Nightclubs
+-----
+
+Citizen.CreateThread(function()
+    -- Getting the object to interact with
+    AfterHoursNightclubs = exports['bob74_ipl']:GetAfterHoursNightclubsObject()
+
+    -------------------------------------------
+    -- Interior part
+
+
+    -- Interior setup
+    AfterHoursNightclubs.Ipl.Interior.Load()
+
+    -- Setting the name of the club to The Palace
+    AfterHoursNightclubs.Interior.Name.Set(AfterHoursNightclubs.Interior.Name.palace)
+
+    -- Glamorous style
+    -- AfterHoursNightclubs.Interior.Style.Set(AfterHoursNightclubs.Interior.Style.glam)
+    -- AfterHoursNightclubs.Interior.Style.Set(AfterHoursNightclubs.Interior.Style.trad)
+    AfterHoursNightclubs.Interior.Style.Set(AfterHoursNightclubs.Interior.Style.edgy)
+
+    -- No podiums
+    AfterHoursNightclubs.Interior.Podium.Set(AfterHoursNightclubs.Interior.Podium.none)
+
+    -- Basic speakers
+    AfterHoursNightclubs.Interior.Speakers.Set(AfterHoursNightclubs.Interior.Speakers.basic)
+
+    -- No security
+    AfterHoursNightclubs.Interior.Security.Set(AfterHoursNightclubs.Interior.Security.off)
+
+    -- Setting turntables
+    AfterHoursNightclubs.Interior.Turntables.Set(AfterHoursNightclubs.Interior.Turntables.style03)
+
+    -- Lights
+    AfterHoursNightclubs.Interior.Lights.Bands.Set(AfterHoursNightclubs.Interior.Lights.Lasers.cyan)
+    AfterHoursNightclubs.Interior.Lights.Lasers.Set(AfterHoursNightclubs.Interior.Lights.Lasers.yellow)
+
+    -- Enabling bottles behind the bar
+    AfterHoursNightclubs.Interior.Bar.Enable(true)
+
+    -- Enabling all booze bottles
+    AfterHoursNightclubs.Interior.Booze.Enable(AfterHoursNightclubs.Interior.Booze, true)
+
+    -- Adding trophies on the desk
+    AfterHoursNightclubs.Interior.Trophy.Enable(AfterHoursNightclubs.Interior.Trophy.number1, true,
+        AfterHoursNightclubs.Interior.Trophy.Color.bronze)
+    AfterHoursNightclubs.Interior.Trophy.Enable(AfterHoursNightclubs.Interior.Trophy.battler, true,
+        AfterHoursNightclubs.Interior.Trophy.Color.silver)
+    AfterHoursNightclubs.Interior.Trophy.Enable(AfterHoursNightclubs.Interior.Trophy.dancer, true,
+        AfterHoursNightclubs.Interior.Trophy.Color.gold)
+
+
+    -- Details testing
+    -- AfterHoursNightclubs.Interior.Details.Enable(AfterHoursNightclubs.vaultWeed, false)
+
+    -- Refreshing interior to apply changes
+    RefreshInterior(AfterHoursNightclubs.interiorId)
+
+
+    -------------------------------------------
+    -- Exterior part
+
+
+    -- La Mesa - Exterior
+    -- No barriers
+    AfterHoursNightclubs.Mesa.Barrier.Enable(false)
+
+    -- Only "For sale" poster
+    AfterHoursNightclubs.Mesa.Posters.Enable(AfterHoursNightclubs.Posters.forSale, true)
+
+
+    -- Mission Row - Exterior
+    -- Barriers
+    AfterHoursNightclubs.Mesa.Barrier.Enable(true)
+
+    -- Posters for Dixon and Madonna only
+    AfterHoursNightclubs.Mesa.Posters.Enable({ AfterHoursNightclubs.Posters.dixon, AfterHoursNightclubs.Posters.madonna },
+        true)
 end)

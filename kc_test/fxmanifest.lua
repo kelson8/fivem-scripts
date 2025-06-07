@@ -44,6 +44,9 @@ client_scripts{
     'client/new_test.lua',
     'client/clock_test.lua',
 
+    -- Test with casino ambient audio
+    'client/casino_test.lua',
+
     'client/new/task_heli_chase.lua',
 
     -- Skyswoop character switch screen test

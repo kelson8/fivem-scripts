@@ -6,6 +6,27 @@
 -- Repo: https://github.com/itsjustcurtis/MenyooSP/tree/main
 -- Enum list: https://github.com/itsjustcurtis/MenyooSP/blob/main/Solution/source/Scripting/enums.h
 
+-- Taken from Enums.h in KCTrainerV
+-- Names for these from here:
+-- https://gtaxscripting.blogspot.com/2016/04/gta-v-peds-component-and-props.html
+-- https://docs.fivem.net/natives/?_0xD4F7B05C
+PedVarComp = {
+    -- PV_COMP_INVALID = -1,
+    PV_COMP_HEAD    = 0,
+    PV_COMP_BERD    = 1, -- Beard
+    PV_COMP_HAIR    = 2, -- Hair
+    PV_COMP_UPPR    = 3, -- Torso
+    PV_COMP_LOWR    = 4, -- Legs/Pants
+    PV_COMP_HAND    = 5, -- Hands
+    PV_COMP_FEET    = 6, -- Shoes
+    PV_COMP_TEEF    = 7, -- Unknown
+    PV_COMP_ACCS    = 8, -- Accessories, like parachute, scuba tank
+    PV_COMP_TASK    = 9, -- Accessories, like bags, mask, scuba mask
+    PV_COMP_DECL    = 10, -- Decals and mask
+    PV_COMP_JBIB    = 11, -- Top, Auxiliary parts for torso
+    -- PV_COMP_MAX     = 12
+}
+
 ControllerInput = {
     INPUT_FRONTEND_DOWN = 187,
 	INPUT_FRONTEND_UP = 188,

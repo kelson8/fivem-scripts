@@ -101,9 +101,11 @@ function teleportToWarps(warpName)
     -- Check if the warp location exists in the table
     local warpLocation = Warps[warpName]
 
-    -- TODO Test this new format
     if warpLocation then
         Teleports.TeleportFade(warpLocation.x, warpLocation.y, warpLocation.z, 10.0)
+
+        -- Well this one is a bit glitchy for some of my warps.
+        -- Teleports.Skyswoop(warpLocation.x, warpLocation.y, warpLocation.z, 10.0)
 
         if warpName == "Spawn1" then
             -- Teleports.TeleportFade(Warps.Spawn1.x, Warps.Spawn1.y, Warps.Spawn1.z, 10.0)

@@ -110,7 +110,7 @@ end
 ---@param z any
 ---@param heading any
 function Teleports.TeleportFade(x, y, z, heading)
-    local player = GetPlayerPed(-1)
+    local player = PlayerPedId()
     local fadeInTime = 500
     local fadeOutTime = 500
 
@@ -135,6 +135,55 @@ function Teleports.TeleportFade(x, y, z, heading)
 
     Wait(fadeInTime)
     DoScreenFadeIn(fadeInTime)
+end
+
+
+--- Teleport with a skyswoop effect like in online
+---@param x any
+---@param y any
+---@param z any
+---@param heading any
+function Teleports.Skyswoop(x, y, z, heading)
+    local player = PlayerPedId()
+    local fadeInTime = 500
+    local fadeOutTime = 500
+
+    -- DoScreenFadeOut(fadeOutTime)
+    -- FreezeEntityPosition(player, true)
+
+    -- while not IsScreenFadedOut() do
+        -- Wait(0)
+    -- end
+
+
+    -- This is somewhat buggy for some areas
+    if not IsPlayerSwitchInProgress() then
+        SetEntityVisible(player, false, false)
+        SwitchToMultiFirstpart(player, 32, 1)
+        Wait(1000)
+
+        SetEntityCoords(player, x, y, z, false, false, false, false)
+        SetEntityHeading(player, heading)
+
+        SwitchToMultiSecondpart(player)
+        SetEntityVisible(player, true, false)
+        Wait(2000)
+    end
+
+    -- This now teleports the players vehicle if they are in one.
+    -- if IsPedInAnyVehicle(player, false) then
+    --     local currentVeh = GetVehiclePedIsIn(player, false)
+    --     SetEntityCoords(currentVeh, x, y, z, false, false, false, false)
+    --     SetEntityHeading(currentVeh, heading)
+    -- else
+    --     SetEntityCoords(player, x, y, z, false, false, false, false)
+    --     SetEntityHeading(player, heading)
+    -- end
+
+
+
+    -- Wait(fadeInTime)
+    -- DoScreenFadeIn(fadeInTime)
 end
 
 ------------ 

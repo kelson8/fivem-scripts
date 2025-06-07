@@ -23,6 +23,10 @@ client_scripts{
     -- Warp config
     'client/config/warp_config.lua',
 
+    -- Events
+    -- Testing with rotuing buckets and permissions.
+    'client/events/routing_buckets.lua',
+    --
 
     'client/functions/functions.lua',
     'client/functions/warp_functions.lua',
@@ -37,7 +41,7 @@ client_scripts{
     -- Content for my debug menu, draws a display under the KCNet test message
     'client/debug_text.lua',
     'client/text.lua',
-    
+
     'client/native_test.lua',
     'client/heli_test.lua',
 
@@ -48,6 +52,7 @@ client_scripts{
 
     -- Menus, new format.
     'client/menus/player_menu.lua',
+    'client/menus/clothes_menu.lua',
     'client/menus/music_menu.lua',
     -- 'client/menus/test_menu.lua',
     -- 'client/menus/vehicle_menu.lua',
@@ -60,5 +65,6 @@ client_scripts{
 }
 
 server_scripts{
-    'server/permissions.lua'
+    'server/permissions.lua',
+    'server/routing_buckets.lua',
 }

@@ -14,6 +14,8 @@ Menus = {}
 
 Menus.Warps = {}
 
+Buttons = {}
+
 local menu = MenuV:CreateMenu("KCNet-Menu", "Welcome to KCNet", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "mainMenuNamespace", "native")
 
@@ -23,31 +25,55 @@ function GetMenu()
     return menu
 end
 
+-- Player Menu
+PlayerMenu = MenuV:CreateMenu("Player", "Player menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+    "menuv", "playerMenuNamespace", "native")
+
+-- Vehicle menu
 local vehicleMenu = MenuV:CreateMenu("Vehicle", "Vehicle menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "vehicleMenuNamespace", "native")
 
 -- local playerMenu = MenuV:CreateMenu("Player", "Player menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
 --     "playerMenuNamespace", "native")
 
+-- Warp menu
 -- Removed local to get this in another file.
 warpMenu = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
 -- Menus.Warp = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "warpMenuNamespace", "native")
 
+
+
+-- Test Menu
 -- local testMenu = menu:InheritMenu({title = 'MenuV 2.0', subtitle = 'Inherit menu of `menu`', theme = 'default'})
 -- local testMenu = MenuV:InheritMenu(menu, _, "testMenuNamespace")
 local testMenu = MenuV:CreateMenu("Test", "Test menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
     "testMenuNamespace", "native")
+
+
+-- Clothes menu
+ClothesMenu = MenuV:CreateMenu("Clothes", "Clothes Menu", "topleft", 255, 0, 0, "size-110", "default",
+        "menuv", "clothesMenuNamespace", "native")
+
+
+-- Music menu
+MusicMenu = MenuV:CreateMenu("Music", "Music Menu", "topleft", 255, 0, 0, "size-110", "default",
+        "menuv", "musicMenuNamespace", "native")
+
 
 -----------
 ---
 -----------
 
 
-
 -----------
 --- Sub menu buttons
 -----------
+---
+
+-- Clothes
+-- Buttons.ClothesMenuButton = menu:AddButton({ label = "Clothes Menu", description = 'Open the clothes menu' })
+ClothesMenuButton = menu:AddButton({ label = "Clothes Menu", description = 'Open the clothes menu' })
 
 -- local menu_button = menu:AddButton({ icon = '😃', label = 'Spawn vehicle', value = menu2, description = 'YEA :D from first menu' })
 -- local spawnVehicleButton = menu:AddButton({ label = 'Spawn vehicle', value = menu2, description = 'Test' })
@@ -58,6 +84,13 @@ local vehicleMenuButton = menu:AddButton({ label = "Vehicle Menu", description =
 warpMenuButton = menu:AddButton({ label = "Warp Menu", description = 'Open Warp Menu' })
 
 local testMenuButton = menu:AddButton({ label = "Test Menu", description = 'Open Test Menu' })
+
+-- Music
+MusicMenuButton = menu:AddButton({ label = "Music Menu", description = 'Open Music Menu' })
+
+-- Player
+-- PlayerMenuButton = menu:AddButton({ label = "Player Menu", value = menu2, description = 'Open Player Menu' })
+PlayerMenuButton = menu:AddButton({ label = "Player Menu", description = 'Open Player Menu' })
 
 
 -----------
@@ -395,6 +428,25 @@ mapZoomDisableTestButton = testMenu:AddButton({
     "Zoom the map out."
 })
 
+-- Routing bucket test
+
+setNopopulationLobbyButton = testMenu:AddButton({
+    label = "No population lobby",
+    description = "Set you to the no population lobby, no vehicles or peds."
+})
+
+
+setHubLobbyButton = testMenu:AddButton({
+    label = "Hub lobby",
+    description = "Set you to the main hub lobby."
+})
+
+-- getVehLobbyButton = testMenu:AddButton({
+--     label = "Current veh lobby",
+--     description = "Get the vehicles current routing bucket."
+-- })
+
+
 -----------
 ---
 -----------
@@ -409,7 +461,7 @@ blipSliderRange = testMenu:AddRange({ label = "Blip", min = 0, max = 883, value 
 --- Test menu button
 -----------
 testMenuButton:On("select", function()
-    local player = GetPlayerPed(-1)
+    
 
     MenuV:OpenMenu(testMenu, function()
         -- TODO Check if player has permission for this and blowUpHeliPedsButton
@@ -484,15 +536,54 @@ testMenuButton:On("select", function()
 
 
         -- Map
+        -- Zoom in
         mapZoomEnableTestButton:On("select", function()
             -- SetRadarZoom(100)
             SetRadarZoomPrecise(0.0)
         end)
 
+        -- Zoom out
         mapZoomDisableTestButton:On("select", function()
             -- SetRadarZoom(0)
+            -- SetRadarZoomPrecise(90.0)
             SetRadarZoomPrecise(90.0)
         end)
+
+        -- Routing bucket tests
+
+        -- These work! Created in kc_lobby.
+        -- TODO Restrict these if in a race lobby or in a race.
+        -- I may setup races using the StreetRaces resource and MySql.
+        setNopopulationLobbyButton:On("select", function()
+            TriggerServerEvent('kc_menu:setNoPopulation')
+        end)
+
+        -- setHubLobbyButton
+        setHubLobbyButton:On("select", function()
+            TriggerServerEvent('kc_menu:setHub')
+        end)
+
+        -- Well this doesn't seem to work
+        -- getVehLobbyButton:On("select", function ()
+        --     local player = PlayerPedId()
+        --     local currentVeh = GetVehiclePedIsIn(player, false)
+        --     -- if currentVeh ~= nil or currentVeh ~= 0 then
+        --     -- Well this didn't work client side.
+        --     -- local currentVehNetId = NetworkGetNetworkIdFromEntity(currentVeh)
+
+        --         -- Shows routing bucket 0 in vehicles.
+        --         TriggerServerEvent('kc_menu:getCurrentVehicleLobby', currentVeh)
+
+        --         -- TriggerServerEvent('kc_menu:getCurrentVehicleLobby', currentVehNetId)
+        --         -- TriggerServerEvent('kc_menu:getCurrentVehicleLobby')
+
+        --         -- print(("Current Vehicle: %s"):format(currentVeh))
+
+        --         -- exports.kc_util:Notify(("Vehicle: %s"):format(currentVeh))
+        --     -- else
+        --         -- Text.Notify("You are not in a vehicle!")
+        --     -- end
+        -- end)
     end)
 end)
 
