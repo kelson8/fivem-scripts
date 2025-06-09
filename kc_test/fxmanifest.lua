@@ -43,6 +43,8 @@ client_scripts{
     'client/misc/blip_test.lua',
     'client/new_test.lua',
     'client/clock_test.lua',
+    
+    'client/new/car_test.lua',
 
     -- Test with casino ambient audio
     'client/casino_test.lua',
@@ -56,7 +58,10 @@ client_scripts{
 
 
     -- Sound test
-    'client/sound_test.lua'
+    'client/sound_test.lua',
+
+    -- Restrictions for wanted levels and other stuff.
+    'client/population_functions.lua'
 }
 
 server_scripts{

@@ -1,17 +1,39 @@
 -- Taken idea from Calm-AI
 
--- Why doesn't this work?
--- Disable cops if the config option is false.
+local DisabledEms = {
+    FireDepartment = 3, -- Fire Department
+    Ambulance = 5,      -- Ambulance
+}
+
+-- Disable cops if the config option is true
 Citizen.CreateThread(function()
-    if not TestConfig.PoliceEnabled then
-        while true do
-            Wait(0)
-            for i = 1,12 do
-                EnableDispatchService(i, false)
-            end
+    -- Temporary
+    -- for i = 1, 12 do
+    --     EnableDispatchService(i, true)
+    -- end
+
+    while true do
+        Wait(0)
+
+        if TestConfig.PoliceRadioDisabled then
+            -- This seems to work for disabling the police radio.
+            -- https://nativedb.dotindustries.dev/gta5/natives/0xB9EFD5C25018725A?search=SetAudioFlag
+            SetAudioFlag("PoliceScannerDisabled", true)
+        end
+
+        if TestConfig.PoliceDisabled then
             SetPlayerWantedLevel(PlayerId(), 0, false)
             SetPlayerWantedLevelNow(PlayerId(), false)
-			SetPlayerWantedLevelNoDrop(PlayerId(), 0, false)
+            SetPlayerWantedLevelNoDrop(PlayerId(), 0, false)
+        end
+
+        -- This should only disable Ambulances and Firetrucks now
+        if TestConfig.EmergencyVehiclesDisabled then
+            -- for i = 1, 12 do
+            -- EnableDispatchService(i, false)
+            EnableDispatchService(DisabledEms.Ambulance, false)
+            EnableDispatchService(DisabledEms.FireDepartment, false)
+            -- end
         end
     end
 end)

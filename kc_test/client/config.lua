@@ -14,7 +14,15 @@ TestConfig = {
     ShowMilitaryBaseMap = true,
     ShowPrisonMap = false,
 
-    PoliceEnabled = true,
+    -- Disables police and wanted stars.
+    PoliceDisabled = false,
+
+    -- Disables police radio
+    PoliceRadioDisabled = false,
+
+    -- Disables emergency services spawning in.
+    EmergencyVehiclesDisabled = true,
+
     -- Enables the wasted message Scaleform, this is incomplete.
     WastedMessage = false,
 }
@@ -40,4 +48,7 @@ TextConfig = {
     ColorG = 255,
     ColorB = 150,
     ColorA = 255,
+
+    -- Test for the gxt text display
+    GxtTestTextEnabled = false,
 }

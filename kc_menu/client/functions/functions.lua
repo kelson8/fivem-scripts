@@ -274,10 +274,15 @@ function Vehicle.Create(vehicleName, x, y, z, heading, clearArea)
 end
 
 
+-- Copied from spawn_vehicle.lua in kc_car
 -- TODO Set these up
--- function Vehicle.SetColor()
+function Vehicle.SetPrimaryColor(vehicle, r1, g1, b1)
+    SetVehicleCustomPrimaryColour(vehicle, r1, g1, b1)
+end
 
--- end
+function Vehicle.SetSecondaryColor(vehicle, r1, g1, b1)
+    SetVehicleCustomSecondaryColour(vehicle, r1, g1, b1)
+end
 
 --
 
@@ -399,12 +404,12 @@ function blowupPlayer()
         -- This kills the player but the car won't blow up
         -- SetVehicleOutOfControl(vehicle, false, true)
 
-        AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, 1, 0, 1065353216, 0)
+        AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, true, false, 1065353216)
     else
         exports.kc_util:Notify("You are going to ~r~explode~s~ in 2 seconds.")
         Wait(2000)
 
-        AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, 1, 0, 1065353216, 0)
+        AddOwnedExplosion(player, x, y, z, gaspumpExplosion, damageScale, true, false, 1065353216)
     end
 end
 

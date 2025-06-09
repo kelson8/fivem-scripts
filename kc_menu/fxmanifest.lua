@@ -52,6 +52,7 @@ client_scripts{
 
     -- Menus, new format.
     'client/menus/player_menu.lua',
+    'client/menus/lobby_menu.lua',
     'client/menus/clothes_menu.lua',
     'client/menus/music_menu.lua',
     -- 'client/menus/test_menu.lua',

@@ -62,18 +62,18 @@ end
 ------------
 
 -- Send a notification to the player, old function should be removed later.
-function notify(msg)
-    SetNotificationTextEntry("STRING")
-    AddTextComponentString(msg)
-    DrawNotification(true, false)
-end
+-- function notify(msg)
+--     SetNotificationTextEntry("STRING")
+--     AddTextComponentString(msg)
+--     DrawNotification(true, false)
+-- end
 
 --
 
 -- Send a message to the player.
-function sendMessage(msg)
+function Text.SendMessage(msg)
     TriggerEvent('chat:addMessage', {
-        args = {msg, },
+        args = { msg, },
     })
 end
 
@@ -88,6 +88,7 @@ end
 -- Make a name for them and a mapping down here.
 
 exports("Notify", Text.Notify)
+exports("SendMessage", Text.SendMessage)
 
 -- Fade
 exports("FadeOut", Fade.FadeOut)

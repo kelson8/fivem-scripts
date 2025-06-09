@@ -43,8 +43,6 @@ local function setTextEntry()
     SetTextFont(0) -- 0 -> 4
     SetTextScale(0.3, 0.3)
     SetTextColour(color.r, color.g, color.b, color.a)
-    SetTextEntry("STRING")
-    -- Test
     BeginTextCommandDisplayText("STRING")
 end
 

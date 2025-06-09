@@ -269,7 +269,6 @@ RegisterCommand("drivingped", function()
         Citizen.Wait(100)
     end
 
-    -- SetEntityCoords(lesterPed, x_1, y_1, z_1, true, false, false, false)
     SetEntityCoords(lesterPed, x, y + 1, z, true, false, false, false)
     SetEntityHealth(lesterPed, 1000)
 
@@ -282,9 +281,9 @@ RegisterCommand("drivingped", function()
     -- local vehicle = spawnVehicleWithoutBlip(GetHashKey("adder"), playerCoords.x + 3, playerCoords.y + 3, playerCoords.z)
     -- TaskEnterVehicle(lesterPed, vehicle, 3000, 0, 1.0, 8)
 
-    -- local vehicleName = "adder"
+    local vehicleName = "adder"
     -- Custom police vehicle
-    local vehicleName = "polbuffwb"
+    -- local vehicleName = "polbuffwb"
     local car = GetHashKey(vehicleName)
 
     -- Check if the vehicle actually exists
@@ -369,6 +368,10 @@ RegisterCommand("drivingped", function()
             TaskVehicleDriveToCoord(lesterPed, pedDrivingVeh1, blipX, blipY, blipZ, speed, 0, vehicleName,
                 drivingStyleIgnoreLights, 15, -1)
             -- TaskVehicleDriveToCoord(lesterPed, pedDrivingVeh1, blipX, blipY, 35.0, speed, 0, vehicleName, drivingStyleIgnoreLights, 15, -1)
+
+            -- New---
+            -- TODO Test this option later
+            -- TaskVehicleDriveToCoordLongrange(lesterPed, pedDrivingVeh1, blipX, blipY, blipZ, speed, drivingStyleIgnoreLights, 15)  
         end
     end
 
@@ -569,14 +572,14 @@ end, false)
 -- This should stop the lester ped without making them exit the vehicle, or they'll wander around.
 RegisterCommand("stopped", function()
     StopDrivingPed()
-end)
+end, false)
 
 
 -- This works
 RegisterCommand("spawnpedtest", function()
     spawnPedTest()
     notify("Entity id: " .. ped1NetId)
-end)
+end, false)
 
 ---
 --- Debug commands
@@ -585,11 +588,12 @@ end)
 -- This seems to work for getting the previous peds network id, stored by one of the functions.
 RegisterCommand("previd", function()
     notify("Lester ped net id: " .. ped1NetId)
-end)
+end, false)
 
 RegisterCommand("pedcheck", function()
     local pedNetId = NetworkGetEntityFromNetworkId(ped1NetId)
-    if not IsEntityDead(pedNetId, false) then
+    -- if not IsEntityDead(pedNetId, false) then
+    if not IsEntityDead(pedNetId) then
         notify("The ped is alive")
     else
         notify("The ped is dead")

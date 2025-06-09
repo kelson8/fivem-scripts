@@ -36,6 +36,14 @@ local vehicleMenu = MenuV:CreateMenu("Vehicle", "Vehicle menu", "topleft", 255, 
 -- local playerMenu = MenuV:CreateMenu("Player", "Player menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
 --     "playerMenuNamespace", "native")
 
+-- Lobby menu
+
+LobbyMenu = MenuV:CreateMenu("Lobby", "Lobby menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+    -- Menus.Warp = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
+    "lobbyMenuNamespace", "native")
+
+
+
 -- Warp menu
 -- Removed local to get this in another file.
 warpMenu = MenuV:CreateMenu("Warp", "Warp menu", "topleft", 255, 0, 0, "size-110", "default", "menuv",
@@ -92,6 +100,8 @@ MusicMenuButton = menu:AddButton({ label = "Music Menu", description = 'Open Mus
 -- PlayerMenuButton = menu:AddButton({ label = "Player Menu", value = menu2, description = 'Open Player Menu' })
 PlayerMenuButton = menu:AddButton({ label = "Player Menu", description = 'Open Player Menu' })
 
+-- Lobby
+LobbyMenuButton = menu:AddButton({ label = "Lobby Menu", description = 'Open Lobby Menu' })
 
 -----------
 ---
@@ -263,42 +273,6 @@ mapZoomDisableTestButton = testMenu:AddButton({
     "Zoom the map out."
 })
 
--- Routing bucket test
-
-setNopopulationLobbyButton = testMenu:AddButton({
-    label = "No population lobby",
-    description = "Set you to the no population lobby, no vehicles or peds."
-})
-
-
-setHubLobbyButton = testMenu:AddButton({
-    label = "Hub lobby",
-    description = "Set you to the main hub lobby."
-})
-
--- getVehLobbyButton = testMenu:AddButton({
---     label = "Current veh lobby",
---     description = "Get the vehicles current routing bucket."
--- })
-
-
--- This works!!
--- RegisterCommand("getveh_lobby", function()
---     local player = PlayerPedId()
---     local currentVeh = GetVehiclePedIsIn(player, false)
-
---     if currentVeh ~= nil or currentVeh ~= 0 then
---         -- This works like this on the client now! Shows routing bucket 10 for no population lobby instead of 0
---         local vehNetId = NetworkGetNetworkIdFromEntity(currentVeh)
-
---         TriggerServerEvent('kc_menu:getCurrentVehicleLobby', vehNetId)
-
---         -- exports.kc_util:Notify(("Vehicle: %s"):format(currentVeh))
---         -- else
---         -- Text.Notify("You are not in a vehicle!")
---     end
--- end, false)
-
 -----------
 ---
 -----------
@@ -406,48 +380,6 @@ testMenuButton:On("select", function()
             -- SetRadarZoomPrecise(90.0)
             SetRadarZoomPrecise(90.0)
         end)
-
-        -- Routing bucket tests
-
-        -- These work! Created in kc_lobby.
-        -- TODO Restrict these if in a race lobby or in a race.
-        -- I may setup races using the StreetRaces resource and MySql.
-        -- I figured out how to make these work for the players current vehicle also.
-        setNopopulationLobbyButton:On("select", function()
-            TriggerServerEvent('kc_menu:setNoPopulation')
-            -- TriggerServerEvent('kc_menu:setNoPopulation', currentVeh)
-            -- TriggerServerEvent('kc_menu:setNoPopulation', vehNetId)
-            TriggerServerEvent('kc_menu:setVehicleNoPopulation', vehNetId)
-        end)
-
-        -- setHubLobbyButton
-        setHubLobbyButton:On("select", function()
-            TriggerServerEvent('kc_menu:setHub')
-
-            TriggerServerEvent('kc_menu:setVehicleLobby', vehNetId)
-        end)
-
-        -- Well this doesn't seem to work
-        -- getVehLobbyButton:On("select", function ()
-        --     local player = PlayerPedId()
-        --     local currentVeh = GetVehiclePedIsIn(player, false)
-        --     -- if currentVeh ~= nil or currentVeh ~= 0 then
-        --     -- Well this didn't work client side.
-        --     -- local currentVehNetId = NetworkGetNetworkIdFromEntity(currentVeh)
-
-        --         -- Shows routing bucket 0 in vehicles.
-        --         TriggerServerEvent('kc_menu:getCurrentVehicleLobby', currentVeh)
-
-        --         -- TriggerServerEvent('kc_menu:getCurrentVehicleLobby', currentVehNetId)
-        --         -- TriggerServerEvent('kc_menu:getCurrentVehicleLobby')
-
-        --         -- print(("Current Vehicle: %s"):format(currentVeh))
-
-        --         -- exports.kc_util:Notify(("Vehicle: %s"):format(currentVeh))
-        --     -- else
-        --         -- Text.Notify("You are not in a vehicle!")
-        --     -- end
-        -- end)
     end)
 end)
 
@@ -466,6 +398,26 @@ if menu:OpenWith('KEYBOARD', 'F1') then
     -- menuOpen = not menuOpen
     menuOpen = true
 end
+
+-- This works!
+-- I added controller support to the menu with RB and DPAD Left.
+Citizen.CreateThread(function ()
+    while true do
+        Wait(0)
+
+        -- Controller
+        -- RB + DPAD Left
+        -- if IsControlJustPressed(1, 183) and IsControlJustPressed(1, 174)
+        if IsControlJustPressed(1, 183) and IsControlJustPressed(1, 174)
+            and not GetLastInputMethod(0) then
+            -- CreateMenu()
+            -- menuOpen = true
+            MenuV:OpenMenu(menu, function ()
+                menuOpen = true
+            end)
+        end
+    end
+end)
 
 -- if not menuOpen then
 --     menu:OpenWith('KEYBOARD', 'F1') -- Press F1 to open Menu

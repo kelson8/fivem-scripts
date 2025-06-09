@@ -297,7 +297,8 @@ end)
 ---------
 RegisterServerEvent("kc_menu:setVehicleLobby")
 AddEventHandler("kc_menu:setVehicleLobby", function(vehNetId)
-    if IsPlayerAceAllowed(source, "kc_menu.lobby.set_no_population") then
+    -- if IsPlayerAceAllowed(source, "kc_menu.lobby.set_no_population") then
+    if IsPlayerAceAllowed(source, "kc_menu.lobby.hub") then
         SetRoutingBucketPopulationEnabled(noPopulationBucket, false)
 
         local currentVehicle = NetworkGetEntityFromNetworkId(vehNetId)

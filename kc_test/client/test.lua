@@ -217,6 +217,10 @@ RegisterCommand("tpmarker", function()
         -- blipZ = GetGroundZFor3dCoord(coord.x, coord.y, coord.z, 9999, false, false)
         -- end
 
+        if not zGround then
+            blipz = GetGroundZFor_3dCoord(coord.x, coord.y, coord.z, false)
+        end
+
         if IsPedInAnyVehicle(player, false) then
             local vehicle = GetVehiclePedIsIn(player, false)
             FadeScreenForTeleport()
