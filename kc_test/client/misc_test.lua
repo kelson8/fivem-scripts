@@ -36,52 +36,7 @@ function sendMessage(msg)
     })
 end
 
--- This might work for what I'm trying to do, make sure the interior is loaded
--- https://forum.cfx.re/t/help-teleport-player-to-streamed-location/811867/4
 
--- TODO Setup config file for this, either in lua or json
-RegisterCommand("warp", function(source, args, rawCommand)
-    local player = GetPlayerPed(-1)
-    local carrier1 = "m24_1_carrier"
-    local bountyOffice2 = "m24_1_int_placement_m24_1_interior_dlc_int_bounty_milo_"
-    local aircarrierX, airCarrierY, airCarrierZ = -3259.89, 3909.33, 26.78
-    local bountyOfficeX, bountyOfficeY, bountyOfficeZ = 565.887, -2688.762, -50.2
-    local casinoVaultX, casinoVaultY, casinoVaultZ = 2497.08, -238.51, -70.74
-
-    if args[1] == nil then
-        sendMessage("Warp list: casino_vault, aircarrier1, bountyoffice")
-        -- TODO Figure out how to get this working with a list of warps.
-        -- for k,v in pairs(Warps) do
-        --     notify(v[1])
-        -- end
-    end
-
-    -- TODO Move this into a config, get the name, x, y, z, heading and teleport message from the config
-    -- Like I am doing in the ScaleformUI_Test which has the markers drawing.
-    if args[1] == "casino_vault" then
-        FadeScreenForTeleport()
-        SetEntityCoords(player, casinoVaultX, casinoVaultY, casinoVaultZ, true, false, false, false)
-        SetEntityHeading(player, 270.79)
-        notify("Teleported to casino vault")
-    -- Ipl checks are needed for below two
-    elseif args[1] == "aircarrier1" then
-        if IsIplActive(carrier1) then
-            FadeScreenForTeleport()
-            SetEntityCoords(player, aircarrierX, airCarrierY, airCarrierZ, true, false, false, false)
-            sendMessage("Warped to the aircraft carrier.")
-        end
-    elseif args[1] == "bountyoffice" then
-        if IsIplActive(bountyOffice2) then
-            FadeScreenForTeleport()
-            SetEntityCoords(player, bountyOfficeX, bountyOfficeY, bountyOfficeZ, true, false, false, false)
-            sendMessage("Warped to the bounty office.")
-        end
-
-    -- 
-    
-        -- end
-    end
-end, false)
 
 -- RegisterNetEvent("ch_test:getVehicle")
 -- AddEventHandler("ch_test:getVehicle", function()
@@ -102,13 +57,28 @@ function showAdvancedNotification(message, sender, subject, textureDict, iconTyp
     EndTextCommandThefeedPostTicker(false, saveToBrief)
 end
 
-RegisterCommand('advancednotification', function(_, _, rawCommand)
+-- List of notification pictures:
+-- https://wiki.rage.mp/wiki/Notification_Pictures
+
+-- To request certain ones:
+-- RequestStreamedTextureDict("name", false)
+RegisterCommand('advancednotification', function(source, args, rawCommand)
+    -- print(args[1])
+    -- print(rawCommand)
+
+    -- Gives error:  attempt to call a string value (local 'notificationText')
+    -- in the below.
+    local notificationText = tostring(args[1])
+    
     showAdvancedNotification(
         rawCommand,
+        -- notificationText
         'This is sender',
         'This is subject',
-        'CHAR_AMMUNATION',
-        8,
+        -- 'CHAR_AMMUNATION',
+        'CHAR_PEGASUS_DELIVERY',
+        -- 8,
+        2,
         true,
         130
     )
@@ -146,30 +116,97 @@ end, false)
 -- These seem to work now, not sure what changed.
 local endCredits = false
 
+-- Looking through the decompiled scripts and the json list here for these:
+-- https://github.com/DurtyFree/gta-v-data-dumps/blob/master/musicEventNames.json
+-- TODO Move these into music_test.lua
 RegisterCommand("playmusic", function()
     -- local player = getPlayerPed(-1)
+
+    -- These ones doesn't work
+    local mcStartTrack = "MP_MC_START"
+    local startHeist4Track = "MP_MC_START_HEIST_4"
+    --
+
+    -- These below do work
+    -- Play something for arena war.
+    local areaCountdownTrack = "AW_COUNTDOWN_30S"
+
+    -- Last 30 seconds track in deathmatch.
+    local dmCountdownTrack = "MP_DM_COUNTDOWN_30_SEC"
+
+    -- Plays some Arena war vehicle selection music
+    local awVehicleSelectionTrack = "AW_LOBBY_VEHICLE_SELECTION"
+
+    -- Play arena war announcer finished track.
+    local awAnnouncerFinishedTrack = "AW_ANNOUNCER_FINISHED"
+
+    -- Import Export music
+    local ieStartTrack = "IE_START_MUSIC"
+
+    -- Free mode intro track, when a player first starts the prologue.
+    local fmIntroTrack = "FM_INTRO_START"
+
+    -- Just a default track.
+    local unkTrack1 = "MP_DM_COUNTDOWN_30_SEC"
+
+    -- Looks like one of the singleplayer heist tracks.
+    local ah3bCopsTrack = "AH3B_COPS"
+
+    -- Unsure of these arcade ones honestly, for the arcade and machines I'm assuming.
+    local arcadeTrack1 = "ARCADE_WR_THEME_START"
+
+
+    -- This one sounds like the cop music
+    -- Yes this one is one of the cop sound tracks, I've been looking everywhere for these!
+    -- Or this is something for micheal, not sure though
+    local shootoutMichealTrack = "MIC1_SHOOTOUT_START"
+
+    -- Unsure of this one but sounds like the police chase music.
+    local copMusic1 = "SALVAGE_START_MUSIC"
+
+    -- local musicTrack = fmIntroTrack
+    -- local musicTrack = areaCountdownTrack
+    -- local musicTrack = dmCountdownTrack
+    -- local musicTrack = awVehicleSelectionTrack
+    -- local musicTrack = awAnnouncerFinishedTrack
+    -- local musicTrack = ieStartTrack
+    local musicTrack = unkTrack1
 
     -- endCredits = not endCredits
 
     -- TriggerMusicEvent("EXL1_MISSLE_HITS")
-    TriggerMusicEvent("CHASE_PARACHUTE_START")
+    -- TriggerMusicEvent("CHASE_PARACHUTE_START")
+
+
+    -- TriggerMusicEvent("MP_MC_CMH_SUB_FINALE_START")
+    -- TriggerMusicEvent("MP_MC_CMH_VEHICLE_CHASE")
+
+    -- PrepareMusicEvent("FM_INTRO_START")
+    -- TriggerMusicEvent("FM_INTRO_START")
+    -- PrepareMusicEvent(musicTrack)
+    TriggerMusicEvent(musicTrack)
+
     -- TriggerMusicEvent("FS_FORMATION_START")
     -- TriggerMusicEvent("MP_LTS")
     -- PlayEndCreditsMusic(endCredits)
 end, false)
 
 RegisterCommand("playarenamusic", function()
-
-    TriggerMusicEvent("AW_LOBBY_MUSIC_START")
+    local awLobbyMusic = "AW_LOBBY_MUSIC_START"
+    PrepareMusicEvent(awLobbyMusic)
+    TriggerMusicEvent(awLobbyMusic)
 end, false)
 
 RegisterCommand("stopmusic", function()
-    TriggerMusicEvent("MP_MC_CMH_IAA_FINALE_START")
+    -- TriggerMusicEvent("MP_MC_CMH_IAA_FINALE_START")
+    TriggerMusicEvent("AC_STOP")
 end, false)
 
 RegisterCommand("playsound", function()
     PlaySound(1, "CHARACTER_CHANGE_UP_MASTER", 0, false, false, false)
 end, false)
+
+
 
 --
 
@@ -178,5 +215,4 @@ function showSubtitle(message, duration)
     BeginTextCommandPrint("STRING")
     AddTextComponentString(message)
     EndTextCommandPrint(duration, true)
-    -- BeginTextCommandBusyspinnerOn()
 end

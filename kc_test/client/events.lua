@@ -14,6 +14,15 @@
 -- Test disabling player weapons in the facility, do they all use the same coords?
 -- This works
 
+-- This fixes it to where players can attack each other, for some reason it wasn't enabled.
+-- https://github.com/fcarvalho-bruno/enablepvp
+-- 
+AddEventHandler("playerSpawned", function(spawn)
+	local player = PlayerPedId()
+	SetCanAttackFriendly(player, true, true)
+	NetworkSetFriendlyFireOption(true)
+end)
+
 -- TODO Try to make this conceal the player as a test and use another client to join.
 local function CheckPlayerIsInFacility()
     local player = GetPlayerPed(-1)

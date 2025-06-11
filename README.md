@@ -3,7 +3,7 @@ These are going to be for the custom FiveM server that I am working on.
 
 I'm mostly just doing this to learn lua a bit more and scripting with FiveM.
 
-The ch_gamemode and ch_map resources aren't needed to be loaded in, I fixed ch_spawn so it will respawn the players.
+The kc_gamemode and kc_map resources aren't needed to be loaded in, I fixed kc_spawn so it will respawn the players.
 
 To enable these resources add the following to the server.cfg.
 
